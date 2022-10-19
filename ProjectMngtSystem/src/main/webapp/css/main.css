@@ -1,0 +1,78 @@
+.main_section01 {
+  height: 100%; position: relative; top: 0px;
+}
+
+.main_section01.fp-completely .main__visual .visual__txt>p {
+  -webkit-transform: translateY(0) !important;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+.main_section01 .main__visual {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url(/image/main/mv01.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+}
+
+.main_section01 .main__visual .visual__txt {
+  width: 100%;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+}
+
+.main_section01 .main__visual .visual__txt>p:first-child {
+  font-size: 80px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1em;
+  -webkit-transform: translateY(100px);
+  transform: translateY(100px);
+  opacity: 0;
+  -webkit-transition: all ease-out 1s;
+  transition: all ease-out 1s;
+}
+
+.main_section01 .main__visual .visual__txt>p:last-child {
+  color: #fff;
+  margin-top: 40px;
+  font-size: 20px;
+  line-height: 1.8em;
+  font-weight: 300;
+  -webkit-transform: translateY(100px);
+  transform: translateY(100px);
+  opacity: 0;
+  -webkit-transition: all ease-out 1s;
+  transition: all ease-out 1s;
+  -webkit-transition-delay: .3s;
+  transition-delay: .3s;
+}
+
+.main__visual .input-box {
+  position:absolute; 
+  height:64px; 
+  padding:0 64px 0 0;
+  /* width: 100%; */
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color:#fff; 
+  box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.3); 
+  border-radius: 50px;}
+.main__visual .input-box .input-text {display:block; height:100%; width:100%; padding:0 15px; font-size:1.2857em; border:0; background-color:transparent;}
+.main__visual .input-box .btn-search {overflow:hidden; display:block; position:absolute; right:1px; top:0; width:64px; height:100%; background:#18a9ec;font-size: 32px;text-indent: -9999;color: #fff; border-radius: 50px;}
+.main_section01 .main__visual .input-box .atcmp_wrap {position:absolute; top:64px; left:0; z-index:2; width:100%; background-color:#fff; border-top:1px solid #396fe1;}
