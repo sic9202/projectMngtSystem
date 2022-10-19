@@ -58,20 +58,16 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 @Controller
 public class projectMngtCtrl {
 
-//	/** EgovSampleService */
-//	@Resource(name = "projectMngtSvc")
-//	private ProjectMngtSvc projectMngtSvc;
-	
-	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
-
-	/** Validator */
-	@Resource(name = "beanValidator")
-	protected DefaultBeanValidator beanValidator;
-
-	@Autowired
+	@Resource(name = "projectMngtSvc")
 	private ProjectMngtSvc projectMngtSvc;
+	
+//	/** EgovPropertyService */
+//	@Resource(name = "propertiesService")
+//	protected EgovPropertyService propertiesService;
+//
+//	/** Validator */
+//	@Resource(name = "beanValidator")
+//	protected DefaultBeanValidator beanValidator;
 	/**
 	 * 글 목록을 조회한다. (pageing)
 	 * @param searchVO - 조회할 정보가 담긴 SampleDefaultVO
