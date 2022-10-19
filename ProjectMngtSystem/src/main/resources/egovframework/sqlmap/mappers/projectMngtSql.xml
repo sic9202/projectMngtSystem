@@ -1,11 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="egovframework.projectMngt.sevice.imple.ProjectMngtMapper">
-	<select id="getWorkList" resultType="String" parameterType="String">
+<mapper namespace="egovframework.projectMngt.service.impl.ProjectMngtMapper">
+	<select id="getProjectList" resultType="ProjectVO">
 		SELECT
-			*
+			p.idx AS project_idx,
+			project_name,
+			project_type,
+			project_reg_date,
+			p.reg_user_idx,
+			u.user_name AS reg_user_name
 		FROM
-			work_list
+			project p
+		JOIN user u ON p.reg_user_idx = u.idx;
+	</select>
+
+	<select id="getProjectListCnt" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			project p
+		JOIN user u ON p.reg_user_idx = u.idx;
+	</select>
+	
+	<select id="getScheduleList" resultType="ScheduleVO" parameterType="int">
+		SELECT
+			s.idx AS schedule_idx,
+			project_idx,
+			schedule_name,
+			schedule_reg_date,
+			s.reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			schedule s
+		JOIN
+			user u ON s.reg_user_idx = u.idx
+		WHERE
+			s.project_idx = #{project_idx};
+	</select>
+
+	<select id="getScheduleListCnt" resultType="int" parameterType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			schedule s
+		JOIN
+			user u ON s.reg_user_idx = u.idx
+		WHERE
+			s.project_idx = #{project_idx};
+	</select>
+	
+	<select id="getWorkList" resultType="WorkVO" parameterType="Map">
+		SELECT
+			w.idx AS work_idx,
+			schedule_idx,
+			project_idx,
+			work_info,
+			work_reg_date,
+			work_name,
+			w.reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.schedule_idx = #{schedule_idx};
+	</select>
+
+	<select id="getWorkListCnt" resultType="int" parameterType="Map">
+		SELECT
+			COUNT(*)
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.schedule_idx = #{schedule_idx};
+	</select>
+	
+	<select id="getProjectInfo" resultType="ProjectVO" parameterType="int">
+		SELECT
+			p.idx AS project_idx,
+			project_name,
+			project_type,
+			project_reg_date,
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			project p
+		JOIN 
+			user u ON p.reg_user_idx = u.idx
+		WHERE
+			p.idx = #{project_idx};
+	</select>
+	
+	<select id="getScheduleInfo" resultType="ScheduleVO" parameterType="int">
+		SELECT
+			s.idx AS schedule_idx,
+			schedule_name,
+			schedule_reg_date,
+			s.project_idx
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			schedule s
+		JOIN 
+			user u ON s.reg_user_idx = u.idx
+		WHERE
+			s.idx = #{schedule_idx};
 	</select>
 </mapper>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>K-ICT 빅데이터 센터</title>
+    <title>프로젝트관리</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -12,8 +12,8 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="DATAMASQ">
     <meta name="naver-site-verification" content="">
-    <meta name="description" content="KICT 빅데이터 센터">
-    <meta property="og:description" content="KICT 빅데이터 센터">
+    <meta name="description" content="프로젝트관리">
+    <meta property="og:description" content="프로젝트관리">
 
     <link rel="shortcut icon" href="/image/common/favicon.png">
 
@@ -56,7 +56,7 @@
 									<input type="text" placeholder="아이디" id="user_id" name="user_id">
 									<input type="password" placeholder="비밀번호" id="user_pwd" name="user_pwd">
 								</form>
-								<button type="button" onclick="moveList()">로그인</button>
+								<button type="button" onclick="moveProjectList()">로그인</button>
 								<ul class="flex">
 									<li><a href="findPwd.do">비밀번호 찾기</a></li>
 								</ul>

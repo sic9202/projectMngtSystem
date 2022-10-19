@@ -37,9 +37,9 @@
 <body>
 	<script src="/js/projectMngt/projectList.js"></script>
 	<script type="text/javascript">
-		$().ready(function(){
-			getShareDatasetList(0);
-		});
+// 		$().ready(function(){
+// 			getShareDatasetList(0);
+// 		});
 	</script>
     <div class="sub-visual sv01 on">
       <p class="animated on">프로젝트 리스트 </p>
@@ -54,33 +54,34 @@
 
         <div class="board_top">
           <p class="lb count">
-            <span>총 <b id="totalCnt"></b>건</span>
+            <span>총 <b id="totalCnt">${totalCnt }</b>건</span>
           </p>
           <div class="board_search_box">
             <label class="blind" for="">검색 분류</label>
             <select id="searchType" class="search_select" name="">
               <option value="">선택</option>
-              <option value="10">데이터명</option>
-              <option value="20">키워드</option>
-              <option value="30">등록자</option>
+              <option value="10">프로젝트명</option>
+              <option value="20">등록자</option>
             </select>
             <label class="blind" for="searchWord">검색어 입력</label>
             <input id="searchContent" type="text" class="txt_search" name="" value="" placeholder="검색어 입력">
-            <button type="button" class="btn_search" onclick="getShareDatasetList(1)"><i class="xi-magnifier"></i> 검색</button>
+            <button type="button" class="btn_search" onclick=""><i class="xi-magnifier"></i> 검색</button>
             <input type="hidden" name="pageNo" id="pageNo" value="" />
             <input type="hidden" name="listSize" id="listSize" value="10" />
           </div>
         </div>
         
 		<div id="data_content">
-			<div class="data-view-result" style="cursor: pointer;" onclick="goProjectEnvList()">
-				<p class="cate"><span class="cate19">분야</span><span>IT총판</span></p>
-				<p class="date"><span>기관명 : 디모아</span>
-					<span>등록일자 : 2022-10-17</span>
-				</p>
-				<p class="title"><a>샘플데이터</a></p>
-				<p class="text"></p>
-			</div>
+			<c:forEach var="p_list" items="${project_list }" varStatus="pStatus">
+				<div class="data-view-result" style="cursor: pointer;" onclick="goScheduleList(${p_list.project_idx })">
+					<p class="cate"><span class="cate19">분야</span><span>${p_list.project_type }</span></p>
+					<p class="date">
+						<span>등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${p_list.project_reg_date }"/></span>
+					</p>
+					<p class="title"><a>${p_list.project_name }</a></p>
+					<p class="text"></p>
+				</div>
+			</c:forEach>
 		</div>
         <div id="pagination">
           <!-- 페이지 많이지면 생김 a href="#"
@@ -97,7 +98,7 @@
 
     </div>
 <form action="" method="post" id="moveForm">
-	<input type="hidden" name="dataset_idx" value=""/>	
+	<input type="hidden" name="project_idx" value=""/>	
 </form>
 </body>
 

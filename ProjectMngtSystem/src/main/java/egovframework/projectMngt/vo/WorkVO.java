@@ -9,7 +9,7 @@ public class WorkVO {
 	private String schedule_name;
 	private int project_idx;
 	private String project_name;
-	private Timestamp schedule_reg_date;
+	private Timestamp work_reg_date;
 	private int reg_user_idx;
 	private String reg_user_name;
 	public int getWork_idx() {
@@ -48,11 +48,11 @@ public class WorkVO {
 	public void setProject_name(String project_name) {
 		this.project_name = project_name;
 	}
-	public Timestamp getSchedule_reg_date() {
-		return schedule_reg_date;
+	public Timestamp getWork_reg_date() {
+		return work_reg_date;
 	}
-	public void setSchedule_reg_date(Timestamp schedule_reg_date) {
-		this.schedule_reg_date = schedule_reg_date;
+	public void setWork_reg_date(Timestamp work_reg_date) {
+		this.work_reg_date = work_reg_date;
 	}
 	public int getReg_user_idx() {
 		return reg_user_idx;

@@ -145,6 +145,6 @@ function change_pwd(email){
 
 }
 
-function moveList(){
+function moveProjectList(){
 	window.location.href = encodeURI("/projectList.do");
 }

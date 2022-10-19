@@ -188,10 +188,14 @@ function addMyDataset(dataset_idx){
 	});
 }
 
-function goProjectEnvList(){
-	window.location.href = encodeURI("/projectEnvList.do");
+function goScheduleList(project_idx){
+	$("#moveForm").attr("action", "/scheduleList.do");
+	$("#moveForm input[name=project_idx]").val(project_idx);
+	$("#moveForm").submit();
 }
 
-function goWorkList(){
-	window.location.href = encodeURI("/workList.do");
+function goWorkList(schedule_idx){
+	$("#moveForm").attr("action", "/workList.do");
+	$("#moveForm input[name=schedule_idx]").val(schedule_idx);
+	$("#moveForm").submit();
 }
