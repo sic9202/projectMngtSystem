@@ -51,5 +51,9 @@ public interface ProjectMngtSvc {
 	
 	ProjectVO getProjectInfo(int project_idx);
 	ScheduleVO getScheduleInfo(int schedule_idx);
+	WorkVO getWorkInfo(int parseInt);
+	
+	int addProject(ProjectVO project_param);
+	int addSchedule(ScheduleVO schedule_param);
 
 }

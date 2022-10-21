@@ -23,6 +23,13 @@
 		JOIN user u ON p.reg_user_idx = u.idx;
 	</select>
 	
+	<insert id="addProject" parameterType="ProjectVO">
+		INSERT INTO 
+			project (project_name, project_type, reg_user_idx) 
+		VALUES 
+			(#{project_name}, #{project_type}, #{reg_user_idx});
+	</insert>
+	
 	<select id="getScheduleList" resultType="ScheduleVO" parameterType="int">
 		SELECT
 			s.idx AS schedule_idx,
@@ -49,6 +56,13 @@
 		WHERE
 			s.project_idx = #{project_idx};
 	</select>
+	
+	<insert id="addSchedule" parameterType="ScheduleVO">
+		INSERT INTO 
+			schedule (project_idx, schedule_name, reg_user_idx) 
+		VALUES 
+			(#{project_idx}, #{schedule_name}, #{reg_user_idx});
+	</insert>
 	
 	<select id="getWorkList" resultType="WorkVO" parameterType="Map">
 		SELECT
@@ -100,14 +114,36 @@
 			s.idx AS schedule_idx,
 			schedule_name,
 			schedule_reg_date,
-			s.project_idx
-			reg_user_idx,
-			u.user_name AS reg_user_name
+			s.project_idx,
+			s.reg_user_idx,
+			u.user_name AS reg_user_name,
+			project_name
 		FROM
 			schedule s
 		JOIN 
 			user u ON s.reg_user_idx = u.idx
+		JOIN
+			project p ON s.project_idx = p.idx
 		WHERE
 			s.idx = #{schedule_idx};
 	</select>
+	
+	<select id="getWorkInfo" resultType="WorkVo" parameterType="int">
+		SELECT
+			w.idx AS work_idx,
+			schedule_idx,
+			project_idx,
+			work_info,
+			work_reg_date,
+			work_name,
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.idx = #{work_idx};
+	</select>
+	
 </mapper>

@@ -132,6 +132,8 @@ function newWork(){
 	window.location.href = encodeURI("/workNew.do");
 }
 
-function goWorkView(){
-	window.location.href = encodeURI("/workView.do");
+function goWorkView(work_idx){
+	$("#moveForm").attr("action", "/workView.do");
+	$("#moveForm input[name=work_idx]").val(work_idx);
+	$("#moveForm").submit();
 }

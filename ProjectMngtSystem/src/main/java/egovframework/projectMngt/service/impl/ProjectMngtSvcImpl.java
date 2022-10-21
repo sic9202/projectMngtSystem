@@ -63,4 +63,19 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		ScheduleVO schedule_info = projectMngtMapper.getScheduleInfo(schedule_idx);
 		return schedule_info;
 	}
+	
+	public WorkVO getWorkInfo(int work_idx) {
+		WorkVO work_info = projectMngtMapper.getWorkInfo(work_idx);
+		return work_info;
+	}
+	
+	public int addProject(ProjectVO project_param) {
+		int result = projectMngtMapper.addProject(project_param);
+		return result;
+	}
+	
+	public int addSchedule(ScheduleVO schedule_param) {
+		int result = projectMngtMapper.addSchedule(schedule_param);
+		return result;
+	}
 }

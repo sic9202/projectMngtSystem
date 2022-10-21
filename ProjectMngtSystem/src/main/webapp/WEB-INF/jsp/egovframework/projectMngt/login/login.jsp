@@ -58,7 +58,7 @@
 								</form>
 								<button type="button" onclick="moveProjectList()">로그인</button>
 								<ul class="flex">
-									<li><a href="findPwd.do">비밀번호 찾기</a></li>
+<!-- 									<li><a href="findPwd.do">비밀번호 찾기</a></li> -->
 								</ul>
 	
 								<a href="signUp.do" class="join_link btn">회원가입</a>

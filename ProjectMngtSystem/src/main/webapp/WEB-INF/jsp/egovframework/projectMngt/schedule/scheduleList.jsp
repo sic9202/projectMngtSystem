@@ -35,23 +35,23 @@
 
 </head>
 <body>
-	<script src="/js/projectMngt/workList.js"></script>
+	<script src="/js/projectMngt/schedule.js"></script>
 	<script type="text/javascript">
-		$().ready(function(){
-			getDatasetList(0);
-		});
+// 		$().ready(function(){
+// 			getDatasetList(0);
+// 		});
 	</script>
     <div class="sub-visual sv01 on">
-      <p class="animated on">업무 관리</p>
+      <p class="animated on">프로젝트상세</p>
     </div>
 
     <!-- container start-->
     <div class="pr-page">
       <div id="inner02" class="inner02">
-        <p class="sub__tit01">${schedule_info.schedule_name }<span class="sub__tit02"></span></p>
+        <p class="sub__tit01">${project_info.project_name } <span class="sub__tit02"></span></p>
 
         <div class="btn-area rb">
-          <a style="cursor:pointer;" onclick="newWork()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
+          <a style="cursor:pointer;" onclick="goScheduleNew()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
         </div>
 
         <div class="board_top">
@@ -62,7 +62,7 @@
             <label class="blind" for="">검색 분류</label>
             <select id="searchType" class="search_select" name="">
               <option value="" selected>선택</option>
-              <option value="10">업무명</option>
+              <option value="10">공정명</option>
               <option value="20">등록자</option>
             </select>
             <label class="blind" for="">검색어 입력</label>
@@ -85,20 +85,20 @@
               <thead>
                 <tr>
                   <th scope="col">번호</th>
-                  <th scope="col">업무명</th>
+                  <th scope="col">공정명</th>
                   <th scope="col">등록일</th>
                   <th scope="col">등록자</th>
                 </tr>
               </thead>
               <tbody>
-              	<c:forEach var="w_list" items="${work_list }" varStatus="wStatus">
-              		<tr>
-	              		<td>${wStatus.count }</td>
-						<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkView()">${w_list.work_name }</a></td>
-						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${w_list.work_reg_date }"/></td>
-						<td>${w_list.reg_user_name }</td>
-					</tr>
-              	</c:forEach>
+              <c:forEach var="s_list" items="${schedule_list }" varStatus="sStatus">
+              	<tr>
+              		<td>${sStatus.count }</td>
+					<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkList(${s_list.schedule_idx})">${s_list.schedule_name }</a></td>
+					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${s_list.schedule_reg_date }"/></td>
+					<td>${s_list.reg_user_name }</td>
+				</tr>
+              </c:forEach>
               </tbody>
             </table>
           </div>
@@ -117,9 +117,8 @@
       <!-- container end-->
     </div>
 <form action="" method="post" id="moveForm">
-	<input type="hidden" name="org_idx" value="${org_idx }">
-	<input type="hidden" name="user_idx" value="${user_idx }"/>
-	<input type="hidden" name="dataset_idx" value=""/>
+	<input type="hidden" name="project_idx" value="${project_info.project_idx }">
+	<input type="hidden" name="schedule_idx" value=""/>
 </form>
 </body>
 
