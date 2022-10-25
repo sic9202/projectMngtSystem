@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+ 		<typeAlias alias="ProjectVO" type="egovframework.projectMngt.vo.ProjectVO"/>
+ 		<typeAlias alias="ScheduleVO" type="egovframework.projectMngt.vo.ScheduleVO"/>
+ 		<typeAlias alias="WorkVO" type="egovframework.projectMngt.vo.WorkVO"/>
+ 		<typeAlias alias="LoginVO" type="egovframework.projectMngt.vo.LoginVO"/>
+    </typeAliases>
+</configuration>
