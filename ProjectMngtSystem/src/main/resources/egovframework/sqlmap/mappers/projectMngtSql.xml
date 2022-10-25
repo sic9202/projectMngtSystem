@@ -146,4 +146,41 @@
 			w.idx = #{work_idx};
 	</select>
 	
+	<select id="checkUser1" resultType="int" parameterType="Map">
+		SELECT
+			COUNT(*) 
+		FROM 
+			user
+		WHERE
+			user_email = #{id};
+	</select>
+	
+	<select id="checkUser2" resultType="int" parameterType="Map">
+		SELECT
+			COUNT(*)
+		FROM
+			user
+		WHERE
+			user_email = #{id} AND passwd = #{encrypt_pwd};
+	</select>
+	
+	<select id="getUserInfo" resultType="LoginVO" parameterType="Map">
+		SELECT 
+			idx AS user_idx,
+			user_email AS id,
+			passwd,
+			user_name,
+			mobile,
+			join_date,
+			use_yn,
+			user_desc
+		FROM
+			user
+		WHERE
+			user_email = #{id} 
+		AND
+			passwd = #{encrypt_pwd};
+	</select>
+	
+	
 </mapper>

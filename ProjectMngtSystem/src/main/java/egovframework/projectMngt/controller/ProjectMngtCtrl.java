@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import egovframework.projectMngt.service.ProjectMngtSvc;
+import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
 import egovframework.projectMngt.vo.WorkVO;
@@ -27,6 +28,8 @@ public class ProjectMngtCtrl {
 	//project 시작 
 	@RequestMapping("/projectList.do")
 	public String projectList(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
+		LoginVO loginVO = (LoginVO) request.getSession().getAttribute("loginVO");
+		
 		List<ProjectVO> project_list = projectMngtSvc.getProjectList();
 		int totalCnt = projectMngtSvc.getProjectListCnt();
 		model.addAttribute("project_list", project_list);
