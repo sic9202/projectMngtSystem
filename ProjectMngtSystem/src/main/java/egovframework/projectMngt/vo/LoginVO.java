@@ -5,10 +5,11 @@ import java.sql.Timestamp;
 public class LoginVO {
 	
 	private int user_idx;
-	private String id; //email
-	private String passwd;
+	private String user_id; //email
+	private String user_pwd;
+	private String encrypt_pwd;
 	private String user_name;
-	private String mobile;
+	private String phone_num;
 	private Timestamp join_date;
 	private int use_yn;
 	private String user_desc;
@@ -19,17 +20,23 @@ public class LoginVO {
 	public void setUser_idx(int user_idx) {
 		this.user_idx = user_idx;
 	}
-	public String getId() {
-		return id;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getPasswd() {
-		return passwd;
+	public String getUser_pwd() {
+		return user_pwd;
 	}
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
+	public void setUser_pwd(String user_pwd) {
+		this.user_pwd = user_pwd;
+	}
+	public String getEncrypt_pwd() {
+		return encrypt_pwd;
+	}
+	public void setEncrypt_pwd(String encrypt_pwd) {
+		this.encrypt_pwd = encrypt_pwd;
 	}
 	public String getUser_name() {
 		return user_name;
@@ -37,11 +44,11 @@ public class LoginVO {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	public String getMobile() {
-		return mobile;
+	public String getPhone_num() {
+		return phone_num;
 	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setPhone_num(String phone_num) {
+		this.phone_num = phone_num;
 	}
 	public Timestamp getJoin_date() {
 		return join_date;

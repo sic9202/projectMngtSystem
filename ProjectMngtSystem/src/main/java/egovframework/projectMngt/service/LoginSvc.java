@@ -42,4 +42,8 @@ import egovframework.projectMngt.vo.WorkVO;
 public interface LoginSvc {
 
 	LoginVO checkUser(Map<String, String> map) throws Exception;
+
+	int signUp(LoginVO user_info) throws Exception;
+
+	int duplicateCheck(String user_id);
 }

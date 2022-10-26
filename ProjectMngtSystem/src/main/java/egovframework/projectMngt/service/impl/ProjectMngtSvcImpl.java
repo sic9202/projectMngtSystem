@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.projectMngt.service.ProjectMngtSvc;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -77,5 +78,10 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	public int addSchedule(ScheduleVO schedule_param) {
 		int result = projectMngtMapper.addSchedule(schedule_param);
 		return result;
+	}
+	
+	public List<WorkDataVO> getWorkDataInfo(int work_idx) {
+		List<WorkDataVO> work_data_info = projectMngtMapper.getWorkDataInfo(work_idx);
+		return work_data_info;
 	}
 }

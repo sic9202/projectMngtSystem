@@ -15,6 +15,8 @@
             <mvc:exclude-mapping path="/login.do"/>
             <mvc:exclude-mapping path="/signUp.do"/>
             <mvc:exclude-mapping path="/checkUser.do"/>
+            <mvc:exclude-mapping path="/register_account.do"/>
+            <mvc:exclude-mapping path="/duplicate_check.do"/>
             <bean class="egovframework.projectMngt.cmm.AuthInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

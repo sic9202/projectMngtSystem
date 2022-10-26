@@ -55,8 +55,8 @@
 	
 							<div class="w_550">
 								<form id="" name="">
-									<input type="text" placeholder="아이디" id="id" name="id">
-									<input type="password" placeholder="비밀번호" id="passwd" name="passwd">
+									<input type="text" placeholder="아이디" id="user_id" name="user_id">
+									<input type="password" placeholder="비밀번호" id="user_pwd" name="user_pwd">
 								</form>
 <!-- 								<button type="button" onclick="moveProjectList()">로그인</button> -->
 								<button type="button" onclick="check_user()">로그인</button>

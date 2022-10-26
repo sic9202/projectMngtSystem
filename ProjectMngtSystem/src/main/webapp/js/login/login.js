@@ -9,23 +9,23 @@ function id_check(id){
 }
 
 function value_check(){
-	if($("#id").val() == ""){
+	if($("#user_id").val() == ""){
 		alert("아이디를 입력해주세요");
-		$("#id").focus();
+		$("#user_id").focus();
 		return false;
 	}else{
-		if(!id_check($("#id").val())){
+		if(!id_check($("#user_id").val())){
 			alert("잘못된 형식의 아이디 입니다.");
-			$("#id").val("");
-			$("#passwd").val("");
-			$("#id").focus();
+			$("#user_id").val("");
+			$("#user_pwd").val("");
+			$("#user_id").focus();
 			return false;
 		}
 	}
-	if($("#passwd").val() == ""){
+	if($("#user_pwd").val() == ""){
 		alert("비밀번호를 입력해주세요");
-		$("#passwd").val("");
-		$("#passwd").focus();
+		$("#user_pwd").val("");
+		$("#user_pwd").focus();
 		return false;
 	}
 	return true;
@@ -34,40 +34,40 @@ function value_check(){
 
 function check_user() {
 	if(value_check()){
-		var id = $("#id").val();
-		var passwd = $("#passwd").val();
+		var user_id = $("#user_id").val();
+		var user_pwd = $("#user_pwd").val();
 		
 		$.ajax({
 			type: "POST",
 			url: "/checkUser.do",
 			data: {
-				id: id,
-				passwd: passwd
+				user_id: user_id,
+				user_pwd: user_pwd
 			},
 			success: function(r){
 				if(r.use_yn == 0){
 					alert("탈퇴한 회원입니다.");
-					$("#passwd").val("");
-					$("#id").val("");
-					$("#id").focus();
+					$("#user_pwd").val("");
+					$("#user_id").val("");
+					$("#user_id").focus();
 					return false;
 				}else{
 					if(r.status == 1){ //로그인성공
 						window.location.href = encodeURI("/projectList.do");
 					}else if(r.status == 2){
 						alert("잘못된 아이디 입니다.");
-						$("#passwd").val("");
-						$("#id").val("");
-						$("#id").focus();
+						$("#user_pwd").val("");
+						$("#user_id").val("");
+						$("#user_id").focus();
 					}else if(r.status == 3){
 						alert("잘못된 비밀번호 입니다.");
-						$("#passwd").val("");
-						$("#passwd").focus();
+						$("#user_pwd").val("");
+						$("#user_pwd").focus();
 					}else{
 						alert("로그인에 실패하였습니다.");
-						$("#passwd").val("");
-						$("#id").val("");
-						$("#id").focus();
+						$("#user_pwd").val("");
+						$("#user_id").val("");
+						$("#user_id").focus();
 					}
 				}
 			}
@@ -93,15 +93,15 @@ function check_user() {
 //	}	
 //}
 
-function pwdCheck(passwd){
-	var num = passwd.search(/[0-9]/g);
-	var eng = passwd.search(/[a-z]/ig);
-	var spe = passwd.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+function pwdCheck(pwd){
+	var num = pwd.search(/[0-9]/g);
+	var eng = pwd.search(/[a-z]/ig);
+	var spe = pwd.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-	if(passwd.length < 6 || passwd.length > 12){
+	if(pwd.length < 6 || pwd.length > 12){
 		alert("8자리 ~ 20자리 이내로 입력해주세요.");
 		return false;
-	}else if(passwd.search(/\s/) != -1){
+	}else if(pwd.search(/\s/) != -1){
 		alert("비밀번호는 공백 없이 입력해주세요.");
 		return false;
 	}else if(num < 0 || eng < 0 || spe < 0 ){

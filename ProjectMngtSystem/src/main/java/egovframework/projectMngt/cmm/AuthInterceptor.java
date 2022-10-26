@@ -26,7 +26,7 @@ public class AuthInterceptor extends WebContentInterceptor {
     	String url = request.getRequestURI();
     	try {
     		sessionVo = (LoginVO) request.getSession().getAttribute("loginVO");
-    		if (sessionVo != null && sessionVo.getId() != null) {
+    		if (sessionVo != null && sessionVo.getUser_id() != null) {
         		return true;
             } else {
 //            	ModelAndView mv = new ModelAndView("redirect:/main.do");

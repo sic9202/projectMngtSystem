@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -37,4 +38,9 @@ public interface ProjectMngtMapper {
 	
 	//로그인 정보
 	LoginVO getUserInfo(Map<String, String> map);
+	int signUp(LoginVO user_info);
+	int duplicateCheck(String user_id);
+	
+	//work_data정보
+	List<WorkDataVO> getWorkDataInfo(int work_idx);
 }

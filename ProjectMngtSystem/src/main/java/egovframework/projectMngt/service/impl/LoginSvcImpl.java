@@ -31,7 +31,7 @@ public class LoginSvcImpl implements LoginSvc {
 		LoginVO loginVO = new LoginVO();
 		int status = 1;
 		
-		String encrypt_pwd = registersrv.encryptPassword(map.get("passwd"), map.get("id"));
+		String encrypt_pwd = registersrv.encryptPassword(map.get("user_pwd"), map.get("user_id"));
 		map.put("encrypt_pwd", encrypt_pwd);
 		int cnt1 = projectMngtMapper.checkUser1(map);
 		if(cnt1 == 0) {
@@ -46,5 +46,31 @@ public class LoginSvcImpl implements LoginSvc {
 		}
 		loginVO.setStatus(status);
 		return loginVO;
+	}
+	
+	public int signUp(LoginVO user_info) throws Exception{
+		int status = 0;
+		String encrypt_pwd = registersrv.encryptPassword(user_info.getUser_pwd(), user_info.getUser_id());
+		user_info.setEncrypt_pwd(encrypt_pwd);
+		int cnt = projectMngtMapper.signUp(user_info);
+		
+		if(cnt > 0) {
+			status = 1;
+		}
+		return status;
+	}
+	
+	public int duplicateCheck(String user_id){
+		int status = 0; //생성가능
+		try {
+			int cnt = projectMngtMapper.duplicateCheck(user_id);
+			if(cnt > 0) {
+				status = 1; //이미 있는 id
+			}
+		} catch (Exception e) {
+			status = 2; //에러
+		}
+		
+		return status;
 	}
 }

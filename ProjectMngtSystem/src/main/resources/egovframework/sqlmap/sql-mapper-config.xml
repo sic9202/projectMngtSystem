@@ -7,5 +7,6 @@
  		<typeAlias alias="ScheduleVO" type="egovframework.projectMngt.vo.ScheduleVO"/>
  		<typeAlias alias="WorkVO" type="egovframework.projectMngt.vo.WorkVO"/>
  		<typeAlias alias="LoginVO" type="egovframework.projectMngt.vo.LoginVO"/>
+ 		<typeAlias alias="WorkDataVO" type="egovframework.projectMngt.vo.WorkDataVO"/>
     </typeAliases>
 </configuration>

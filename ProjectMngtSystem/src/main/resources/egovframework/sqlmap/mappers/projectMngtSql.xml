@@ -152,7 +152,7 @@
 		FROM 
 			user
 		WHERE
-			user_email = #{id};
+			user_email = #{user_id};
 	</select>
 	
 	<select id="checkUser2" resultType="int" parameterType="Map">
@@ -161,26 +161,54 @@
 		FROM
 			user
 		WHERE
-			user_email = #{id} AND passwd = #{encrypt_pwd};
+			user_email = #{user_id} AND passwd = #{encrypt_pwd};
 	</select>
 	
 	<select id="getUserInfo" resultType="LoginVO" parameterType="Map">
 		SELECT 
 			idx AS user_idx,
-			user_email AS id,
-			passwd,
+			user_email AS user_id,
+			passwd AS user_pwd,
 			user_name,
-			mobile,
+			phone_num,
 			join_date,
 			use_yn,
 			user_desc
 		FROM
 			user
 		WHERE
-			user_email = #{id} 
+			user_email = #{user_id} 
 		AND
 			passwd = #{encrypt_pwd};
 	</select>
 	
+	<select id="duplicateCheck" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM
+			user
+		WHERE
+			user_email = #{user_id} 
+	</select>
+	
+	<select id="getWorkDataInfo" resultType="WorkDataVO" parameterType="int">
+		SELECT
+			wd.idx AS work_data_idx,
+			work_idx,
+			str_date,
+			end_date,
+			support_time,
+			support_type,
+			support_content,
+			severity,
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work_data wd
+		JOIN 
+			user u ON wd.reg_user_idx = u.idx
+		WHERE
+			wd.work_idx = #{work_idx};
+	</select>
 	
 </mapper>
