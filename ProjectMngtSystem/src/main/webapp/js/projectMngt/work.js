@@ -122,9 +122,8 @@ function datasetNew(){
 	});
 }
 
-function datasetView(dataset_idx){
-	$("#moveForm").attr("action", "/datasetView.do");
-	$("#moveForm input[name=dataset_idx]").val(dataset_idx);
+function goWorkList(){
+	$("#moveForm").attr("action", "/workList.do");
 	$("#moveForm").submit();
 }
 
@@ -136,4 +135,144 @@ function goWorkView(work_idx){
 	$("#moveForm").attr("action", "/workView.do");
 	$("#moveForm input[name=work_idx]").val(work_idx);
 	$("#moveForm").submit();
+}
+
+//레코드추가
+function addRecord(){
+	var tag = "";
+	var rowCnt = $('#work_data table tbody tr').length;
+	tag += '<tr data="add">'
+		+		'<td><input id="str_date" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="end_date" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="reg_user_name" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+ 		'<td><input id="support_time" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="support_type" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="support_content" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td>'
+		+			'<select id="severity" class="selectOrgN">'
+		+				'<option value="2">상</option>'
+		+				'<option value="1">중</option>'
+		+				'<option value="0">하</option>'
+      	+			'</select>'
+		+		'<td>'
+		+			'<a id="sample_del_btn" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
+		+		'</td>'
+		+	'</tr>'
+	$('#work_data tbody').append(tag);
+}
+
+//레코드 삭제
+function removeRecord(btn){
+	tr = $(btn).parent().parent();
+	if(tr.attr("data") == "add"){
+		tr.remove();
+	}else if(tr.attr("data") == "added"){
+		tr.attr("data", "del");
+		tr.attr("style", "display:none");
+	}
+}
+
+function check_work_data_val(){
+	var result = true;
+	$('#work_data table tbody tr').each(function(idx, val){
+		if($(val).attr('data') == 'add'){
+			if($("#str_date_"+idx).val() == null || $("#str_date_"+idx).val().trim() == ""){
+				alert("공란이 있습니다. 모두 입력해주세요.");
+				result = false;
+				return false;
+			}
+			
+			if($("#end_date_"+idx).val() == null || $("#end_date_"+idx).val().trim() == ""){
+				alert("공란이 있습니다. 모두 입력해주세요.");
+				result = false;
+				return false;
+			}
+			
+			if($("#support_time_"+idx).val() == null || $("#support_time_"+idx).val().trim() == ""){
+				alert("공란이 있습니다. 모두 입력해주세요.");
+				result = false;
+				return false;
+			}else if(isNaN($("#support_time_"+idx).val())){
+				alert("숫자만 입력해주세요.");
+				result = false;
+				return false;
+			}
+			
+			if($("#support_type_"+idx).val() == null || $("#support_type_"+idx).val().trim() == ""){
+				alert("공란이 있습니다. 모두 입력해주세요.");
+				result = false;
+				return false;
+			}
+			
+			if($("#support_content_"+idx).val() == null || $("#support_content_"+idx).val().trim() == ""){
+				alert("공란이 있습니다. 모두 입력해주세요.");
+				result = false;
+				return false;
+			}
+			
+			if($("#severity_"+idx).val() == null || $("#severity_"+idx).val() == ""){
+				alert("선택되지 않은 값이 있습니다. 값을 선택해주세요.");
+				result = false;
+				return false;
+			}
+		}
+	});
+	
+	return result;
+}
+
+function saveWorkData(work_idx){
+	var date_pattern = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/;
+	var arr = new Array();
+	var delArr = new Array();
+	
+	var str_date = "";
+	var end_date = "";
+	var support_time = "";
+	var support_type = "";
+	var support_content = "";
+	var severity = "";
+
+	if(check_work_data_val()){
+		$('#work_data table tbody tr').each(function(idx, val){
+			if($(val).attr('data') == 'add'){
+				var obj = new Object();
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+				obj.work_idx = work_idx;
+			}
+		});
+	}
+	
+	
+	//기본 3개(workType, project_name, id)
+	if(Object.keys(datas).length < 4){
+		return false;
+	}
+	
+	$.ajax({
+		cache : false,
+		url : rootPath + '/joinwork/updateDateMngt.html',
+		type : 'POST', 
+		data : {
+			datas : JSON.stringify(datas)
+		}, 
+		success : function(result) {
+			if(result > 0){
+				alert("저장되었습니다.");	
+			}else{
+				alert("오류가 발생했습니다.")
+			}
+			goList();
+		}, // success 
+		error : function(result) {
+			alert("실패하였습니다.");
+		}
+	});
 }

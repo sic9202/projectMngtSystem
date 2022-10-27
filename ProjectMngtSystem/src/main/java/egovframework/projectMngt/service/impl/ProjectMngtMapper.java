@@ -41,6 +41,7 @@ public interface ProjectMngtMapper {
 	int signUp(LoginVO user_info);
 	int duplicateCheck(String user_id);
 	
-	//work_data정보
-	List<WorkDataVO> getWorkDataInfo(int work_idx);
+	//work_data리스트
+	List<WorkDataVO> getWorkDataList(int work_idx);
+	int getWorkDataListCnt(int work_idx);
 }

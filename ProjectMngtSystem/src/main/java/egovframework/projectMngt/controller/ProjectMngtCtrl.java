@@ -129,12 +129,14 @@ public class ProjectMngtCtrl {
 		ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
 		ScheduleVO schedule_info = projectMngtSvc.getScheduleInfo(Integer.parseInt(schedule_idx));
 		
-		List<WorkDataVO> work_data_list = projectMngtSvc.getWorkDataInfo(Integer.parseInt(work_idx));
+		List<WorkDataVO> work_data_list = projectMngtSvc.getWorkDataList(Integer.parseInt(work_idx));
+		int totalCnt = projectMngtSvc.getWorkDataListCnt(Integer.parseInt(work_idx));
 		
 		model.addAttribute("work_info", work_info);
 		model.addAttribute("project_info", project_info);
 		model.addAttribute("schedule_info", schedule_info);
 		model.addAttribute("work_data_list", work_data_list);
+		model.addAttribute("totalCnt", totalCnt);
 		
 		return "/work/workView";
 	}

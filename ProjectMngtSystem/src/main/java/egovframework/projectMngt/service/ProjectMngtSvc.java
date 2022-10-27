@@ -57,6 +57,7 @@ public interface ProjectMngtSvc {
 	int addProject(ProjectVO project_param);
 	int addSchedule(ScheduleVO schedule_param);
 	
-	List<WorkDataVO> getWorkDataInfo(int work_idx);
+	List<WorkDataVO> getWorkDataList(int work_idx);
+	int getWorkDataListCnt(int parseInt);
 
 }

@@ -80,8 +80,13 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
-	public List<WorkDataVO> getWorkDataInfo(int work_idx) {
-		List<WorkDataVO> work_data_info = projectMngtMapper.getWorkDataInfo(work_idx);
+	public List<WorkDataVO> getWorkDataList(int work_idx) {
+		List<WorkDataVO> work_data_info = projectMngtMapper.getWorkDataList(work_idx);
 		return work_data_info;
+	}
+	
+	public int getWorkDataListCnt(int work_idx) {
+		int totalCnt = projectMngtMapper.getWorkDataListCnt(work_idx);
+		return totalCnt;
 	}
 }

@@ -35,7 +35,7 @@
 
 </head>
 <body>
-	<script src="/js/dataset/datasetView.js"></script>
+	<script src="/js/projectMngt/work.js"></script>
 	<script type="text/javascript">
 // 		$().ready(function(){
 // 			datasetInfo("${dataset_idx}");
@@ -69,12 +69,10 @@
               <%-- <li id="tab3" class="inactive" style="cursor:pointer;"><a onclick="datasetSample(${dataset_idx})">샘플데이터</a></li> --%>
             </ul>
           </div>        
-<!-- 샘플데이터 시작 -->
-         <div id="dataset_sample">
+         <div id="work_data">
          	<table class="tbl_info sm">
                  <caption> 표</caption>
                  <colgroup>
-                 	<col style="width:5%">
                      <col style="width:12%">
                      <col style="width:12%">
                      <col style="width:8%;">
@@ -86,7 +84,6 @@
                  </colgroup>
                  <thead>
                     <tr>
-                		<th class="b">순번</th>
                         <th class="b">시작일</th> 
                         <th class="b">종료일</th>
                         <th class="b">지원담당자</th>
@@ -100,7 +97,6 @@
                  <tbody>
                  	<c:forEach items="${work_data_list }" var="wd_list" varStatus="wdStatus">
 	                 	<tr data="added">
-							<td>${wdStatus.count }</td>
 							<td>${wd_list.str_date }</td>
 							<td>${wd_list.end_date }</td>
 							<td>${wd_list.reg_user_name }</td>
@@ -120,40 +116,43 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td><a id="del_btn" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a>
+							<td><a id="del_btn" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a></td>
 						</tr>
 					</c:forEach>
 					<tr data="add">
-						<td></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="sample_record" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="str_date" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="end_date" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="reg_user_name" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="support_time" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="support_type" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="support_content" type="text" class="inputOrg" maxlength="50" value=""/></td>
 						<td>
 							<select id="severity" name="" class="selectOrgN">
 								<option value="2">상</option>
 								<option value="1">중</option>
 								<option value="0">하</option>
 	                  		</select>
-						<td><a id="sample_del_btn" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>
+						<td>
+							<a id="del_btn" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>
+						</td>
 					</tr>
                  </tbody>
              </table>
 			<div class="btn-area lb">
-                <a style="cursor:pointer;" onclick="addDatasetLayout()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a>
+                <a style="cursor:pointer;" onclick="addRecord()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a>
             </div>
             <div class="btn-area cb">
-             	<a href="javascript:history.back();" onclick="" class="btn btn-big btn_green btn-150">이전</a>
-                <a style="cursor:pointer;" onclick="saveDatasetSample(${dataset_idx})" class="btn btn-big btn_green btn-150">저장</a>
+             	<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">이전</a>
+                <a style="cursor:pointer;" onclick="saveWorkData(${dataset_idx})" class="btn btn-big btn_green btn-150">저장</a>
             </div>
          </div>
         </div>
       </div>
     </div>
     <!-- container end-->
-
+<form action="" method="post" id="moveForm">
+	<input type="hidden" name="project_idx" value="${project_info.project_idx }">
+	<input type="hidden" name="schedule_idx" value="${schedule_info.schedule_idx }"/>
+</form>
 </body>
-
 </html>

@@ -191,7 +191,7 @@
 			user_email = #{user_id} 
 	</select>
 	
-	<select id="getWorkDataInfo" resultType="WorkDataVO" parameterType="int">
+	<select id="getWorkDataList" resultType="WorkDataVO" parameterType="int">
 		SELECT
 			wd.idx AS work_data_idx,
 			work_idx,
@@ -203,6 +203,17 @@
 			severity,
 			reg_user_idx,
 			u.user_name AS reg_user_name
+		FROM
+			work_data wd
+		JOIN 
+			user u ON wd.reg_user_idx = u.idx
+		WHERE
+			wd.work_idx = #{work_idx};
+	</select>
+	
+	<select id="getWorkDataListCnt" resultType="int" parameterType="int">
+		SELECT
+			COUNT(*)
 		FROM
 			work_data wd
 		JOIN 
