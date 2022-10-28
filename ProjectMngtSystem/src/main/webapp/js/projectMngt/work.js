@@ -3,125 +3,6 @@ function movePage(pageNo){
 	getDatasetList(0 ,pageNo)
 }
 
-function getDatasetList(chk, page){
-	var org_idx = $("#moveForm input[name=org_idx]").val();
-	var tag = "";
-	
-	var pageNo = $("#pageNo").val();
-	
-	if(pageNo == "" || pageNo == undefined ){
-		pageNo = 1;
-	}
-	
-	$("#triger").click(function() {
-		if(pageNo != 1) {
-			pageNo = 1;
-		}
-	})
-	
-//	var listSize = $("#listSize").val();
-	var listSize = 5;
-	var searchContent = $("#searchContent").val();	
-	var searchType = $("#searchType option:selected").val();
-	var checkTriger = "";
-	if(chk == 1){
-		if(searchType == "" && searchContent != ""){
-			alert("검색항목을 선택해주세요.");
-			return;
-		}else if(searchType != "" && searchContent == ""){
-			alert("검색어를 입력해주세요.");
-			return;
-		}
-	}
-	
-	$.postDataGetJSON("/getDatasetList.do", {
-		"org_idx":org_idx
-		, "searchType":searchType
-		, "searchContent":searchContent
-		, "pageNo": pageNo
-		, "listSize": listSize
-	}, function(r){
-		var totalCnt = "0";
-		if(r.list.length > 0){
-			totalCnt = r.totalCnt;
-			var paging = r.paging_html;
-			var endPage = parseInt(totalCnt/listSize);
-			var cnt = 1;
-			var num = "";
-			for(var i = 0; i < r.list.length; i++){
-				var data_name = "";
-				var dataset_insert_date = "";
-				var user_info = "";
-				var open_yn = "";
-				var dataset_idx = "";
-				num = parseInt((parseInt(listSize)*(parseInt(pageNo)-1)) + parseInt(cnt));
-				if(r.list[i].dataset_idx != null){
-					dataset_idx = r.list[i].dataset_idx;
-				}
-				if(r.list[i].data_name != null){
-					data_name = r.list[i].data_name;
-				}
-				if(r.list[i].dataset_insert_date != null){
-					dataset_insert_date = r.list[i].dataset_insert_date;
-				}
-				if(r.list[i].user_info != null){
-					user_info = r.list[i].user_info;
-				}
-				if(r.list[i].open_yn != null){
-					open_yn = r.list[i].open_yn;
-				}
-				
-				tag += '<tr><td>'+num+'</td>'
-					+ '<td class="sbj txtL"><a style="cursor:pointer;" onclick="datasetView('+dataset_idx+')">'+data_name+'</a></td>'
-					+ '<td>'+dataset_insert_date+'</td>'
-					+ '<td>'+user_info+'</td>';
-				
-				if(open_yn == 1){
-					tag += '<td><span class="cate">공개</span></td></tr>'
-				}else{
-					tag += '<td><span class="cate red">준비</span></td></tr>'
-				}
-			cnt++
-			}
-		}else{
-			tag += '<tr>'
-				+		'<td colspan="5">조회된 데이터가 없습니다.</td>'
-				+  '</tr>'
-		}
-		$('#totalCnt').html(totalCnt);
-		$('#datasetList tbody').html(tag);
-		$('#pagination').html(paging);
-	});
-}
-
-function goDatasetNew(){
-	var user_idx = $("#moveForm input[name=user_idx]").val();
-	$("#moveForm").attr("action", "/goDatasetNew.do");
-	$("#moveForm input[name=user_idx]").val(user_idx);
-	$("#moveForm").submit();
-}
-
-function datasetNew(){
-	var user_idx = $("input[name=user_idx]").val();
-	var data_name = $("input[name=data_name]").val();
-	
-	if(data_name == ""){
-		alert("데이터명을 입력해주세요.");
-		$("input[name=data_name]").focus();
-		return false;
-	}
-	
-	$.postDataGetJSON("/datasetNew.do", {"user_idx":user_idx, "data_name":data_name}, function(r){
-		if(r.status == 1){
-			alert("등록되었습니다.")
-			window.location.href = encodeURI("/datasetList.do");
-		}else{
-			alert("등록에 실패했습니다.");
-			window.location.href = encodeURI("/datasetList.do");
-		}
-	});
-}
-
 function goWorkList(){
 	$("#moveForm").attr("action", "/workList.do");
 	$("#moveForm").submit();
@@ -142,20 +23,20 @@ function addRecord(){
 	var tag = "";
 	var rowCnt = $('#work_data table tbody tr').length;
 	tag += '<tr data="add">'
-		+		'<td><input id="str_date" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="end_date" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="reg_user_name" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+ 		'<td><input id="support_time" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="support_type" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="support_content" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="str_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="end_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="reg_user_name_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+ 		'<td><input id="support_time_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="support_type_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="support_content_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td>'
-		+			'<select id="severity" class="selectOrgN">'
+		+			'<select id="severity_'+rowCnt+'" class="selectOrgN">'
 		+				'<option value="2">상</option>'
 		+				'<option value="1">중</option>'
 		+				'<option value="0">하</option>'
       	+			'</select>'
 		+		'<td>'
-		+			'<a id="sample_del_btn" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
+		+			'<a id="del_btn_'+rowCnt+'" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
 		+		'</td>'
 		+	'</tr>'
 	$('#work_data tbody').append(tag);
@@ -238,41 +119,45 @@ function saveWorkData(work_idx){
 			if($(val).attr('data') == 'add'){
 				var obj = new Object();
 				obj.work_idx = work_idx;
+				obj.str_date = $("#str_date_"+idx).val();
+				obj.end_date = $("#end_date_"+idx).val();
+				obj.support_time = $("#support_time_"+idx).val();
+				obj.support_type = $("#support_type_"+idx).val();
+				obj.support_content = $("#support_content_"+idx).val();
+				obj.severity = $("#severity_"+idx+" option:selected").val();
+				arr.push(obj);
+			}
+			
+			if($(val).attr('data') == 'del'){
+				var obj = new Object();
 				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
-				obj.work_idx = work_idx;
+				obj.work_data_idx = $("#work_data_idx_"+idx).val();
+				delArr.push(obj);
 			}
 		});
-	}
-	
-	
-	//기본 3개(workType, project_name, id)
-	if(Object.keys(datas).length < 4){
+		
+		var addRecordList = JSON.stringify(arr);
+		var delRecordList = JSON.stringify(delArr);
+		
+		$.ajax({
+			type: 'POST',
+			url: '/saveWorkData.do',
+			data:{
+				addRecordList: addRecordList,
+				delRecordList: delRecordList
+			},
+			success: function(r){
+				if(r == 1){
+					alert("저장되었습니다.");
+					goWorkView(work_idx);
+				}
+			},
+			error: function(e){
+				alert("저장에 실패했습니다.");
+				goWorkView(work_idx);
+			}
+		});
+	}else{
 		return false;
 	}
-	
-	$.ajax({
-		cache : false,
-		url : rootPath + '/joinwork/updateDateMngt.html',
-		type : 'POST', 
-		data : {
-			datas : JSON.stringify(datas)
-		}, 
-		success : function(result) {
-			if(result > 0){
-				alert("저장되었습니다.");	
-			}else{
-				alert("오류가 발생했습니다.")
-			}
-			goList();
-		}, // success 
-		error : function(result) {
-			alert("실패하였습니다.");
-		}
-	});
 }

@@ -1,5 +1,7 @@
 package egovframework.projectMngt.controller;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +16,22 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 @Controller
 public class ProjectMngtCtrl {
@@ -29,8 +42,6 @@ public class ProjectMngtCtrl {
 	//project 시작 
 	@RequestMapping("/projectList.do")
 	public String projectList(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
-		LoginVO loginVO = (LoginVO) request.getSession().getAttribute("loginVO");
-		
 		List<ProjectVO> project_list = projectMngtSvc.getProjectList();
 		int totalCnt = projectMngtSvc.getProjectListCnt();
 		model.addAttribute("project_list", project_list);
@@ -125,6 +136,8 @@ public class ProjectMngtCtrl {
 	public String workView(ModelMap model, HttpServletRequest request, HttpServletResponse resp,
 			@RequestParam("project_idx") String project_idx, @RequestParam("schedule_idx") String schedule_idx,
 			@RequestParam("work_idx") String work_idx) {
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		
 		WorkVO work_info = projectMngtSvc.getWorkInfo(Integer.parseInt(work_idx));
 		ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
 		ScheduleVO schedule_info = projectMngtSvc.getScheduleInfo(Integer.parseInt(schedule_idx));
@@ -137,6 +150,7 @@ public class ProjectMngtCtrl {
 		model.addAttribute("schedule_info", schedule_info);
 		model.addAttribute("work_data_list", work_data_list);
 		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("login_info", login_info);
 		
 		return "/work/workView";
 	}
@@ -145,6 +159,23 @@ public class ProjectMngtCtrl {
 	public String workNew(ModelMap model){
 		return "/work/workNew";
 	}
+	
+	@RequestMapping("/saveWorkData.do")
+	@ResponseBody
+	public int saveWorkData(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam Map<String, String> map) throws Exception {
+		String addRecordList = map.get("addRecordList");
+		String delRecordList = map.get("delRecordList");
+		List<Map<String, String>> list = new ArrayList<Map<String,String>>();
+		JSONArray jsonArr = new JSONArray(addRecordList);
+		
+		for(int i = 0; i < jsonArr.length(); i++) {
+			list.add(new ObjectMapper().readValue(jsonArr.toString(), Map.class));
+		}
+		
+		return 1;
+	}
+	
 	//work 끝
 	
 

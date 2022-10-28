@@ -97,6 +97,7 @@
                  <tbody>
                  	<c:forEach items="${work_data_list }" var="wd_list" varStatus="wdStatus">
 	                 	<tr data="added">
+	                 		<input type="hidden" id="work_data_idx_${wdStatus.index }" value="${wd_list.work_data_idx }" />
 							<td>${wd_list.str_date }</td>
 							<td>${wd_list.end_date }</td>
 							<td>${wd_list.reg_user_name }</td>
@@ -116,24 +117,24 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td><a id="del_btn" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a></td>
+							<td><a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a></td>
 						</tr>
 					</c:forEach>
 					<tr data="add">
-						<td><input id="str_date" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="end_date" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="reg_user_name" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="support_time" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="support_type" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="support_content" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="str_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="end_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td>${login_info.user_name }</td>
+						<td><input id="support_time_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="support_type_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
+						<td><input id="support_content_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
 						<td>
-							<select id="severity" name="" class="selectOrgN">
+							<select id="severity_${totalCnt }" name="" class="selectOrgN">
 								<option value="2">상</option>
 								<option value="1">중</option>
 								<option value="0">하</option>
 	                  		</select>
 						<td>
-							<a id="del_btn" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>
+							<a style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>
 						</td>
 					</tr>
                  </tbody>
@@ -143,7 +144,7 @@
             </div>
             <div class="btn-area cb">
              	<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">이전</a>
-                <a style="cursor:pointer;" onclick="saveWorkData(${dataset_idx})" class="btn btn-big btn_green btn-150">저장</a>
+                <a style="cursor:pointer;" onclick="saveWorkData(${work_info.work_idx})" class="btn btn-big btn_green btn-150">저장</a>
             </div>
          </div>
         </div>
