@@ -3,6 +3,9 @@ package egovframework.projectMngt.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+import org.json.JSONArray;
+
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
@@ -44,4 +47,8 @@ public interface ProjectMngtMapper {
 	//work_data리스트
 	List<WorkDataVO> getWorkDataList(int work_idx);
 	int getWorkDataListCnt(int work_idx);
+	
+	//work_data추가/삭제
+	int addWorkData(@Param(value = "addList") List<Map<String, String>> addList);
+	int delWorkData(@Param(value = "delList") List<Map<String, String>> delList);
 }

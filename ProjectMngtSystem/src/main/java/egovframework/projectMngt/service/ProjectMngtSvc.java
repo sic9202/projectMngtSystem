@@ -59,5 +59,7 @@ public interface ProjectMngtSvc {
 	
 	List<WorkDataVO> getWorkDataList(int work_idx);
 	int getWorkDataListCnt(int parseInt);
+	
+	int saveWorkData(Map<String, String> map);
 
 }

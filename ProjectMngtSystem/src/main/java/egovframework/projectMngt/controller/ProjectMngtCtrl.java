@@ -164,16 +164,9 @@ public class ProjectMngtCtrl {
 	@ResponseBody
 	public int saveWorkData(ModelMap model, HttpServletRequest request, HttpServletResponse resp
 			, @RequestParam Map<String, String> map) throws Exception {
-		String addRecordList = map.get("addRecordList");
-		String delRecordList = map.get("delRecordList");
-		List<Map<String, String>> list = new ArrayList<Map<String,String>>();
-		JSONArray jsonArr = new JSONArray(addRecordList);
+		int status = projectMngtSvc.saveWorkData(map);
 		
-		for(int i = 0; i < jsonArr.length(); i++) {
-			list.add(new ObjectMapper().readValue(jsonArr.toString(), Map.class));
-		}
-		
-		return 1;
+		return status;
 	}
 	
 	//work 끝

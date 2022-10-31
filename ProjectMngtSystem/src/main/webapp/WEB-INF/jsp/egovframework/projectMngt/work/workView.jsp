@@ -120,6 +120,8 @@
 							<td><a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a></td>
 						</tr>
 					</c:forEach>
+					<input type="hidden" id="user_name" value="${login_info.user_name }"/>
+					<input type="hidden" id="user_idx" value="${login_info.user_idx }"/>
 					<tr data="add">
 						<td><input id="str_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
 						<td><input id="end_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
@@ -154,6 +156,7 @@
 <form action="" method="post" id="moveForm">
 	<input type="hidden" name="project_idx" value="${project_info.project_idx }">
 	<input type="hidden" name="schedule_idx" value="${schedule_info.schedule_idx }"/>
+	<input type="hidden" name="work_idx" value="${work_info.work_idx}"/>
 </form>
 </body>
 </html>

@@ -33,12 +33,17 @@ public class LoginSvcImpl implements LoginSvc {
 		
 		String encrypt_pwd = registersrv.encryptPassword(map.get("user_pwd"), map.get("user_id"));
 		map.put("encrypt_pwd", encrypt_pwd);
+		
+		//id check
 		int cnt1 = projectMngtMapper.checkUser1(map);
 		if(cnt1 == 0) {
+			//미가입
 			status = 2;
 		}else{
+			//id & password check
 			int cnt2 = projectMngtMapper.checkUser2(map);
 			if(cnt2 == 0) {
+				//틀린 비밀번호
 				status = 3;
 			}else {
 				loginVO = projectMngtMapper.getUserInfo(map);

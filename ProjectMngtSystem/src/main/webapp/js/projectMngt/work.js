@@ -22,10 +22,11 @@ function goWorkView(work_idx){
 function addRecord(){
 	var tag = "";
 	var rowCnt = $('#work_data table tbody tr').length;
+	var user_name = $('#user_name').val();
 	tag += '<tr data="add">'
 		+		'<td><input id="str_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td><input id="end_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="reg_user_name_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td>'+user_name+'</td>'
 		+ 		'<td><input id="support_time_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td><input id="support_type_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td><input id="support_content_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
@@ -125,6 +126,7 @@ function saveWorkData(work_idx){
 				obj.support_type = $("#support_type_"+idx).val();
 				obj.support_content = $("#support_content_"+idx).val();
 				obj.severity = $("#severity_"+idx+" option:selected").val();
+				obj.reg_user_idx = $("#user_idx").val();
 				arr.push(obj);
 			}
 			
@@ -149,11 +151,13 @@ function saveWorkData(work_idx){
 			success: function(r){
 				if(r == 1){
 					alert("저장되었습니다.");
+					var work_idx = $("#moveForm input[name=work_idx]").val();
 					goWorkView(work_idx);
 				}
 			},
 			error: function(e){
 				alert("저장에 실패했습니다.");
+				var work_idx = $("#moveForm input[name=work_idx]").val();
 				goWorkView(work_idx);
 			}
 		});

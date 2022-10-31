@@ -222,4 +222,42 @@
 			wd.work_idx = #{work_idx};
 	</select>
 	
+	<insert id="addWorkData" parameterType="java.util.HashMap">
+		<if test="addList.size != 0">
+			INSERT INTO work_data(
+				work_idx,
+				str_date,
+				end_date,
+				support_time,
+				support_type,
+				support_content,
+				severity,
+				reg_user_idx
+			) VALUES
+			<foreach collection="addList" item="item" separator=",">
+				(
+					${item.work_idx},
+					'${item.str_date}',
+					'${item.end_date}',
+					${item.support_time},
+					'${item.support_type}',
+					'${item.support_content}',
+					${item.severity},
+					${item.reg_user_idx}
+				);
+			</foreach>
+		</if>
+	</insert>
+	
+	<delete id="delWorkData" parameterType="java.util.HashMap">
+		<if test="delList.size != 0">
+			DELETE FROM work_data
+			WHERE 
+			<foreach collection="delList" item="item" separator=",">
+				idx = ${item.work_data_idx}
+				AND work_idx = ${work_idx};
+			</foreach>
+		</if>
+	</delete>
+	
 </mapper>

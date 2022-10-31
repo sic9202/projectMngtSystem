@@ -45,30 +45,30 @@ function check_user() {
 				user_pwd: user_pwd
 			},
 			success: function(r){
-				if(r.use_yn == 0){
-					alert("탈퇴한 회원입니다.");
+				if(r.status == 1){ //로그인 성공
+					if(r.use_yn == 0){
+						alert("탈퇴한 회원입니다.");
+						$("#user_pwd").val("");
+						$("#user_id").val("");
+						$("#user_id").focus();
+						return false;
+					}else{
+						window.location.href = encodeURI("/projectList.do");	
+					}
+				}else if(r.status ==2){ //틀린 아이디
+					alert("잘못된 아이디 입니다.");
 					$("#user_pwd").val("");
 					$("#user_id").val("");
 					$("#user_id").focus();
-					return false;
+				}else if(r.status == 3){ //틀린 비밀번호
+					alert("잘못된 비밀번호 입니다.");
+					$("#user_pwd").val("");
+					$("#user_pwd").focus();
 				}else{
-					if(r.status == 1){ //로그인성공
-						window.location.href = encodeURI("/projectList.do");
-					}else if(r.status == 2){
-						alert("잘못된 아이디 입니다.");
-						$("#user_pwd").val("");
-						$("#user_id").val("");
-						$("#user_id").focus();
-					}else if(r.status == 3){
-						alert("잘못된 비밀번호 입니다.");
-						$("#user_pwd").val("");
-						$("#user_pwd").focus();
-					}else{
-						alert("로그인에 실패하였습니다.");
-						$("#user_pwd").val("");
-						$("#user_id").val("");
-						$("#user_id").focus();
-					}
+					alert("로그인에 실패하였습니다.");
+					$("#user_pwd").val("");
+					$("#user_id").val("");
+					$("#user_id").focus();
 				}
 			}
 		});

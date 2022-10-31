@@ -1,5 +1,6 @@
 package egovframework.projectMngt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,17 @@ import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Param;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 @Service("projectMngtSvc")
 public class ProjectMngtSvcImpl implements ProjectMngtSvc {
@@ -88,5 +96,56 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	public int getWorkDataListCnt(int work_idx) {
 		int totalCnt = projectMngtMapper.getWorkDataListCnt(work_idx);
 		return totalCnt;
+	}
+	
+	public int saveWorkData(Map<String, String> map) {
+		int result = 1;
+		try {
+			String addRecordList = map.get("addRecordList");
+			JSONArray addJsonArr = new JSONArray(addRecordList);
+			if(addJsonArr.length() != 0) {
+				List<Map<String, String>> addList = getListMapFromJsonArray(addJsonArr);
+				int addCnt = projectMngtMapper.addWorkData(addList);
+			}
+			
+			String delRecordList = map.get("delRecordList");
+			JSONArray delJsonArr = new JSONArray(delRecordList);
+			if(delJsonArr.length() != 0) {
+				List<Map<String, String>> delList = getListMapFromJsonArray(delJsonArr);
+				int delCnt = projectMngtMapper.delWorkData(delList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = 0;
+		}
+		
+		return result;
+	}
+	
+	//jsonObject -> Map
+	public static Map<String, String> getMapFromJSONObject(JSONObject obj){
+		if(ObjectUtils.isEmpty(obj)) {
+			throw new IllegalArgumentException(String.format("BAD REQUEST obj %s", obj));
+		}
+		
+		try {
+			Map<String, String> map = new ObjectMapper().readValue(obj.toString(), Map.class);
+			return map;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	//jsonArray -> List<Map>
+	public static List<Map<String, String>> getListMapFromJsonArray(JSONArray jsonArray){
+		if(ObjectUtils.isEmpty(jsonArray)) {
+			throw new IllegalArgumentException("jsonArray is null");
+		}
+		List<Map<String, String>> list = new ArrayList<Map<String,String>>();
+		for(Object jsonObject : jsonArray) {
+			list.add(getMapFromJSONObject((JSONObject) jsonObject));
+		}
+		
+		return list;
 	}
 }
