@@ -53,7 +53,7 @@ function check_user() {
 						$("#user_id").focus();
 						return false;
 					}else{
-						window.location.href = encodeURI("/projectList.do");	
+						goProjectList();
 					}
 				}else if(r.status ==2){ //틀린 아이디
 					alert("잘못된 아이디 입니다.");
@@ -142,6 +142,6 @@ function pwdCheck(pwd){
 //
 //}
 
-function moveProjectList(){
+function goProjectList(){
 	window.location.href = encodeURI("/projectList.do");
 }

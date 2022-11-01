@@ -7,6 +7,7 @@ import java.util.Map;
 import egovframework.projectMngt.service.ProjectMngtSvc;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.SearchVO;
 import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
 
@@ -33,8 +34,8 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	@Resource(name = "projectMngtMapper")
 	private ProjectMngtMapper projectMngtMapper;
 	
-	public List<ProjectVO> getProjectList(){
-		List<ProjectVO> project_list = projectMngtMapper.getProjectList();
+	public List<ProjectVO> getProjectList(SearchVO search){
+		List<ProjectVO> project_list = projectMngtMapper.getProjectList(search);
 		return project_list;
 	}
 	

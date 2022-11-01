@@ -2,7 +2,7 @@ package egovframework.projectMngt.vo;
 
 import java.sql.Timestamp;
 
-public class ProjectVO {
+public class ProjectVO extends SearchVO{
 	private int project_idx;
 	private String project_name;
 	private String project_type;
@@ -45,5 +45,4 @@ public class ProjectVO {
 	public void setReg_user_name(String reg_user_name) {
 		this.reg_user_name = reg_user_name;
 	}
-	
 }

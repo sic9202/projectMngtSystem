@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.SearchVO;
 import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -17,7 +18,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 public interface ProjectMngtMapper {
 
 	//리스트 조회
-	List<ProjectVO> getProjectList();
+	List<ProjectVO> getProjectList(SearchVO search);
 	int getProjectListCnt();
 	
 	List<ScheduleVO> getScheduleList(int project_idx);

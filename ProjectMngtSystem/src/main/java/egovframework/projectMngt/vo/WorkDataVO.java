@@ -1,6 +1,6 @@
 package egovframework.projectMngt.vo;
 
-public class WorkDataVO {
+public class WorkDataVO extends SearchVO{
 	private int work_data_idx;
 	private int work_idx;
 	private String str_date;

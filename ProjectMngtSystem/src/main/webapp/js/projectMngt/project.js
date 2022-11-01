@@ -1,6 +1,24 @@
+
 function movePage(pageNo){
-	$("#pageNo").val(pageNo);
-	getShareDatasetList(0 ,pageNo)
+	window.location.href = encodeURI("/projectList.do?currentPageNo="+pageNo);
+}
+
+function goProjectList(){
+	var searchType = $("#searchType").val();
+	if(searchType == 0){
+		alert("검색항목을 선택해주세요.");
+		return false;
+	}
+	var searchContent = $("#searchContent").val();
+	if(searchContent == ""){
+		alert("검색어를 입력해주세요.");
+		return false;
+	}
+	
+	$("#listForm").attr("action", "/projectList.do");
+	$("#listForm input[name=searchType]").val(searchType);
+	$("#listForm input[name=searchContent]").val(searchContent);
+	$("#listForm").submit();
 }
 
 function goProjectNew(){

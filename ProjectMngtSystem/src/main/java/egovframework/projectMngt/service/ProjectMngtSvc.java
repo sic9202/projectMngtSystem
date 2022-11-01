@@ -20,6 +20,7 @@ import java.util.Map;
 
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.SearchVO;
 import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
 
@@ -41,7 +42,7 @@ import egovframework.projectMngt.vo.WorkVO;
  */
 public interface ProjectMngtSvc {
 
-	List<ProjectVO> getProjectList();
+	List<ProjectVO> getProjectList(SearchVO search);
 	int getProjectListCnt();
 	
 	List<ScheduleVO> getScheduleList(int project_idx);

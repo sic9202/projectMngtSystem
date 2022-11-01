@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="egovframework.projectMngt.service.impl.ProjectMngtMapper">
-	<select id="getProjectList" resultType="ProjectVO">
+	<select id="getProjectList" parameterType="SearchVO" resultType="ProjectVO">
 		SELECT
 			p.idx AS project_idx,
 			project_name,
@@ -12,7 +12,9 @@
 			u.user_name AS reg_user_name
 		FROM
 			project p
-		JOIN user u ON p.reg_user_idx = u.idx;
+		JOIN user u ON p.reg_user_idx = u.idx
+		ORDER BY project_reg_date DESC
+		LIMIT #{firstIndex}, #{recordCountPerPage};
 	</select>
 
 	<select id="getProjectListCnt" resultType="int">
@@ -244,7 +246,7 @@
 					'${item.support_content}',
 					${item.severity},
 					${item.reg_user_idx}
-				);
+				)
 			</foreach>
 		</if>
 	</insert>
@@ -252,11 +254,11 @@
 	<delete id="delWorkData" parameterType="java.util.HashMap">
 		<if test="delList.size != 0">
 			DELETE FROM work_data
-			WHERE 
-			<foreach collection="delList" item="item" separator=",">
-				idx = ${item.work_data_idx}
-				AND work_idx = ${work_idx};
-			</foreach>
+			<where> 
+				<foreach collection="delList" item="item" separator="OR">
+					(idx = ${item.work_data_idx} AND work_idx = ${item.work_idx})
+				</foreach>
+			</where>
 		</if>
 	</delete>
 	

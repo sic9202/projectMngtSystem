@@ -9,8 +9,11 @@ import egovframework.projectMngt.service.ProjectMngtSvc;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
+import egovframework.projectMngt.vo.SearchVO;
 import egovframework.projectMngt.vo.WorkDataVO;
 import egovframework.projectMngt.vo.WorkVO;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,13 +43,35 @@ public class ProjectMngtCtrl {
 	@Resource(name = "projectMngtSvc")
 	private ProjectMngtSvc projectMngtSvc;
 	
+	@Resource(name = "propertiesService")
+	private EgovPropertyService propertiesService;
+	
 	//project 시작 
 	@RequestMapping("/projectList.do")
-	public String projectList(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
-		List<ProjectVO> project_list = projectMngtSvc.getProjectList();
+	public String projectList(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam(required = false, defaultValue = "1") int currentPageNo
+			, @RequestParam(required = false, defaultValue = "") String searchType
+			, @RequestParam(required = false, defaultValue = "") String searchContent) {
+		
+		SearchVO search = new SearchVO();
+		search.setPageUnit(propertiesService.getInt("pageUnit"));
+		search.setPageSize((propertiesService.getInt("pageSize")));
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(currentPageNo);
+		paginationInfo.setRecordCountPerPage(search.getPageUnit());
+		paginationInfo.setPageSize(search.getPageSize());
+		
+		search.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		search.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		List<ProjectVO> project_list = projectMngtSvc.getProjectList(search);
 		int totalCnt = projectMngtSvc.getProjectListCnt();
+		paginationInfo.setTotalRecordCount(totalCnt);
+		
 		model.addAttribute("project_list", project_list);
 		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 		
 		return "/project/projectList";
 	}

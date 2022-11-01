@@ -2,7 +2,7 @@ package egovframework.projectMngt.vo;
 
 import java.sql.Timestamp;
 
-public class WorkVO {
+public class WorkVO extends SearchVO{
 	private int work_idx;
 	private String work_name;
 	private int schedule_idx;
