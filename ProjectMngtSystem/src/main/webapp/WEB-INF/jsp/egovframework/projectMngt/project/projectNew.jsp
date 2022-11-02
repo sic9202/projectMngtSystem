@@ -46,26 +46,26 @@
     <div class="pr-page">
       <div class="inner02">
         <p class="sub__tit01">프로젝트신규</p>
-        <%-- <div class="etc__box"><input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요."
-            placeholder="프로젝트명을 입력하세요.">
+        <div class="etc__box">
+        	<input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요." placeholder="프로젝트명을 입력하세요.">
         </div>
-        <div class="btn-area cb">
-          <a style="cursor: pointer;" onclick="projectNew()" class="btn btn-big btn_green btn-150">등록</a>
-        </div>
-		<input type="hidden" name="user_idx" value="${user_idx }"> --%>
-		<div id="data_content">
-			<div class="data-view-result" style="cursor: pointer;" onclick="">
-				<p class="cate"><span class="cate19">분야</span><span><input type="text" id="" name="project_name" maxlength="20" title="프로젝트명을 입력하세요."
-            placeholder="분야를 입력하세요."></span></p>
-				<p class="date">
-					<span>등록일자 : 2022-10-21</span>
-				</p>
-				<p class="title"><input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요."
-            placeholder="프로젝트명을 입력하세요."></p>
-				<p class="text"><input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요."
-            placeholder="프로젝트설명을 입력하세요."></p>
-			</div>
-		</div>
+<!--         <div class="btn-area cb"> -->
+<!--           <a style="cursor: pointer;" onclick="projectNew()" class="btn btn-big btn_green btn-150">등록</a> -->
+<!--         </div> -->
+		<input type="hidden" name="user_idx" value="${user_idx }">
+<!-- 		<div id="data_content"> -->
+<!-- 			<div class="data-view-result" style="cursor: pointer;" onclick=""> -->
+<!-- 				<p class="cate"><span class="cate19">분야</span><span><input type="text" id="" name="project_name" maxlength="20" title="프로젝트명을 입력하세요." -->
+<!--             placeholder="분야를 입력하세요."></span></p> -->
+<!-- 				<p class="date"> -->
+<!-- 					<span>등록일자 : 2022-10-21</span> -->
+<!-- 				</p> -->
+<!-- 				<p class="title"><input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요." -->
+<!--             placeholder="프로젝트명을 입력하세요."></p> -->
+<!-- 				<p class="text"><input type="text" id="" name="project_name" class="inputOrg" maxlength="50" title="프로젝트명을 입력하세요." -->
+<!--             placeholder="프로젝트 설명을 입력하세요."></p> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<div class="btn-area cb">
 			<a style="cursor: pointer;" onclick="projectNew()" class="btn btn-big btn_green btn-150">등록</a>
 			<a href="javascript:history.back();" onclick="" class="btn btn-big btn_green btn-150">취소</a>

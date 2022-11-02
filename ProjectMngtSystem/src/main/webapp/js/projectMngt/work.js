@@ -29,7 +29,8 @@ function addRecord(){
 		+		'<td>'+user_name+'</td>'
 		+ 		'<td><input id="support_time_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td><input id="support_type_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td><input id="support_content_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+//		+		'<td><input id="support_content_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><textarea id="support_content_'+rowCnt+'" rows="1" cols="30" style="resize: none;"></textarea></td>'
 		+		'<td>'
 		+			'<select id="severity_'+rowCnt+'" class="selectOrgN">'
 		+				'<option value="2">상</option>'
@@ -53,6 +54,51 @@ function removeRecord(btn){
 		tr.attr("style", "display:none");
 	}
 }
+
+function updateRecord(idx){
+	tr = $("#upd_btn_"+idx).parent().parent();
+	tr.attr("data", "update");
+	$("#str_date_"+idx).attr("disabled", false);
+	$("#str_date_"+idx).attr("style", "border:; text-align: center;");
+	$("#end_date_"+idx).attr("disabled", false);
+	$("#end_date_"+idx).attr("style", "border:; text-align: center;");
+	$("#support_time_"+idx).attr("disabled", false);
+	$("#support_time_"+idx).attr("style", "border:; text-align: center;");
+	$("#support_type_"+idx).attr("disabled", false);
+	$("#support_type_"+idx).attr("style", "border:; text-align: center;");
+	$("#support_content_"+idx).attr("disabled", false);
+	$("#support_content_"+idx).attr("style", "border:; resize: none;");
+	$("#severity_"+idx).attr("disabled", false);
+	$("#severity_"+idx).attr("style", "border:;");
+	$("#upd_btn_"+idx).attr("style", "display:none;");
+	$("#cncl_btn_"+idx).attr("style", "cursor:pointer; display:inline-block;");
+}
+
+function cancelRecord(idx){
+	tr = $("#cncl_btn_"+idx).parent().parent();
+	tr.attr("data", "added");
+	$("#str_date_"+idx).attr("disabled", true);
+	$("#str_date_"+idx).attr("style", "border:none; text-align: center;");
+	$("#end_date_"+idx).attr("disabled", true);
+	$("#end_date_"+idx).attr("style", "border:none; text-align: center;");
+	$("#support_time_"+idx).attr("disabled", true);
+	$("#support_time_"+idx).attr("style", "border:none; text-align: center;");
+	$("#support_type_"+idx).attr("disabled", true);
+	$("#support_type_"+idx).attr("style", "border:none; text-align: center;");
+	$("#support_content_"+idx).attr("disabled", true);
+	$("#support_content_"+idx).attr("style", "border:none; resize: none;");
+	$("#severity_"+idx).attr("disabled", true);
+	$("#severity_"+idx).attr("style", "border:none;");
+	$("#upd_btn_"+idx).attr("style", "cursor:pointer; display:inline-block;");
+	$("#cncl_btn_"+idx).attr("style", "display:none;");
+}
+
+//function modifyRecord(btn){
+//	tr = $(btn).parent().parent();
+//	tr.children("td").each(function(index, item){
+//		$(item).children("input").attr("disabled", false);
+//	});
+//}
 
 function check_work_data_val(){
 	var result = true;
@@ -85,7 +131,7 @@ function check_work_data_val(){
 				result = false;
 				return false;
 			}
-			
+			console.log($("#support_content_"+idx).val());
 			if($("#support_content_"+idx).val() == null || $("#support_content_"+idx).val().trim() == ""){
 				alert("공란이 있습니다. 모두 입력해주세요.");
 				result = false;
@@ -124,7 +170,7 @@ function saveWorkData(work_idx){
 				obj.end_date = $("#end_date_"+idx).val();
 				obj.support_time = $("#support_time_"+idx).val();
 				obj.support_type = $("#support_type_"+idx).val();
-				obj.support_content = $("#support_content_"+idx).val();
+				obj.support_content = $("#support_content_"+idx).val().replace(/\n/g, "<br>");
 				obj.severity = $("#severity_"+idx+" option:selected").val();
 				obj.reg_user_idx = $("#user_idx").val();
 				arr.push(obj);
@@ -164,4 +210,9 @@ function saveWorkData(work_idx){
 	}else{
 		return false;
 	}
+}
+
+function goScheduleList(){
+	$("#moveForm").attr("action", "/scheduleList.do");
+	$("#moveForm").submit();
 }

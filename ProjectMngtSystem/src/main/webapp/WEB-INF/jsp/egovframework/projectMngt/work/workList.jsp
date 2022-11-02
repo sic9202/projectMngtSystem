@@ -91,6 +91,7 @@
                 </tr>
               </thead>
               <tbody>
+              <c:if test="${fn:length(work_list) != 0 }">
               	<c:forEach var="w_list" items="${work_list }" varStatus="wStatus">
               		<tr>
 	              		<td>${wStatus.count }</td>
@@ -99,19 +100,21 @@
 						<td>${w_list.reg_user_name }</td>
 					</tr>
               	</c:forEach>
+              </c:if>
+              <c:if test="${fn:length(work_list) == 0 }">
+              	<tr>
+					<td colspan="4">조회된 데이터가 없습니다.</td>
+				</tr>
+              </c:if>
               </tbody>
             </table>
+            <div class="btn-area lb">
+             	<a style="cursor:pointer;" onclick="goScheduleList()" class="btn btn-big btn_green btn-150">이전</a>
+            </div>
           </div>
         </div>
         <div id="pagination">
-          <!-- 페이지 많이지면 생김 a href="#"
-            class="btn" title="첫 페이지"><i
-              class="xi-angle-double-left"></i><span class="blind">첫 페이지</span></a><a href="#" class="btn" 
-            title="이전 페이지"><i class="xi-angle-left"></i><span class="blind">이전 페이지</span></a-->
-          <!-- <a href="#" class="on" title="현재 페이지">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a
-            href="#">5</a><a href="#" class="btn" title="다음 페이지"><i class="xi-angle-right"></i><span class="blind">다음
-              페이지</span></a><a href="#" class="btn" title="마지막 페이지"><i class="xi-angle-double-right"></i><span
-              class="blind">마지막 페이지</span></a> -->
+        	
         </div>
       </div>
       <!-- container end-->

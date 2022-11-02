@@ -74,7 +74,7 @@
 		<div id="data_content">
 			<c:forEach var="p_list" items="${project_list }" varStatus="pStatus">
 				<div class="data-view-result" style="cursor: pointer;" onclick="goScheduleList(${p_list.project_idx })">
-					<p class="cate"><span class="cate19">분야</span><span>${p_list.project_type }</span></p>
+<%-- 					<p class="cate"><span class="cate19">분야</span><span>${p_list.project_type }</span></p> --%>
 					<p class="date">
 						<span>등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${p_list.project_reg_date }"/></span>
 					</p>
@@ -85,7 +85,7 @@
 		</div>
         <div class="pagination">
         	<!-- 페이지 많이지면 생김 -->
-        	<ui:pagination paginationInfo="${paginationInfo }" type="image" jsFunction="goProjectList"/>
+        	<ui:pagination paginationInfo="${paginationInfo }" type="image" jsFunction="movePage"/>
         </div>
       </div>
       <!-- container end-->

@@ -77,10 +77,10 @@
                      <col style="width:12%">
                      <col style="width:8%;">
                      <col style="width:8%;">
-                     <col style="width:20%;">
+                     <col style="width:15%;">
                      <col style="width:auto;">
                      <col style="width:7%;">
-                     <col style="width:7%;">
+                     <col style="width:12%;">
                  </colgroup>
                  <thead>
                     <tr>
@@ -95,50 +95,74 @@
                     </tr>
                 </thead>
                  <tbody>
+                 <c:if test="${fn:length(work_data_list) != 0 }">
                  	<c:forEach items="${work_data_list }" var="wd_list" varStatus="wdStatus">
 	                 	<tr data="added">
 	                 		<input type="hidden" id="work_data_idx_${wdStatus.index }" value="${wd_list.work_data_idx }" />
-							<td>${wd_list.str_date }</td>
-							<td>${wd_list.end_date }</td>
+							<td><input id="str_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.str_date }" style="border: none; text-align: center;" disabled/></td>
+							<td><input id="end_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.end_date }" style="border:none; text-align: center;" disabled/></td>
 							<td>${wd_list.reg_user_name }</td>
-							<td>${wd_list.support_time }</td>
-							<td>${wd_list.support_type }</td>
-							<td>${wd_list.support_content }</td>
+							<td><input id="support_time_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_time }" style="border:none; text-align: center;" disabled/></td>
+							<td><input id="support_type_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_type }" style="border:none; text-align: center;" disabled/></td>
+							<td><textarea id="support_content_${wdStatus.index }" rows="1" cols="30" style="resize: none; border: none;" disabled>${wd_list.support_content }</textarea></td>
 							<td>
-								<c:choose>
-									<c:when test="${wd_list.severity eq 0}">
-										하
-									</c:when>
-									<c:when test="${wd_list.severity eq 1}">
-										중
-									</c:when>
-									<c:otherwise>
-										상
-									</c:otherwise>
-								</c:choose>
+								<select id="severity_${wdStatus.index }" class="selectOrgN" style="border:none;" disabled>
+									<option value="2" <c:if test="${wd_list.severity eq 2 }">selected="selected"</c:if>>상</option>
+ 									<option value="1" <c:if test="${wd_list.severity eq 1 }">selected="selected"</c:if>>중</option>
+ 									<option value="0" <c:if test="${wd_list.severity eq 0 }">selected="selected"</c:if>>하</option>
+ 						      	</select>
 							</td>
-							<td><a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a></td>
+							<td>
+<%-- 								<a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="modifyRecord(this)" class="btn btn-sm btn_color_navy">수정</a> --%>
+								<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a>
+								<a id="upd_btn_${wdStatus.index }" style="cursor:pointer;" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a>
+								<a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a>
+							</td>
 						</tr>
+<!-- 						<tr data="added"> -->
+<%-- 							<td><input id="str_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.str_date }" disabled/></td> --%>
+<%-- 							<td><input id="end_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.end_date }"/></td> --%>
+<%-- 							<td>${wd_list.reg_user_name }</td> --%>
+<%-- 							<td><input id="support_time_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_time }" readonly/></td> --%>
+<%-- 							<td><input id="support_type_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_type }" readonly/></td> --%>
+<%-- 							<td><textarea id="support_content_${wdStatus.index }" rows="1" cols="30" style="resize: none;" readonly>${wd_list.support_content }</textarea></td> --%>
+<!-- 							<td> -->
+<%-- 								<select id="severity_${wdStatus.index }" class="selectOrgN" readonly> --%>
+<%-- 									<option value="2" <c:if test="${wd_list.severity eq 2 }">selected="selected"</c:if>>상</option> --%>
+<%-- 									<option value="1" <c:if test="${wd_list.severity eq 1 }">selected="selected"</c:if>>중</option> --%>
+<%-- 									<option value="0" <c:if test="${wd_list.severity eq 0 }">selected="selected"</c:if>>하</option> --%>
+<!-- 						      	</select> -->
+<!-- 							<td> -->
+<%-- 								<a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a> --%>
+<!-- 							</td> -->
+<!-- 						</tr> -->
 					</c:forEach>
+				</c:if>
+				<c:if test="${fn:length(work_data_list) == 0 }">
+					<tr>
+						<td colspan="8">조회된 데이터가 없습니다.</td>
+					</tr>
+				</c:if>
 					<input type="hidden" id="user_name" value="${login_info.user_name }"/>
 					<input type="hidden" id="user_idx" value="${login_info.user_idx }"/>
-					<tr data="add">
-						<td><input id="str_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="end_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td>${login_info.user_name }</td>
-						<td><input id="support_time_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="support_type_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td><input id="support_content_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td>
-						<td>
-							<select id="severity_${totalCnt }" name="" class="selectOrgN">
-								<option value="2">상</option>
-								<option value="1">중</option>
-								<option value="0">하</option>
-	                  		</select>
-						<td>
-							<a style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>
-						</td>
-					</tr>
+<!-- 					<tr data="add"> -->
+<%-- 						<td><input id="str_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td> --%>
+<%-- 						<td><input id="end_date_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td> --%>
+<%-- 						<td>${login_info.user_name }</td> --%>
+<%-- 						<td><input id="support_time_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td> --%>
+<%-- 						<td><input id="support_type_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td> --%>
+<%-- <%-- 						<td><input id="support_content_${totalCnt }" type="text" class="inputOrg" maxlength="50" value=""/></td> --%>
+<%-- 						<td><textarea id="support_content_${totalCnt }" rows="1" cols="30" style="resize: none;"></textarea></td> --%>
+<!-- 						<td> -->
+<%-- 							<select id="severity_${totalCnt }" name="" class="selectOrgN"> --%>
+<!-- 								<option value="2">상</option> -->
+<!-- 								<option value="1">중</option> -->
+<!-- 								<option value="0">하</option> -->
+<!-- 	                  		</select> -->
+<!-- 						<td> -->
+<!-- 							<a style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
                  </tbody>
              </table>
 			<div class="btn-area lb">

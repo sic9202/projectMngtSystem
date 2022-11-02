@@ -74,44 +74,53 @@
 
         <div class="board_wrap">
           <div class="board_tbl_box">
-            <table id="datasetList" class="tbl_board notice">
-              <caption>데이터셋</caption>
+            <table id="scheduleList" class="tbl_board notice">
+              <caption>일정리스트</caption>
               <colgroup>
                 <col style="width: 10%">
                 <col style="width: 60%">
                 <col style="width: 20%">
                 <col style="width: 10%">
+<%--                 <col style="width: 10%"> --%>
               </colgroup>
               <thead>
                 <tr>
-                  <th scope="col">번호</th>
+                  <th scope="col">순번</th>
                   <th scope="col">공정명</th>
                   <th scope="col">등록일</th>
                   <th scope="col">등록자</th>
+<!--                   <th scope="col"></th> -->
                 </tr>
               </thead>
               <tbody>
-              <c:forEach var="s_list" items="${schedule_list }" varStatus="sStatus">
+              <c:if test="${fn:length(schedule_list) != 0 }">
+              	<c:forEach var="s_list" items="${schedule_list }" varStatus="sStatus">
+	              	<tr>
+	              		<td>${sStatus.count }</td>
+						<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkList(${s_list.schedule_idx})">${s_list.schedule_name }</a></td>
+						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${s_list.schedule_reg_date }"/></td>
+						<td>${s_list.reg_user_name }</td>
+<!-- 						<td> -->
+<%-- 							<a id="del_btn_${sStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a> --%>
+<!-- 						</td> -->
+					</tr>
+	              </c:forEach>
+              </c:if>
+              <c:if test="${fn:length(schedule_list) == 0 }">
               	<tr>
-              		<td>${sStatus.count }</td>
-					<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkList(${s_list.schedule_idx})">${s_list.schedule_name }</a></td>
-					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${s_list.schedule_reg_date }"/></td>
-					<td>${s_list.reg_user_name }</td>
+					<td colspan="5">조회된 데이터가 없습니다.</td>
 				</tr>
-              </c:forEach>
+              </c:if>
+              
               </tbody>
             </table>
+            <div class="btn-area lb">
+             	<a style="cursor:pointer;" onclick="goProjectList()" class="btn btn-big btn_green btn-150">이전</a>
+            </div>
           </div>
         </div>
         <div id="pagination">
-          <!-- 페이지 많이지면 생김 a href="#"
-            class="btn" title="첫 페이지"><i
-              class="xi-angle-double-left"></i><span class="blind">첫 페이지</span></a><a href="#" class="btn" 
-            title="이전 페이지"><i class="xi-angle-left"></i><span class="blind">이전 페이지</span></a-->
-          <!-- <a href="#" class="on" title="현재 페이지">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a
-            href="#">5</a><a href="#" class="btn" title="다음 페이지"><i class="xi-angle-right"></i><span class="blind">다음
-              페이지</span></a><a href="#" class="btn" title="마지막 페이지"><i class="xi-angle-double-right"></i><span
-              class="blind">마지막 페이지</span></a> -->
+          
         </div>
       </div>
       <!-- container end-->

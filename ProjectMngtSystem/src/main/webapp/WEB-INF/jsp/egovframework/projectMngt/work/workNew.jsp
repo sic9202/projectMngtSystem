@@ -35,7 +35,7 @@
 <body>
   	<script src="/js/dataset/datasetList.js"></script>
     <div class="sub-visual sv01 on">
-      <p class="animated on">보유 데이터셋</p>
+      <p class="animated on">업무관리</p>
     </div>
     <!--header end-->
 
@@ -43,7 +43,7 @@
     <input type="hidden" name="menuCode" value="">
     <div class="pr-page">
       <div class="inner02">
-        <p class="sub__tit01">데이터명세 신규 등록</p>
+        <p class="sub__tit01">업무신규</p>
         <div class="etc__box"><input type="text" id="" name="data_name" class="inputOrg" maxlength="50" title="데이터를 입력하세요"
             placeholder="데이터를 입력하세요">
         </div>

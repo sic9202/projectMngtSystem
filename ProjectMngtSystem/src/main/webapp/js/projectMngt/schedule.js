@@ -51,3 +51,7 @@ function goWorkList(schedule_idx){
 	$("#moveForm input[name=schedule_idx]").val(schedule_idx);
 	$("#moveForm").submit();
 }
+
+function goProjectList(){
+	window.location.href = encodeURI("/projectList.do");
+}
