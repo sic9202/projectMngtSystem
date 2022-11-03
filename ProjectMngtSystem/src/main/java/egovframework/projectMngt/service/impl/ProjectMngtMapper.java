@@ -49,7 +49,8 @@ public interface ProjectMngtMapper {
 	List<WorkDataVO> getWorkDataList(int work_idx);
 	int getWorkDataListCnt(int work_idx);
 	
-	//work_data추가/삭제
+	//work_data 추가/삭제/수정
 	int addWorkData(@Param(value = "addList") List<Map<String, String>> addList);
 	int delWorkData(@Param(value = "delList") List<Map<String, String>> delList);
+	int updWorkData(@Param(value = "updList") List<Map<String, String>> updList);
 }

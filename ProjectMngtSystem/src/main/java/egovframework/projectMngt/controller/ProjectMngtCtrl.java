@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import egovframework.projectMngt.service.ProjectMngtSvc;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
@@ -21,14 +22,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +44,8 @@ import java.lang.reflect.Type;
 
 @Controller
 public class ProjectMngtCtrl {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Resource(name = "projectMngtSvc")
 	private ProjectMngtSvc projectMngtSvc;
@@ -194,8 +201,17 @@ public class ProjectMngtCtrl {
 		
 		return status;
 	}
-	
 	//work 끝
 	
+	@PostMapping("/uploadFile.do")
+	public void uploadFile(MultipartHttpServletRequest multiRequest) {
+		try {
+			projectMngtSvc.uploadFile(multiRequest);
+		} catch (Exception e) {
+			if(logger.isErrorEnabled()) {
+				logger.error("#Exception Message : {}", e.getMessage());
+			}
+		}
+	}
 
 }

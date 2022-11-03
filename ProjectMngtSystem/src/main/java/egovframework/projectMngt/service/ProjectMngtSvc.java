@@ -18,6 +18,8 @@ package egovframework.projectMngt.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
 import egovframework.projectMngt.vo.SearchVO;
@@ -62,5 +64,7 @@ public interface ProjectMngtSvc {
 	int getWorkDataListCnt(int parseInt);
 	
 	int saveWorkData(Map<String, String> map);
+	
+	void uploadFile(MultipartHttpServletRequest multiRequest) throws Exception;
 
 }

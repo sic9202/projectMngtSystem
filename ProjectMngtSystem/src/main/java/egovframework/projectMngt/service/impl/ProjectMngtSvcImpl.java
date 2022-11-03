@@ -1,8 +1,11 @@
 package egovframework.projectMngt.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import egovframework.projectMngt.service.ProjectMngtSvc;
 import egovframework.projectMngt.vo.ProjectVO;
@@ -24,12 +27,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 @Service("projectMngtSvc")
 public class ProjectMngtSvcImpl implements ProjectMngtSvc {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass()) ;
 	
 	@Resource(name = "projectMngtMapper")
 	private ProjectMngtMapper projectMngtMapper;
@@ -109,6 +115,13 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 				int addCnt = projectMngtMapper.addWorkData(addList);
 			}
 			
+			String updRecordList = map.get("updRecordList");
+			JSONArray updJsonArr = new JSONArray(updRecordList);
+			if(updJsonArr.length() != 0) {
+				List<Map<String, String>> updList = getListMapFromJsonArray(updJsonArr);
+				int updCnt = projectMngtMapper.updWorkData(updList);
+			}
+			
 			String delRecordList = map.get("delRecordList");
 			JSONArray delJsonArr = new JSONArray(delRecordList);
 			if(delJsonArr.length() != 0) {
@@ -148,5 +161,74 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		}
 		
 		return list;
+	}
+	
+	
+	//fileUpload
+	public void uploadFile(MultipartHttpServletRequest multiRequest) throws Exception{
+		Map<String, MultipartFile> files = multiRequest.getFileMap();
+		
+		//file.entrySet()의 요소를 읽어온다.
+		Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
+		
+		MultipartFile mFile;
+		
+		//upload file Path
+//		String filePath = "/usr/local/uploadFile/";
+		String filePath = "C:\\dev\\uploadFile";
+		
+		//obj for fileName duplication
+		String saveFileName = "", saveFilePath = "";
+		
+		while(itr.hasNext()) {
+			Entry<String, MultipartFile> entry = itr.next();
+			
+			mFile = entry.getValue();
+			
+			//original file name
+			String fileName = mFile.getOriginalFilename();
+			
+			//file name w/o ext
+			String fileCutName = fileName.substring(0, fileName.lastIndexOf("."));
+			
+			//ext
+			String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+			
+			//file path, file name
+			saveFilePath = filePath + File.separator + fileName;
+			
+			//create file on file path
+			File fileFolder = new File(filePath);
+			if(!fileFolder.exists()) {
+				if(fileFolder.mkdirs()) {
+					logger.info("[file.mkdirs] : Success");
+				}else {
+					logger.error("[file.mkdirs] : Fail");
+				}
+			}
+			
+			File saveFile = new File(saveFilePath);
+			
+			if(saveFile.isFile()) {
+				boolean _exist = true;
+				int index = 0;
+				
+				//file name duplication chk
+				while(_exist) {
+					index++;
+					saveFileName = fileCutName + "(" + index + ")." + fileExt;
+					String dictFile = filePath + File.separator + saveFileName;
+					
+					_exist = new File(dictFile).isFile();
+					if(!_exist) {
+						saveFilePath = dictFile;
+					}
+				}
+				//업로드처리
+				mFile.transferTo(new File(saveFilePath));
+			}else {
+				mFile.transferTo(saveFile);
+			}
+		}
 	}
 }

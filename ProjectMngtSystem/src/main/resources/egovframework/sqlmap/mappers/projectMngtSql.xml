@@ -210,7 +210,8 @@
 		JOIN 
 			user u ON wd.reg_user_idx = u.idx
 		WHERE
-			wd.work_idx = #{work_idx};
+			wd.work_idx = #{work_idx}
+		ORDER BY end_date DESC, upd_date DESC;
 	</select>
 	
 	<select id="getWorkDataListCnt" resultType="int" parameterType="int">
@@ -234,7 +235,8 @@
 				support_type,
 				support_content,
 				severity,
-				reg_user_idx
+				reg_user_idx,
+				work_data_reg_date
 			) VALUES
 			<foreach collection="addList" item="item" separator=",">
 				(
@@ -245,11 +247,30 @@
 					'${item.support_type}',
 					'${item.support_content}',
 					${item.severity},
-					${item.reg_user_idx}
+					${item.reg_user_idx},
+					now()
 				)
 			</foreach>
 		</if>
 	</insert>
+	
+	<update id="updWorkData" parameterType="java.util.HashMap">
+		<if test="updList.size != 0">
+			<foreach collection="updList" item="item" separator=";" close=";">
+				UPDATE work_data
+				SET
+					str_date = '${item.str_date}',
+					end_date = '${item.end_date}',
+					support_time = ${item.support_time},
+					support_type = '${item.support_type}',
+					support_content = '${item.support_content}',
+					severity = ${item.severity},
+					upd_date = now()
+				WHERE
+					idx = ${item.work_data_idx}
+			</foreach>
+		</if>
+	</update>
 	
 	<delete id="delWorkData" parameterType="java.util.HashMap">
 		<if test="delList.size != 0">
