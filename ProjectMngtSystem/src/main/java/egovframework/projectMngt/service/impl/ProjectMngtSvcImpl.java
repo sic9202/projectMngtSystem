@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import egovframework.projectMngt.service.ProjectMngtSvc;
+import egovframework.projectMngt.vo.FileVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
 import egovframework.projectMngt.vo.SearchVO;
@@ -16,6 +17,7 @@ import egovframework.projectMngt.vo.WorkVO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 import javax.annotation.Resource;
 
@@ -26,7 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -39,6 +44,9 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	
 	@Resource(name = "projectMngtMapper")
 	private ProjectMngtMapper projectMngtMapper;
+	
+	@Resource(name = "uploadPath")
+	private String uploadPath;
 	
 	public List<ProjectVO> getProjectList(SearchVO search){
 		List<ProjectVO> project_list = projectMngtMapper.getProjectList(search);
@@ -163,19 +171,18 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return list;
 	}
 	
-	
 	//fileUpload
 	public void uploadFile(MultipartHttpServletRequest multiRequest) throws Exception{
+		
+		FileVO fileVO = new FileVO();
+		ModelMap model = new ModelMap();
+		
+		
 		Map<String, MultipartFile> files = multiRequest.getFileMap();
 		
-		//file.entrySet()의 요소를 읽어온다.
 		Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
 		
 		MultipartFile mFile;
-		
-		//upload file Path
-//		String filePath = "/usr/local/uploadFile/";
-		String filePath = "C:\\dev\\uploadFile";
 		
 		//obj for fileName duplication
 		String saveFileName = "", saveFilePath = "";
@@ -186,19 +193,22 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 			mFile = entry.getValue();
 			
 			//original file name
-			String fileName = mFile.getOriginalFilename();
-			
+			String orgFileName = mFile.getOriginalFilename();
+		
 			//file name w/o ext
-			String fileCutName = fileName.substring(0, fileName.lastIndexOf("."));
-			
+			String fileCutName = orgFileName.substring(0, orgFileName.lastIndexOf("."));
+		
 			//ext
-			String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
-			
+			String fileExt = orgFileName.substring(orgFileName.lastIndexOf(".") + 1);
+		
 			//file path, file name
-			saveFilePath = filePath + File.separator + fileName;
-			
+			saveFilePath = uploadPath + File.separator + orgFileName;
+		
+			//저장할 파일명
+			saveFileName = orgFileName; 
+		
 			//create file on file path
-			File fileFolder = new File(filePath);
+			File fileFolder = new File(uploadPath);
 			if(!fileFolder.exists()) {
 				if(fileFolder.mkdirs()) {
 					logger.info("[file.mkdirs] : Success");
@@ -217,7 +227,7 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 				while(_exist) {
 					index++;
 					saveFileName = fileCutName + "(" + index + ")." + fileExt;
-					String dictFile = filePath + File.separator + saveFileName;
+					String dictFile = uploadPath + File.separator + saveFileName;
 					
 					_exist = new File(dictFile).isFile();
 					if(!_exist) {
@@ -229,6 +239,9 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 			}else {
 				mFile.transferTo(saveFile);
 			}
+			fileVO.setFileName(saveFileName);
+			
+			model.addAttribute("fileVO", fileVO);
 		}
 	}
 }

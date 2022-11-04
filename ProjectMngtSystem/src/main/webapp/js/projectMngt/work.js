@@ -244,10 +244,3 @@ function goScheduleList() {
 	$("#moveForm").attr("action", "/scheduleList.do");
 	$("#moveForm").submit();
 }
-
-function uploadFileBtn(idx){
-	$('#uploadFile_'+idx).click(function(){
-		$('#listForm').attr("action", "/uploadFile.do")	
-		$('#listForm').submit();
-	});
-}
