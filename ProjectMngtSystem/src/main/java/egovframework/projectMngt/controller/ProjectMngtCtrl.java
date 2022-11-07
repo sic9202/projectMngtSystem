@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.projectMngt.service.ProjectMngtSvc;
+import egovframework.projectMngt.vo.FileVO;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -170,7 +172,8 @@ public class ProjectMngtCtrl {
 	
 	@RequestMapping("/workView.do")
 	public String workView(ModelMap model, HttpServletRequest request, HttpServletResponse resp,
-			@RequestParam("project_idx") String project_idx, @RequestParam("schedule_idx") String schedule_idx,
+			@RequestParam("project_idx") String project_idx,
+			@RequestParam("schedule_idx") String schedule_idx,
 			@RequestParam("work_idx") String work_idx) {
 		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		
@@ -208,14 +211,33 @@ public class ProjectMngtCtrl {
 	
 	//fileUpload
 	@RequestMapping(name = "/uploadFile.do", method = RequestMethod.POST)
-	public void uploadFile(MultipartHttpServletRequest multiRequest, ModelMap model){
+	@ResponseBody
+	public int uploadFile(HttpServletRequest request, HttpServletResponse resp, ModelMap model,
+			@RequestParam("uploadFile") MultipartFile mFile,
+			@RequestParam("work_data_idx") String work_data_idx,
+			@RequestParam("work_idx") String work_idx){
+		int status = 1;
 		try {
-			projectMngtSvc.uploadFile(multiRequest);
+			FileVO fileVO = new FileVO();
+			fileVO.setWork_data_idx(Integer.parseInt(work_data_idx));
+			fileVO.setWork_idx(Integer.parseInt(work_idx));
+			fileVO.setUploadFile(mFile);
+			projectMngtSvc.uploadFile(fileVO);
+			
 		} catch (Exception e) {
 			if(logger.isErrorEnabled()) {
 				logger.error("#Exception Message : {}", e.getMessage());
 			}
+			status = 0;
 		}
+		return status;
+	}
+	@RequestMapping("/delUploadFile.do")
+	@ResponseBody
+	public boolean delUploadFile(HttpServletRequest request, HttpServletResponse resp, ModelMap model,
+			@RequestParam("file_idx") String file_idx) {
+		boolean result = projectMngtSvc.delUploadFile(Integer.parseInt(file_idx));
+		return result;
 	}
 
 }

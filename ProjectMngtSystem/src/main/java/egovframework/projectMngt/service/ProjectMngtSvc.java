@@ -22,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.projectMngt.vo.FileVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
 import egovframework.projectMngt.vo.SearchVO;
@@ -67,6 +68,6 @@ public interface ProjectMngtSvc {
 	
 	int saveWorkData(Map<String, String> map);
 	
-	void uploadFile(MultipartHttpServletRequest multiRequest) throws Exception;
-
+	void uploadFile(FileVO fileVO) throws Exception;
+	boolean delUploadFile(int parseInt);
 }

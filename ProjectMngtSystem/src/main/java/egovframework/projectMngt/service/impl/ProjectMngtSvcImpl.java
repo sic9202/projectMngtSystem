@@ -172,76 +172,88 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	}
 	
 	//fileUpload
-	public void uploadFile(MultipartHttpServletRequest multiRequest) throws Exception{
-		
-		FileVO fileVO = new FileVO();
-		ModelMap model = new ModelMap();
-		
-		
-		Map<String, MultipartFile> files = multiRequest.getFileMap();
-		
-		Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
-		
-		MultipartFile mFile;
+	public void uploadFile(FileVO fileVO) throws Exception{
 		
 		//obj for fileName duplication
 		String saveFileName = "", saveFilePath = "";
 		
-		while(itr.hasNext()) {
-			Entry<String, MultipartFile> entry = itr.next();
-			
-			mFile = entry.getValue();
-			
-			//original file name
-			String orgFileName = mFile.getOriginalFilename();
-		
-			//file name w/o ext
-			String fileCutName = orgFileName.substring(0, orgFileName.lastIndexOf("."));
-		
-			//ext
-			String fileExt = orgFileName.substring(orgFileName.lastIndexOf(".") + 1);
-		
-			//file path, file name
-			saveFilePath = uploadPath + File.separator + orgFileName;
-		
-			//저장할 파일명
-			saveFileName = orgFileName; 
-		
-			//create file on file path
-			File fileFolder = new File(uploadPath);
-			if(!fileFolder.exists()) {
-				if(fileFolder.mkdirs()) {
-					logger.info("[file.mkdirs] : Success");
-				}else {
-					logger.error("[file.mkdirs] : Fail");
-				}
-			}
-			
-			File saveFile = new File(saveFilePath);
-			
-			if(saveFile.isFile()) {
-				boolean _exist = true;
-				int index = 0;
-				
-				//file name duplication chk
-				while(_exist) {
-					index++;
-					saveFileName = fileCutName + "(" + index + ")." + fileExt;
-					String dictFile = uploadPath + File.separator + saveFileName;
-					
-					_exist = new File(dictFile).isFile();
-					if(!_exist) {
-						saveFilePath = dictFile;
-					}
-				}
-				//업로드처리
-				mFile.transferTo(new File(saveFilePath));
+		//original file name
+		String orgFileName = fileVO.getUploadFile().getOriginalFilename();
+	
+		//file name w/o ext
+		String fileCutName = orgFileName.substring(0, orgFileName.lastIndexOf("."));
+	
+		//ext
+		String fileExt = orgFileName.substring(orgFileName.lastIndexOf(".") + 1);
+	
+		//file path, file name
+		saveFilePath = uploadPath + File.separator + orgFileName;
+	
+		//저장할 파일명
+		saveFileName = orgFileName; 
+	
+		//create file on file path
+		File fileFolder = new File(uploadPath);
+		if(!fileFolder.exists()) {
+			if(fileFolder.mkdirs()) {
+				logger.info("[file.mkdirs] : Success");
 			}else {
-				mFile.transferTo(saveFile);
+				logger.error("[file.mkdirs] : Fail");
 			}
-			fileVO.setFileName(saveFileName);
-			
-			model.addAttribute("fileVO", fileVO);
 		}
+		
+		File saveFile = new File(saveFilePath);
+		
+		//동일파일명 확인
+		if(saveFile.isFile()) {
+			boolean _exist = true;
+			int index = 0;
+			
+			//file name duplication chk
+			while(_exist) {
+				index++;
+				saveFileName = fileCutName + "(" + index + ")." + fileExt;
+				String dictFile = uploadPath + File.separator + saveFileName;
+				
+				_exist = new File(dictFile).isFile();
+				if(!_exist) {
+					saveFilePath = dictFile;
+				}
+			}
+			//업로드처리
+			fileVO.getUploadFile().transferTo(new File(saveFilePath));
+		}else {
+			fileVO.getUploadFile().transferTo(saveFile);
+		}
+		fileVO.setFile_name(saveFileName);
+		fileVO.setFile_path(saveFilePath);
+		fileVO.setFile_size(fileVO.getUploadFile().getSize());
+		fileVO.setExt(fileExt);
+		
+		//기존 work_data에 있는 파일인지 확인
+		FileVO addedFileInfo = projectMngtMapper.getUploadFileInfo(fileVO);
+		if(addedFileInfo != null) {
+			//기존 file del_yn = 'Y'로 업데이트
+			projectMngtMapper.updAddedFileInfo(addedFileInfo);
+		}
+		projectMngtMapper.addFileInfo(fileVO);
+	}
+	
+	public boolean delUploadFile(int file_idx) {
+		boolean result = true;
+		FileVO file_info = new FileVO();
+		file_info.setFile_idx(file_idx);
+		
+		file_info = projectMngtMapper.getUploadFileInfo(file_info);
+		try {
+			File file = new File(file_info.getFile_path());
+			if(file.isFile())
+				file.delete();
+			projectMngtMapper.updAddedFileInfo(file_info);
+		} catch (Exception e) {
+			result = false;
+		}
+		
+		return result;
 	}
 }

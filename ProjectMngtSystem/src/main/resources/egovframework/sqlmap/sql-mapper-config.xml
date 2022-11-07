@@ -9,5 +9,6 @@
  		<typeAlias alias="LoginVO" type="egovframework.projectMngt.vo.LoginVO"/>
  		<typeAlias alias="WorkDataVO" type="egovframework.projectMngt.vo.WorkDataVO"/>
  		<typeAlias alias="SearchVO" type="egovframework.projectMngt.vo.SearchVO"/>
+ 		<typeAlias alias="FileVO" type="egovframework.projectMngt.vo.FileVO"/>
     </typeAliases>
 </configuration>

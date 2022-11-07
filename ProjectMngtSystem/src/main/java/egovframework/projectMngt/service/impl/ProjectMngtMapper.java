@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.json.JSONArray;
 
+import egovframework.projectMngt.vo.FileVO;
 import egovframework.projectMngt.vo.LoginVO;
 import egovframework.projectMngt.vo.ProjectVO;
 import egovframework.projectMngt.vo.ScheduleVO;
@@ -53,4 +54,9 @@ public interface ProjectMngtMapper {
 	int addWorkData(@Param(value = "addList") List<Map<String, String>> addList);
 	int delWorkData(@Param(value = "delList") List<Map<String, String>> delList);
 	int updWorkData(@Param(value = "updList") List<Map<String, String>> updList);
+	
+	//file exist chk
+	FileVO getUploadFileInfo(FileVO fileVO);
+	void addFileInfo(FileVO fileVO);
+	void updAddedFileInfo(FileVO addedFileInfo);
 }

@@ -123,12 +123,20 @@
  						      	</select>
 							</td>
 							<td>
-								<form id="uploadFileForm_${wdStatus.index }" action="uploadFile.do" method="post" enctype="multipart/form-data">
+							<c:choose>
+								<c:when test="${wd_list.file_name ne '' && wd_list.file_name ne null }">
+									<img title="${wd_list.file_name}" src="/image/common/download.png" id="" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
+									<img src="/image/common/delete.png" id="del_file_btn_${wdStatus.index }" onclick="delUploadFile(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
+								</c:when>
+								<c:otherwise>
 									<label for="uploadFile_${wdStatus.index }">
-										<img src="/image/common/excel.png" id="uploadFileBtn_${wdStatus.index }" style="width: 30px; height: 30px; display: block; margin: 0px auto; cursor: pointer;">
+										<img src="/image/common/upload.png" id="uploadFileBtn_${wdStatus.index }" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;">
+	<!-- 									<img src="/image/common/download.png" id="" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;"> -->
+	<!-- 									<img src="/image/common/delete.png" id="" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;"> -->
 									</label>
-									<input type="file" id="uploadFile_${wdStatus.index }" style="display: none;" onchange="javascript:this.form.submit();"/>
-								</form>
+									<input type="file" id="uploadFile_${wdStatus.index }" style="display: none;" onchange="fileUpload(${wdStatus.index })" required="required"/>	
+								</c:otherwise>
+							</c:choose>
 							</td>
 							<td>
 								<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a>

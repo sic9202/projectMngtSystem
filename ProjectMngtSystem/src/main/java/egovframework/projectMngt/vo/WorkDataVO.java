@@ -11,6 +11,9 @@ public class WorkDataVO extends SearchVO{
 	private int severity;
 	private int reg_user_idx;
 	private String reg_user_name;
+	private int file_idx;
+	private String file_name;
+	private int file_size;
 	public int getWork_data_idx() {
 		return work_data_idx;
 	}
@@ -70,5 +73,23 @@ public class WorkDataVO extends SearchVO{
 	}
 	public void setReg_user_name(String reg_user_name) {
 		this.reg_user_name = reg_user_name;
+	}
+	public int getFile_idx() {
+		return file_idx;
+	}
+	public void setFile_idx(int file_idx) {
+		this.file_idx = file_idx;
+	}
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+	public int getFile_size() {
+		return file_size;
+	}
+	public void setFile_size(int file_size) {
+		this.file_size = file_size;
 	}
 }

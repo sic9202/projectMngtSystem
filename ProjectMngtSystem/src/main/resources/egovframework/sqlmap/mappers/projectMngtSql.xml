@@ -196,7 +196,7 @@
 	<select id="getWorkDataList" resultType="WorkDataVO" parameterType="int">
 		SELECT
 			wd.idx AS work_data_idx,
-			work_idx,
+			wd.work_idx,
 			str_date,
 			end_date,
 			support_time,
@@ -204,13 +204,20 @@
 			support_content,
 			severity,
 			reg_user_idx,
-			u.user_name AS reg_user_name
+			u.user_name AS reg_user_name,
+			fi.idx AS file_idx,
+			fi.file_name,
+			fi.file_size    
 		FROM
 			work_data wd
 		JOIN 
 			user u ON wd.reg_user_idx = u.idx
+		LEFT JOIN
+			file_info fi ON fi.work_data_idx = wd.idx
 		WHERE
 			wd.work_idx = #{work_idx}
+		AND fi.del_yn = 'N'
+		OR fi.del_yn is null
 		ORDER BY end_date DESC, upd_date DESC;
 	</select>
 	
@@ -283,4 +290,60 @@
 		</if>
 	</delete>
 	
+	<select id="getUploadFileInfo" parameterType="FileVO" resultType="FileVO">
+		SELECT
+			idx AS file_idx,
+			file_name,
+			file_path,
+			file_size,
+			upload_date,
+			ext,
+			del_yn,
+			work_data_idx,
+			work_idx
+		FROM
+			file_info
+		WHERE 1=1
+		<if test="work_data_idx != null">
+			AND work_data_idx = #{work_data_idx}
+			AND del_yn = 'N'	
+		</if>
+		<if test="file_idx != null">
+			AND idx = #{file_idx}	
+		</if>
+	</select>
+	
+	<update id="updAddedFileInfo" parameterType="FileVO">
+		UPDATE 
+			file_info
+		SET
+			del_yn = 'Y'
+		WHERE
+			idx = #{file_idx};
+	</update>
+	
+	<insert id="addFileInfo" parameterType="FileVO">
+		INSERT INTO
+			file_info(
+				file_name,
+				file_path,
+				file_size,
+				upload_date,
+				ext,
+				del_yn,
+				work_data_idx,
+				work_idx
+			)
+		VALUES
+			(
+				#{file_name},
+				#{file_path},
+				#{file_size},
+				now(),
+				#{ext},
+				'N',
+				#{work_data_idx},
+				#{work_idx}
+			)
+	</insert>
 </mapper>

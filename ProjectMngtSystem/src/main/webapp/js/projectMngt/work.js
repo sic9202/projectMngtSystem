@@ -24,21 +24,30 @@ function addRecord() {
 	var rowCnt = $('#work_data table tbody tr').length;
 	var user_name = $('#user_name').val();
 	tag +=	'<tr data="add">'
-		+	'<td><input id="str_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+	'<td><input id="end_date_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+	'<td>' + user_name + '</td>'
-		+	'<td><input id="support_time_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+	'<td><input id="support_type_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+	'<td id="support_content_'+rowCnt+'"><textarea rows="1" cols="30" style="resize: none;"></textarea></td>'
-		+	'<td>'
-		+	'<select id="severity_' + rowCnt + '" class="selectOrgN">'
-		+	'<option value="2">상</option>'
-		+	'<option value="1">중</option>'
-		+	'<option value="0">하</option>'
-		+	'</select>'
-		+	'<td>'
-		+	'<a id="del_btn_' + rowCnt + '" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
-		+	'</td>'
+		+		'<td><input id="str_date_'+rowCnt+'" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="end_date_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td>' + user_name + '</td>'
+		+		'<td><input id="support_time_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td><input id="support_type_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
+		+		'<td id="support_content_'+rowCnt+'"><textarea rows="1" cols="30" style="resize: none;"></textarea></td>'
+		+		'<td>'
+		+			'<select id="severity_' + rowCnt + '" class="selectOrgN">'
+		+				'<option value="2">상</option>'
+		+				'<option value="1">중</option>'
+		+				'<option value="0">하</option>'
+		+			'</select>'
+		+		'<td>'
+//		+			'<label for="uploadFile_'+rowCnt+'">'
+//		+				'<img src="/image/common/excel.png" id="uploadFileBtn_'+rowCnt+'" style="width: 30px; height: 30px; display: block; margin: 0px auto; cursor: pointer;">'
+//		+			'</label>'
+//		+			'<input type="file" id="uploadFile_'+rowCnt+'" style="display: none;" onchange="fileUpload('+rowCnt+')" required="required"/>'
+		+		'-'
+		+		'</td>'
+		+		'<td>'
+		+			'<a id="cncl_btn_'+rowCnt+'" style="cursor:pointer; display:none;" onclick="cancelRecord('+rowCnt+')" class="btn btn-sm btn_color_navy" >취소</a>'
+		+			'<a id="upd_btn_'+rowCnt+'" style="cursor:pointer;" onclick="updateRecord('+rowCnt+')" class="btn btn-sm btn_color_navy">수정</a>'
+		+			'<a id="del_btn_' + rowCnt + '" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
+		+		'</td>'
 		+	'</tr>'
 	$('#work_data tbody').append(tag);
 }
@@ -66,8 +75,6 @@ function updateRecord(idx) {
 	$("#support_type_" + idx).attr("disabled", false);
 	$("#support_type_" + idx).attr("style", "border:;");
 	
-//	$("#support_content_" + idx).attr("disabled", false);
-//	$("#support_content_" + idx).attr("style", "border:; resize: none;");
 	var support_content = $("#hidden_support_content_"+idx).val().replace(/<br>/g, "\r\n");
 	$("#support_content_"+idx).empty();
 	$("#support_content_"+idx).append('<textarea rows="1" cols="30" style="resize: none;">'+support_content+'</textarea>');
@@ -89,8 +96,6 @@ function cancelRecord(idx) {
 	$("#support_type_" + idx).attr("disabled", true);
 	$("#support_type_" + idx).attr("style", "border:none;");
 	
-//	$("#support_content_" + idx).attr("disabled", true);
-//	$("#support_content_" + idx).attr("style", "border:none; resize: none;");
 	var support_content = $("#hidden_support_content_"+idx).val()
 	$("#support_content_" + idx).empty();
 	$("#support_content_" + idx).append(support_content);
@@ -100,13 +105,6 @@ function cancelRecord(idx) {
 	$("#upd_btn_" + idx).attr("style", "cursor:pointer; display:inline-block;");
 	$("#cncl_btn_" + idx).attr("style", "display:none;");
 }
-
-//function modifyRecord(btn){
-//	tr = $(btn).parent().parent();
-//	tr.children("td").each(function(index, item){
-//		$(item).children("input").attr("disabled", false);
-//	});
-//}
 
 function check_work_data_val() {
 	var result = true;
@@ -179,7 +177,6 @@ function saveWorkData(work_idx) {
 				obj.end_date = $("#end_date_" + idx).val();
 				obj.support_time = $("#support_time_" + idx).val();
 				obj.support_type = $("#support_type_" + idx).val();
-//				obj.support_content = $("#support_content_" + idx).val().replace(/\n/g, "<br>");
 				obj.support_content = $("#support_content_" + idx + " textarea").val().replace(/\n/g, "<br>");
 				obj.severity = $("#severity_" + idx + " option:selected").val();
 				obj.reg_user_idx = $("#user_idx").val();
@@ -195,7 +192,6 @@ function saveWorkData(work_idx) {
 				obj.support_time = $("#support_time_" + idx).val();
 				obj.support_type = $("#support_type_" + idx).val();
 				obj.support_content = $("#support_content_" + idx + " textarea").val().replace(/\n/g, "<br>");
-//				obj.support_content = $("#support_content_" + idx).val();
 				obj.severity = $("#severity_" + idx + " option:selected").val();
 				obj.reg_user_idx = $("#user_idx").val();
 				updArr.push(obj);
@@ -243,4 +239,60 @@ function saveWorkData(work_idx) {
 function goScheduleList() {
 	$("#moveForm").attr("action", "/scheduleList.do");
 	$("#moveForm").submit();
+}
+
+function fileUpload(idx){
+	var selectedFile = $("#uploadFile_"+idx).get(0).files[0];
+	var work_data_idx = $("#work_data_idx_"+idx).val();
+	var work_idx = $("#moveForm input[name=work_idx]").val();
+	var frmData = new FormData();
+	frmData.append("uploadFile", selectedFile);
+	frmData.append("work_data_idx", work_data_idx);
+	frmData.append("work_idx", work_idx);
+	
+	$.ajax({
+		url: "/uploadFile.do",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: frmData,
+		success: function(r){
+			if(r == 1){
+				alert("업로드가 완료되었습니다.");
+				goWorkView(work_idx);
+					
+			}else{
+				alert("업로드에 실패하였습니다.");
+				goWorkView(work_idx);
+			}
+			
+			
+		},
+		error: function(e){
+			
+		}
+	});
+}
+
+function delUploadFile(file_idx){
+	var file_idx = file_idx;
+	var work_idx = $("#moveForm input[name=work_idx]").val();
+	
+	$.ajax({
+		url: "/delUploadFile.do",
+		type: "POST",
+		data: {
+				file_idx: file_idx
+		},
+		success: function(r) {
+			if(r.trim() == 'true'){
+				alert("삭제가 완료되었습니다.");
+				goWorkView(work_idx);
+			}
+		},
+		error: function(e) {
+			alert("삭제에 실패했습니다.");
+			goWorkView(work_idx);
+		}
+	});
 }
