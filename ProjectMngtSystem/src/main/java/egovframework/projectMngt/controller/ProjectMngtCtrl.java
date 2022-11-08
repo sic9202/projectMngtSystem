@@ -239,5 +239,11 @@ public class ProjectMngtCtrl {
 		boolean result = projectMngtSvc.delUploadFile(Integer.parseInt(file_idx));
 		return result;
 	}
+	
+	@RequestMapping("/fileDownload.do")
+	public void fileDownload(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("file_idx") String file_idx) {
+		projectMngtSvc.fileDownload(Integer.parseInt(file_idx), request, resp);
+	}
 
 }

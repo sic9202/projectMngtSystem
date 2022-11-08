@@ -1,6 +1,10 @@
 package egovframework.projectMngt.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +24,8 @@ import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
 import org.json.JSONArray;
@@ -134,7 +140,23 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 			JSONArray delJsonArr = new JSONArray(delRecordList);
 			if(delJsonArr.length() != 0) {
 				List<Map<String, String>> delList = getListMapFromJsonArray(delJsonArr);
+				//work_data row 삭제
 				int delCnt = projectMngtMapper.delWorkData(delList);
+				
+				boolean delResult = true;
+				//file delete
+				for(int i = 0; i < delList.size(); i++) {
+					int work_data_idx = Integer.parseInt(delList.get(i).get("work_data_idx"));
+					FileVO fileVO = new FileVO();
+					fileVO.setWork_data_idx(work_data_idx);
+					fileVO = projectMngtMapper.getUploadFileInfo(fileVO);
+					delResult = delFile(fileVO);
+				}
+				
+				//file_info row 삭제
+				if(delResult) {
+					int delFileCnt = projectMngtMapper.delFileInfo(delList);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,27 +255,83 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		//기존 work_data에 있는 파일인지 확인
 		FileVO addedFileInfo = projectMngtMapper.getUploadFileInfo(fileVO);
 		if(addedFileInfo != null) {
-			//기존 file del_yn = 'Y'로 업데이트
-			projectMngtMapper.updAddedFileInfo(addedFileInfo);
+			fileVO.setFile_idx(addedFileInfo.getFile_idx());
+			projectMngtMapper.updAddedFileInfo(fileVO);
+		}else {
+			projectMngtMapper.addFileInfo(fileVO);
 		}
-		projectMngtMapper.addFileInfo(fileVO);
 	}
 	
-	public boolean delUploadFile(int file_idx) {
+	//file delete
+	public static boolean delFile(FileVO file_info) {
 		boolean result = true;
-		FileVO file_info = new FileVO();
-		file_info.setFile_idx(file_idx);
-		
-		file_info = projectMngtMapper.getUploadFileInfo(file_info);
 		try {
 			File file = new File(file_info.getFile_path());
 			if(file.isFile())
 				file.delete();
-			projectMngtMapper.updAddedFileInfo(file_info);
 		} catch (Exception e) {
+			e.printStackTrace();
 			result = false;
 		}
+		return result;
+	}
+	
+	public boolean delUploadFile(int file_idx) {
+		FileVO file_info = new FileVO();
+		file_info.setFile_idx(file_idx);
+		
+		file_info = projectMngtMapper.getUploadFileInfo(file_info);
+		
+		//file delete
+		boolean result = delFile(file_info);
+		
+		//file_info table update
+		projectMngtMapper.updDelYn(file_info);
 		
 		return result;
+	}
+	
+	public void fileDownload(int file_idx, HttpServletRequest request, HttpServletResponse resp) {
+		FileVO file_info = new FileVO();
+		file_info.setFile_idx(file_idx);
+		file_info = projectMngtMapper.getUploadFileInfo(file_info);
+		
+		String file_name = file_info.getFile_name();
+		
+		try {
+			String browser = request.getHeader("User-Agent");
+			if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")) {
+				file_name = URLEncoder.encode(file_name, "UTF-8").replaceAll("\\+", "%20");
+			}else {
+				file_name = new String(file_name.getBytes("UTF-8"), "ISO-8859-1");
+			}
+		} catch (UnsupportedEncodingException ex) {
+			System.out.println("UnsupportedEncodingException");
+		}
+		
+		String file_path = file_info.getFile_path();
+		File file = new File(file_path);
+		if(!file.exists()) {
+			return;
+		}
+		
+		resp.setContentType("application/octer-stream");
+		resp.setHeader("Content-Transfer-Encoding", "binary");
+		resp.setHeader("Content-Disposition", "attachment; filename=\"" + file_name + "\"");
+		try {
+			OutputStream os = resp.getOutputStream();
+			FileInputStream fis = new FileInputStream(file_path);
+			
+			int ncount = 0;
+			byte[] bytes = new byte[512];
+			
+			while((ncount = fis.read(bytes)) != -1) {
+				os.write(bytes, 0, ncount);
+			}
+			fis.close();
+			os.close();
+		} catch (Exception e) {
+			System.out.println("FileNotFoundException : " + e);
+		}
 	}
 }

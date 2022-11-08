@@ -59,4 +59,6 @@ public interface ProjectMngtMapper {
 	FileVO getUploadFileInfo(FileVO fileVO);
 	void addFileInfo(FileVO fileVO);
 	void updAddedFileInfo(FileVO addedFileInfo);
+	void updDelYn(FileVO file_info);
+	int delFileInfo(List<Map<String, String>> delList);
 }

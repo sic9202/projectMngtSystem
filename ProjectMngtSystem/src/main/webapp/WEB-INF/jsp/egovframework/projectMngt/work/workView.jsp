@@ -124,15 +124,13 @@
 							</td>
 							<td>
 							<c:choose>
-								<c:when test="${wd_list.file_name ne '' && wd_list.file_name ne null }">
-									<img title="${wd_list.file_name}" src="/image/common/download.png" id="" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
+								<c:when test="${wd_list.del_yn eq 'N'}">
+									<img title="${wd_list.file_name}" src="/image/common/download.png" id="" onclick="fileDownload(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
 									<img src="/image/common/delete.png" id="del_file_btn_${wdStatus.index }" onclick="delUploadFile(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
 								</c:when>
 								<c:otherwise>
 									<label for="uploadFile_${wdStatus.index }">
 										<img src="/image/common/upload.png" id="uploadFileBtn_${wdStatus.index }" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;">
-	<!-- 									<img src="/image/common/download.png" id="" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;"> -->
-	<!-- 									<img src="/image/common/delete.png" id="" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;"> -->
 									</label>
 									<input type="file" id="uploadFile_${wdStatus.index }" style="display: none;" onchange="fileUpload(${wdStatus.index })" required="required"/>	
 								</c:otherwise>
@@ -140,8 +138,8 @@
 							</td>
 							<td>
 								<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a>
-								<a id="upd_btn_${wdStatus.index }" style="cursor:pointer;" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a>
-								<a id="del_btn_${wdStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a>
+								<a id="upd_btn_${wdStatus.index }" style="cursor:pointer" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a>
+								<a id="del_btn_${wdStatus.index }" style="cursor:pointer" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a>
 								<input type="hidden" id="work_data_idx_${wdStatus.index }" value="${wd_list.work_data_idx }" />
 								<input type="hidden" id="hidden_support_content_${wdStatus.index }" value="${wd_list.support_content }"/>
 							</td>

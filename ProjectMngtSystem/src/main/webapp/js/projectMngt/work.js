@@ -44,8 +44,6 @@ function addRecord() {
 		+		'-'
 		+		'</td>'
 		+		'<td>'
-		+			'<a id="cncl_btn_'+rowCnt+'" style="cursor:pointer; display:none;" onclick="cancelRecord('+rowCnt+')" class="btn btn-sm btn_color_navy" >취소</a>'
-		+			'<a id="upd_btn_'+rowCnt+'" style="cursor:pointer;" onclick="updateRecord('+rowCnt+')" class="btn btn-sm btn_color_navy">수정</a>'
 		+			'<a id="del_btn_' + rowCnt + '" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a>'
 		+		'</td>'
 		+	'</tr>'
@@ -285,7 +283,7 @@ function delUploadFile(file_idx){
 				file_idx: file_idx
 		},
 		success: function(r) {
-			if(r.trim() == 'true'){
+			if(r == true){
 				alert("삭제가 완료되었습니다.");
 				goWorkView(work_idx);
 			}
@@ -295,4 +293,8 @@ function delUploadFile(file_idx){
 			goWorkView(work_idx);
 		}
 	});
+}
+
+function fileDownload(file_idx){
+	window.location.href = encodeURI("/fileDownload.do?file_idx="+file_idx);
 }

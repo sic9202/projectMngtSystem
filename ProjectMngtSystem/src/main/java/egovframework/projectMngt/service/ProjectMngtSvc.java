@@ -18,6 +18,9 @@ package egovframework.projectMngt.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -70,4 +73,7 @@ public interface ProjectMngtSvc {
 	
 	void uploadFile(FileVO fileVO) throws Exception;
 	boolean delUploadFile(int parseInt);
+	
+	
+	void fileDownload(int parseInt, HttpServletRequest request, HttpServletResponse resp);
 }

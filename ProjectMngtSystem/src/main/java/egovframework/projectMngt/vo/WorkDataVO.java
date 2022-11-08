@@ -14,6 +14,7 @@ public class WorkDataVO extends SearchVO{
 	private int file_idx;
 	private String file_name;
 	private int file_size;
+	private String del_yn;
 	public int getWork_data_idx() {
 		return work_data_idx;
 	}
@@ -91,5 +92,11 @@ public class WorkDataVO extends SearchVO{
 	}
 	public void setFile_size(int file_size) {
 		this.file_size = file_size;
+	}
+	public String getDel_yn() {
+		return del_yn;
+	}
+	public void setDel_yn(String del_yn) {
+		this.del_yn = del_yn;
 	}
 }

@@ -207,7 +207,8 @@
 			u.user_name AS reg_user_name,
 			fi.idx AS file_idx,
 			fi.file_name,
-			fi.file_size    
+			fi.file_size,
+			fi.del_yn  
 		FROM
 			work_data wd
 		JOIN 
@@ -216,8 +217,6 @@
 			file_info fi ON fi.work_data_idx = wd.idx
 		WHERE
 			wd.work_idx = #{work_idx}
-		AND fi.del_yn = 'N'
-		OR fi.del_yn is null
 		ORDER BY end_date DESC, upd_date DESC;
 	</select>
 	
@@ -290,6 +289,17 @@
 		</if>
 	</delete>
 	
+	<delete id="delFileInfo" parameterType="java.util.HashMap">
+		<if test="delList.size != 0">
+			DELETE FROM file_info
+			<where> 
+				<foreach collection="delList" item="item" separator="OR">
+					(work_data_idx = ${item.work_data_idx})
+				</foreach>
+			</where>
+		</if>
+	</delete>
+	
 	<select id="getUploadFileInfo" parameterType="FileVO" resultType="FileVO">
 		SELECT
 			idx AS file_idx,
@@ -304,22 +314,35 @@
 		FROM
 			file_info
 		WHERE 1=1
-		<if test="work_data_idx != null">
+		<if test="work_data_idx != null and work_data_idx != ''">
 			AND work_data_idx = #{work_data_idx}
-			AND del_yn = 'N'	
 		</if>
-		<if test="file_idx != null">
+		<if test="file_idx != null and file_idx != ''">
 			AND idx = #{file_idx}	
 		</if>
 	</select>
 	
-	<update id="updAddedFileInfo" parameterType="FileVO">
+	<update id="updDelYn" parameterType="FileVO">
 		UPDATE 
 			file_info
 		SET
 			del_yn = 'Y'
 		WHERE
 			idx = #{file_idx};
+	</update>
+	
+	<update id="updAddedFileInfo" parameterType="FileVO">
+		UPDATE
+			file_info
+		SET
+			file_name = #{file_name},
+			file_path = #{file_path},
+			file_size = #{file_size},
+			upload_date = now(),
+			ext = #{ext},
+			del_yn = 'N'
+		WHERE
+			idx = #{file_idx}
 	</update>
 	
 	<insert id="addFileInfo" parameterType="FileVO">
