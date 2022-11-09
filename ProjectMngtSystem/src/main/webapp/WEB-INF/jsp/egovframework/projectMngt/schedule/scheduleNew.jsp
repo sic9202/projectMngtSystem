@@ -52,7 +52,6 @@
         <div class="btn-area cb">
           <a style="cursor: pointer;" onclick="scheduleNew()" class="btn btn-big btn_green btn-150">등록</a>
         </div>
-		<input type="hidden" name="project_idx" value="${project_idx }">
 		<input type="hidden" name="user_idx" value="${user_idx }">
       </div>
       <!-- container end-->

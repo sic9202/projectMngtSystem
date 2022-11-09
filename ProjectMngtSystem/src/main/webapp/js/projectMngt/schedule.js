@@ -9,7 +9,6 @@ function goScheduleNew(){
 }
 
 function scheduleNew(){
-	var user_idx = $("input[name=user_idx]").val();
 	var project_idx = $("input[name=project_idx]").val();
 	var schedule_name = $("input[name=schedule_name]").val();
 	
@@ -23,7 +22,6 @@ function scheduleNew(){
 		type: "POST",
 		url: "/scheduleNew.do",
 		data: {
-			user_idx: user_idx,
 			project_idx: project_idx,
 			schedule_name: schedule_name
 		},

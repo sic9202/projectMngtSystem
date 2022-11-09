@@ -132,20 +132,45 @@ public class ProjectMngtCtrl {
 		return "/schedule/scheduleNew";
 	}
 	
+	@RequestMapping("/goWorkNew.do")
+	public String goWorkNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_idx") String schedule_idx) {
+		model.addAttribute("project_idx", project_idx);
+		model.addAttribute("schedule_idx", schedule_idx);
+		return "/work/workNew";
+	}
+	
 	@RequestMapping(value = "/scheduleNew.do")
 	@ResponseBody
-	public int scheduleNew(@RequestParam("schedule_name") String schedule_name
-			, @RequestParam("project_idx") String project_idx
-			, @RequestParam("user_idx") String user_idx) {
+	public int scheduleNew(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("schedule_name") String schedule_name
+			, @RequestParam("project_idx") String project_idx){
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		ScheduleVO schedule_param = new ScheduleVO();
 		schedule_param.setProject_idx(Integer.parseInt(project_idx));
 		schedule_param.setSchedule_name(schedule_name);
-		if(!"".equals(user_idx) && user_idx != null)
-			schedule_param.setReg_user_idx(Integer.parseInt(user_idx));
-		else
-			schedule_param.setReg_user_idx(1);
+		schedule_param.setReg_user_idx(login_info.getUser_idx());
 		
 		int result = projectMngtSvc.addSchedule(schedule_param);
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/workNew.do")
+	@ResponseBody
+	public int workNew(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("work_name") String work_name
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_idx") String schedule_idx){
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		WorkVO work_param = new WorkVO();
+		work_param.setProject_idx(Integer.parseInt(project_idx));
+		work_param.setSchedule_idx(Integer.parseInt(schedule_idx));
+		work_param.setWork_name(work_name);
+		work_param.setReg_user_idx(login_info.getUser_idx());
+		
+		int result = projectMngtSvc.addWork(work_param);
 		
 		return result;
 	}
@@ -161,10 +186,12 @@ public class ProjectMngtCtrl {
 		
 		List<WorkVO> work_list = projectMngtSvc.getWorkList(map);
 		int totalCnt = projectMngtSvc.getWorkListCnt(map);
+		ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
 		ScheduleVO schedule_info = projectMngtSvc.getScheduleInfo(Integer.parseInt(schedule_idx));
 		
 		model.addAttribute("work_list", work_list);
 		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("project_info", project_info);
 		model.addAttribute("schedule_info", schedule_info);
 		
 		return "/work/workList";
@@ -192,11 +219,6 @@ public class ProjectMngtCtrl {
 		model.addAttribute("login_info", login_info);
 		
 		return "/work/workView";
-	}
-	
-	@RequestMapping("/workNew.do")
-	public String workNew(ModelMap model){
-		return "/work/workNew";
 	}
 	
 	@RequestMapping("/saveWorkData.do")

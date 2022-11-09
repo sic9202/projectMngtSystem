@@ -147,8 +147,8 @@
 					</c:forEach>
 				</c:if>
 				<c:if test="${fn:length(work_data_list) == 0 }">
-					<tr>
-						<td colspan="8">조회된 데이터가 없습니다.</td>
+					<tr data="none">
+						<td colspan="9">조회된 데이터가 없습니다.</td>
 					</tr>
 				</c:if>
 					

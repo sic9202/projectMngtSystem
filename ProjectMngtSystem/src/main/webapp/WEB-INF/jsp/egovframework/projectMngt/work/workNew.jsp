@@ -33,7 +33,7 @@
 
 </head>
 <body>
-  	<script src="/js/dataset/datasetList.js"></script>
+  	<script src="/js/projectMngt/work.js"></script>
     <div class="sub-visual sv01 on">
       <p class="animated on">업무관리</p>
     </div>
@@ -44,17 +44,18 @@
     <div class="pr-page">
       <div class="inner02">
         <p class="sub__tit01">업무신규</p>
-        <div class="etc__box"><input type="text" id="" name="data_name" class="inputOrg" maxlength="50" title="데이터를 입력하세요"
+        <div class="etc__box"><input type="text" id="" name="work_name" class="inputOrg" maxlength="50" title="데이터를 입력하세요"
             placeholder="데이터를 입력하세요">
         </div>
         <div class="btn-area cb">
-          <a style="cursor: pointer;" onclick="datasetNew()" class="btn btn-big btn_green btn-150">등록</a>
+          <a style="cursor: pointer;" onclick="workNew()" class="btn btn-big btn_green btn-150">등록</a>
         </div>
-		<input type="hidden" name="org_idx" value="${org_idx }">
-		<input type="hidden" name="user_idx" value="${user_idx }">
       </div>
       <!-- container end-->
     </div>
-
+<form action="" method="post" id="moveForm">
+	<input type="hidden" name="project_idx" value="${project_idx }">
+	<input type="hidden" name="schedule_idx" value="${schedule_idx }"/>
+</form>
 </body>
 </html>

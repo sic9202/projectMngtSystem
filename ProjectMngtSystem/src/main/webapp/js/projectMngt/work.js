@@ -8,8 +8,42 @@ function goWorkList() {
 	$("#moveForm").submit();
 }
 
-function newWork() {
-	window.location.href = encodeURI("/workNew.do");
+function goWorkNew() {
+	$("#moveForm").attr("action", "/goWorkNew.do");
+	$("#moveForm").submit();
+}
+
+function workNew(){
+	var project_idx = $("input[name=project_idx]").val();
+	var schedule_idx = $("input[name=schedule_idx]").val();
+	var work_name = $("input[name=work_name]").val();
+	
+	if(work_name == ""){
+		alert("업무명을 입력해주세요.");
+		$("input[name=work_name]").focus();
+		return false;
+	}
+	
+	$.ajax({
+		type: "POST",
+		url: "/workNew.do",
+		data: {
+			project_idx: project_idx,
+			schedule_idx: schedule_idx,
+			work_name: work_name
+		},
+		success: function(r){
+			if(r = 1){
+				alert("등록되었습니다.")
+				$("#moveForm").attr("action", "/workList.do");
+				$("#moveForm").submit();
+			}else{
+				alert("등록에 실패했습니다.");
+				$("#moveForm").attr("action", "/workList.do");
+				$("#moveForm").submit();
+			}
+		}
+	});
 }
 
 function goWorkView(work_idx) {
@@ -20,6 +54,7 @@ function goWorkView(work_idx) {
 
 //레코드추가
 function addRecord() {
+	var chk = $('#work_data table tbody tr').attr("data");
 	var tag = "";
 	var rowCnt = $('#work_data table tbody tr').length;
 	var user_name = $('#user_name').val();

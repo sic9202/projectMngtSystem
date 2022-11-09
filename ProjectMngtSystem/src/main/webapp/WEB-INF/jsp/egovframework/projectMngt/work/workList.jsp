@@ -51,7 +51,8 @@
         <p class="sub__tit01">${schedule_info.schedule_name }<span class="sub__tit02"></span></p>
 
         <div class="btn-area rb">
-          <a style="cursor:pointer;" onclick="newWork()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
+          <a style="cursor:pointer;" onclick="goWorkNew()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
+<!--           <a style="cursor:pointer;" onclick="" class="btn btn-big btn_color_green btn-150"><i class="xi-minus"></i> 삭제</a> -->
         </div>
 
         <div class="board_top">
@@ -120,7 +121,7 @@
       <!-- container end-->
     </div>
 <form action="" method="post" id="moveForm">
-	<input type="hidden" name="project_idx" value="${schedule_info.project_idx }">
+	<input type="hidden" name="project_idx" value="${project_info.project_idx }">
 	<input type="hidden" name="schedule_idx" value="${schedule_info.schedule_idx }"/>
 	<input type="hidden" name="work_idx" value=""/>
 </form>

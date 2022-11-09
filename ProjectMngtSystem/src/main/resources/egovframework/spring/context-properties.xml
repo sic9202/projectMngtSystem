@@ -18,8 +18,10 @@
 	</bean>
 	
 	<bean id="uploadPath" class="java.lang.String">
+		<!-- local -->
 		<constructor-arg value="C:\\dev\\uploadFile"/>
-		<!-- <constructor-arg value="/usr/local/uploadFile/"/> -->
+		<!-- server -->
+<!-- 		<constructor-arg value="/usr/local/uploadFile/"/> -->
 	</bean>
 	
 </beans>	

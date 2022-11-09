@@ -60,5 +60,6 @@ public interface ProjectMngtMapper {
 	void addFileInfo(FileVO fileVO);
 	void updAddedFileInfo(FileVO addedFileInfo);
 	void updDelYn(FileVO file_info);
-	int delFileInfo(List<Map<String, String>> delList);
+	int delFileInfo(@Param(value = "delList") List<Map<String, String>> delList);
+	int addWork(WorkVO work_param);
 }

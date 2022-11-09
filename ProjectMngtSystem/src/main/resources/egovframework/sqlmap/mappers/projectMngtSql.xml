@@ -45,7 +45,9 @@
 		JOIN
 			user u ON s.reg_user_idx = u.idx
 		WHERE
-			s.project_idx = #{project_idx};
+			s.project_idx = #{project_idx}
+		ORDER BY
+			schedule_reg_date DESC;
 	</select>
 
 	<select id="getScheduleListCnt" resultType="int" parameterType="int">
@@ -61,9 +63,9 @@
 	
 	<insert id="addSchedule" parameterType="ScheduleVO">
 		INSERT INTO 
-			schedule (project_idx, schedule_name, reg_user_idx) 
+			schedule (project_idx, schedule_name, schedule_reg_date, reg_user_idx) 
 		VALUES 
-			(#{project_idx}, #{schedule_name}, #{reg_user_idx});
+			(#{project_idx}, #{schedule_name}, now(), #{reg_user_idx});
 	</insert>
 	
 	<select id="getWorkList" resultType="WorkVO" parameterType="Map">
@@ -81,7 +83,9 @@
 		JOIN 
 			user u ON w.reg_user_idx = u.idx
 		WHERE
-			w.schedule_idx = #{schedule_idx};
+			w.schedule_idx = #{schedule_idx}
+		ORDER BY
+			work_reg_date DESC
 	</select>
 
 	<select id="getWorkListCnt" resultType="int" parameterType="Map">
@@ -368,5 +372,12 @@
 				#{work_data_idx},
 				#{work_idx}
 			)
+	</insert>
+	
+	<insert id="addWork" parameterType="WorkVO">
+		INSERT INTO 
+			work (schedule_idx, project_idx, work_reg_date, work_name, reg_user_idx) 
+		VALUES 
+			(#{schedule_idx}, #{project_idx}, now(), #{work_name}, #{reg_user_idx});
 	</insert>
 </mapper>

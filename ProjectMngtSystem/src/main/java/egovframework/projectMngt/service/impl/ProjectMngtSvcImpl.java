@@ -109,6 +109,11 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
+	public int addWork(WorkVO work_param) {
+		int result = projectMngtMapper.addWork(work_param);
+		return result;
+	}
+	
 	public List<WorkDataVO> getWorkDataList(int work_idx) {
 		List<WorkDataVO> work_data_info = projectMngtMapper.getWorkDataList(work_idx);
 		return work_data_info;

@@ -65,6 +65,7 @@ public interface ProjectMngtSvc {
 	
 	int addProject(ProjectVO project_param);
 	int addSchedule(ScheduleVO schedule_param);
+	int addWork(WorkVO work_param);
 	
 	List<WorkDataVO> getWorkDataList(int work_idx);
 	int getWorkDataListCnt(int parseInt);
@@ -76,4 +77,5 @@ public interface ProjectMngtSvc {
 	
 	
 	void fileDownload(int parseInt, HttpServletRequest request, HttpServletResponse resp);
+	
 }
