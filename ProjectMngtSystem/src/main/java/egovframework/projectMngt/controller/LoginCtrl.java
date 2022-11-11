@@ -1,10 +1,7 @@
 package egovframework.projectMngt.controller;
 
-import java.io.PrintWriter;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Base64.Encoder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +60,7 @@ public class LoginCtrl {
 		user_info.setUser_id(user_id);
 		user_info.setUser_pwd(user_pwd);
 		user_info.setUser_name(user_name);
-		if(!"".equals(phone_num)) {
+		if(!"".equals(phone_num) && phone_num != null) {
 			user_info.setPhone_num(phone_num);
 		}
 		int status = loginSvc.signUp(user_info);
@@ -79,5 +76,12 @@ public class LoginCtrl {
 		
 		int status = loginSvc.duplicateCheck(user_id);
 		return status;
+	}
+	
+	@RequestMapping("/logout.do")
+	public String logout(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
+		request.getSession().removeAttribute("loginVO");
+		
+		return "/login/login";
 	}
 }

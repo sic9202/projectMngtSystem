@@ -1,6 +1,7 @@
 function movePage(pageNo) {
-	$("#pageNo").val(pageNo);
-	getDatasetList(0, pageNo)
+	$("#moveForm").attr("action", "/workList.do");
+	$("#moveForm input[name=currentPageNo]").val(pageNo);
+	$("#moveForm").submit();
 }
 
 function goWorkList() {
@@ -54,7 +55,10 @@ function goWorkView(work_idx) {
 
 //레코드추가
 function addRecord() {
-	var chk = $('#work_data table tbody tr').attr("data");
+	var totalCnt = $("input[name=totalCnt]").val();
+	if(totalCnt == 0 && $('#work_data table tbody tr').attr("data") == "none"){
+		$('#work_data table tbody tr').remove();
+	}
 	var tag = "";
 	var rowCnt = $('#work_data table tbody tr').length;
 	var user_name = $('#user_name').val();
@@ -64,7 +68,7 @@ function addRecord() {
 		+		'<td>' + user_name + '</td>'
 		+		'<td><input id="support_time_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
 		+		'<td><input id="support_type_' + rowCnt + '" type="text" class="inputOrg" maxlength="50" value=""/></td>'
-		+		'<td id="support_content_'+rowCnt+'"><textarea rows="1" cols="30" style="resize: none;"></textarea></td>'
+		+		'<td id="support_content_'+rowCnt+'"><textarea rows="1" cols="30" style="resize: none; width: 100%;"></textarea></td>'
 		+		'<td>'
 		+			'<select id="severity_' + rowCnt + '" class="selectOrgN">'
 		+				'<option value="2">상</option>'
@@ -96,6 +100,7 @@ function removeRecord(btn) {
 	}
 }
 
+//레코드 수정
 function updateRecord(idx) {
 	tr = $("#upd_btn_" + idx).parent().parent();
 	tr.attr("data", "update");
@@ -110,13 +115,14 @@ function updateRecord(idx) {
 	
 	var support_content = $("#hidden_support_content_"+idx).val().replace(/<br>/g, "\r\n");
 	$("#support_content_"+idx).empty();
-	$("#support_content_"+idx).append('<textarea rows="1" cols="30" style="resize: none;">'+support_content+'</textarea>');
+	$("#support_content_"+idx).append('<textarea rows="1" cols="30" style="resize: none; width: 100%;">'+support_content+'</textarea>');
 	$("#severity_" + idx).attr("disabled", false);
 	$("#severity_" + idx).attr("style", "border:;");
 	$("#upd_btn_" + idx).attr("style", "display:none;");
 	$("#cncl_btn_" + idx).attr("style", "cursor:pointer; display:inline-block;");
 }
 
+//레코드 수정 취소
 function cancelRecord(idx) {
 	tr = $("#cncl_btn_" + idx).parent().parent();
 	tr.attr("data", "added");
@@ -139,45 +145,59 @@ function cancelRecord(idx) {
 	$("#cncl_btn_" + idx).attr("style", "display:none;");
 }
 
+//유효성검사
 function check_work_data_val() {
 	var result = true;
+	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
 	$('#work_data table tbody tr').each(function(idx, val) {
 		if ($(val).attr('data') == 'add') {
 			if ($("#str_date_" + idx).val() == null || $("#str_date_" + idx).val().trim() == "") {
 				alert("공란이 있습니다. 모두 입력해주세요.");
+				$("#str_date_" + idx).focus();
+				result = false;
+				return false;
+			}else if(!$("#str_date_" + idx).val().match(date_pattern)){
+				alert("날짜형식에 맞지 않는 데이터가 입력되었습니다. 다시 입력해주세요.");
+				$("#str_date_" + idx).focus();
 				result = false;
 				return false;
 			}
 
 			if ($("#end_date_" + idx).val() == null || $("#end_date_" + idx).val().trim() == "") {
 				alert("공란이 있습니다. 모두 입력해주세요.");
+				$("#end_date_" + idx).focus();
 				result = false;
 				return false;
 			}
 
 			if ($("#support_time_" + idx).val() == null || $("#support_time_" + idx).val().trim() == "") {
 				alert("공란이 있습니다. 모두 입력해주세요.");
+				$("#end_date_" + idx).focus();
 				result = false;
 				return false;
 			} else if (isNaN($("#support_time_" + idx).val())) {
 				alert("숫자만 입력해주세요.");
+				$("#support_time_" + idx).focus();
 				result = false;
 				return false;
 			}
 
 			if ($("#support_type_" + idx).val() == null || $("#support_type_" + idx).val().trim() == "") {
 				alert("공란이 있습니다. 모두 입력해주세요.");
+				$("#support_type_" + idx).focus();
 				result = false;
 				return false;
 			}
 			if ($("#support_content_"+idx+" textarea").val() == null || $("#support_content_"+idx+" textarea").val().trim() == "") {
 				alert("공란이 있습니다. 모두 입력해주세요.");
+				$("#support_content_"+idx+" textarea").focus();
 				result = false;
 				return false;
 			}
 
 			if ($("#severity_" + idx).val() == null || $("#severity_" + idx).val() == "") {
 				alert("선택되지 않은 값이 있습니다. 값을 선택해주세요.");
+				$("#severity_" + idx).focus();
 				result = false;
 				return false;
 			}
@@ -187,8 +207,9 @@ function check_work_data_val() {
 	return result;
 }
 
+//work_data 저장
 function saveWorkData(work_idx) {
-	var date_pattern = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/;
+	
 	var arr = new Array();
 	var updArr = new Array();
 	var delArr = new Array();
@@ -274,6 +295,7 @@ function goScheduleList() {
 	$("#moveForm").submit();
 }
 
+//파일 업로드
 function fileUpload(idx){
 	var selectedFile = $("#uploadFile_"+idx).get(0).files[0];
 	var work_data_idx = $("#work_data_idx_"+idx).val();
@@ -298,8 +320,6 @@ function fileUpload(idx){
 				alert("업로드에 실패하였습니다.");
 				goWorkView(work_idx);
 			}
-			
-			
 		},
 		error: function(e){
 			
@@ -307,6 +327,7 @@ function fileUpload(idx){
 	});
 }
 
+//업로드파일 삭제
 function delUploadFile(file_idx){
 	var file_idx = file_idx;
 	var work_idx = $("#moveForm input[name=work_idx]").val();
@@ -330,6 +351,11 @@ function delUploadFile(file_idx){
 	});
 }
 
+//업로드파일 다운로드
 function fileDownload(file_idx){
 	window.location.href = encodeURI("/fileDownload.do?file_idx="+file_idx);
+}
+
+function addRecordPopUp(){
+	$("#work_data_modal").modal();
 }

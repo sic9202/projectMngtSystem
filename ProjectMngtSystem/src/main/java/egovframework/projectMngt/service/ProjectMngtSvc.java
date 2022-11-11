@@ -49,33 +49,31 @@ import egovframework.projectMngt.vo.WorkVO;
  *  Copyright (C) by MOPAS All right reserved.
  */
 public interface ProjectMngtSvc {
-
+	//project 관련
 	List<ProjectVO> getProjectList(SearchVO search);
 	int getProjectListCnt();
-	
-	List<ScheduleVO> getScheduleList(int project_idx);
-	int getScheduleListCnt(int project_idx);
-	
-	List<WorkVO> getWorkList(Map<String, Integer> map);
-	int getWorkListCnt(Map<String, Integer> map);
-	
 	ProjectVO getProjectInfo(int project_idx);
-	ScheduleVO getScheduleInfo(int schedule_idx);
-	WorkVO getWorkInfo(int parseInt);
-	
 	int addProject(ProjectVO project_param);
+	
+	//schedule 관련
+	List<ScheduleVO> getScheduleList(SearchVO search);
+	int getScheduleListCnt(int project_idx);
+	ScheduleVO getScheduleInfo(int schedule_idx);
 	int addSchedule(ScheduleVO schedule_param);
+	
+	//work 관련
+	List<WorkVO> getWorkList(SearchVO search);
+	int getWorkListCnt(SearchVO search);
+	WorkVO getWorkInfo(int parseInt);
 	int addWork(WorkVO work_param);
 	
+	//work_data 관련
 	List<WorkDataVO> getWorkDataList(int work_idx);
 	int getWorkDataListCnt(int parseInt);
-	
 	int saveWorkData(Map<String, String> map);
 	
+	//uploadFile 관련
 	void uploadFile(FileVO fileVO) throws Exception;
 	boolean delUploadFile(int parseInt);
-	
-	
 	void fileDownload(int parseInt, HttpServletRequest request, HttpServletResponse resp);
-	
 }

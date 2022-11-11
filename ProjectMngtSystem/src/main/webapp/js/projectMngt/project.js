@@ -21,13 +21,16 @@ function goProjectList(){
 	$("#listForm").submit();
 }
 
+//move projectNew page
 function goProjectNew(){
 	window.location.href = encodeURI("/goProjectNew.do");
 }
 
+//add project
 function projectNew(){
-	var user_idx = $("input[name=user_idx]").val();
-	var project_name = $("input[name=project_name]").val();
+	var project_name = $("#project_name").val();
+	var project_type = $("#project_type").val();
+	var project_info = $("#project_info").val();
 	
 	if(project_name == ""){
 		alert("프로젝트명을 입력해주세요.");
@@ -39,8 +42,9 @@ function projectNew(){
 		type: "POST",
 		url: "/projectNew.do",
 		data: {
-			user_idx: user_idx,
-			project_name: project_name
+			project_name: project_name,
+			project_type: project_type,
+			project_info: project_info
 		},
 		success: function(r){
 			if(r == 1){

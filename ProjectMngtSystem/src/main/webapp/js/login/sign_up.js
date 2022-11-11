@@ -3,7 +3,7 @@ function email_check(email){
 	var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 
     if(!reg_email.test(email)) {                            
-         return false;         
+        return false;         
     }else{
     	return true;
     }                     
@@ -31,13 +31,16 @@ function pwdCheck(pwd){
 
 //입력값 체크
 function value_check(){
-	if($("#user_id").val() == ""){
+	if($("#user_id").val().trim() == ""){
 		alert("아이디를 입력하세요");
+		$("#user_id").val().trim();
 		$("#user_id").focus();
 		return false;
 	}else{
 		if(!email_check($("#user_id").val())){
 			alert("아이디 형식이 틀립니다.");
+			$("#user_id").val().trim();
+			$("#user_id").focus();
 			return false;
 		}
 	}
@@ -47,30 +50,29 @@ function value_check(){
 		return false;
 	}else{
 		if(!pwdCheck($("#user_pwd").val())){
-			alert("양식에 맞추어 비밀번호를 입력하세요")
+			alert("양식에 맞추어 비밀번호를 입력하세요");
+			$("#user_pwd").val().trim();
 			$("#user_pwd").focus();
 			return false;
 		}else{
 			if($("#user_pwd").val() != $("#user_pwd_check").val()){
 			alert("비밀번호가 일치하지 않습니다.");
+			$("#user_pwd_check").val().trim();
 			$("#user_pwd_check").focus();
 			return false;
 			}
 		}
-		
 	}
-	if($("#user_name").val() == ""){
-		alert("이름을 입력하세요")
+	
+	if($("#user_name").val().trim() == ""){
+		alert("이름을 입력하세요");
+		$("#user_name").val().trim();
 		$("#user_name").focus();
 		return false;
 	}
-//	if($("#cotelno1").val() == "" || $("#cotelno2").val() == ""){
-//		alert("연락처를 입력하세요");
-//		$("#cotelno1").focus();
-//		return false;
-//	}
-	if($("#id_check").val == 0){
-		alert("아이디중복체크를 해주세요")
+
+	if($("#id_check").val() == 0){
+		alert("아이디중복체크를 해주세요");
 		return false;
 	}
 	return true;
@@ -83,8 +85,8 @@ function sign_up_user(){
 		var user_pwd = $("#user_pwd").val();
 		var user_name = $("#user_name").val();
 		var phone_num = "";
-		if($("#cotelno1").val() != "" && $("#cotelno2").val() != ""){
-			$("#cotelno0").val()+"-"+$("#cotelno1").val()+"-"+$("#cotelno2").val();	
+		if($("#cotelno1").val().trim() != "" && $("#cotelno2").val().trim() != ""){
+			phone_num = $("#cotelno0").val()+"-"+$("#cotelno1").val().trim()+"-"+$("#cotelno2").val().trim();	
 		}
 		
 		$.ajax({
@@ -98,7 +100,7 @@ function sign_up_user(){
 			},
 			success: function(r){
 				if(r == 1){
-					alert("회원가입이 완료 되었습니다.");
+					alert("회원가입이 완료되었습니다.");
 					window.location.href = encodeURI("/login.do");
 				}else{
 					alert("회원가입에 실패하였습니다. 관리자에게 문의하세요.");
@@ -118,8 +120,11 @@ function re_enter(){
 //이메일 중복체크
 function duplicate_check(){
 	var user_id = $("#user_id").val();
-	if(user_id == "" || user_id == null){
+	if(user_id.trim() == "" || user_id == null){
 		alert("아이디를 입력하세요");
+		user_id.trim();
+		user_id.focus();
+		return false;
 	}else{
 		if(email_check(user_id)){
 			$.ajax({
@@ -147,17 +152,3 @@ function duplicate_check(){
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

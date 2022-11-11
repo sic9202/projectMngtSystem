@@ -45,10 +45,11 @@
       <div class="inner02">
         <p class="sub__tit01">업무신규</p>
         <div class="etc__box"><input type="text" id="" name="work_name" class="inputOrg" maxlength="50" title="데이터를 입력하세요"
-            placeholder="데이터를 입력하세요">
+            placeholder="업무명을 입력하세요.">
         </div>
         <div class="btn-area cb">
-          <a style="cursor: pointer;" onclick="workNew()" class="btn btn-big btn_green btn-150">등록</a>
+        	<a style="cursor: pointer;" onclick="workNew()" class="btn btn-big btn_green btn-150">등록</a>
+        	<a href="javascript:history.back();" class="btn btn-big btn_green btn-150">취소</a>
         </div>
       </div>
       <!-- container end-->

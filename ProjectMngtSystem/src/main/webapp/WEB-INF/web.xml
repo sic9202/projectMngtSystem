@@ -27,6 +27,18 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
     
+    <!-- Sitemesh Page Filter -->
+	<filter>
+	    <filter-name>sitemeshPageFilter</filter-name>
+	    <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>sitemeshPageFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	    <!-- <dispatcher>FORWARD</dispatcher> -->
+	</filter-mapping>
+    
+    
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:egovframework/spring/context-*.xml</param-value>

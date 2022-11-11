@@ -46,7 +46,7 @@ function check_user() {
 			},
 			success: function(r){
 				if(r.status == 1){ //로그인 성공
-					if(r.use_yn == 0){
+					if(r.use_yn == 'N'){
 						alert("탈퇴한 회원입니다.");
 						$("#user_pwd").val("");
 						$("#user_id").val("");

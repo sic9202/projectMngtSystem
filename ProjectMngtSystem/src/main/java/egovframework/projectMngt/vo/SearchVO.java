@@ -8,6 +8,10 @@ public class SearchVO {
 	private int firstIndex;
 	private int lastIndex;
 	private int totalRecordCount;
+	private int project_idx;
+	private int schedule_idx;
+	private int work_idx;
+	
 	public int getPageUnit() {
 		return pageUnit;
 	}
@@ -49,6 +53,24 @@ public class SearchVO {
 	}
 	public void setTotalRecordCount(int totalRecordCount) {
 		this.totalRecordCount = totalRecordCount;
+	}
+	public int getProject_idx() {
+		return project_idx;
+	}
+	public void setProject_idx(int project_idx) {
+		this.project_idx = project_idx;
+	}
+	public int getSchedule_idx() {
+		return schedule_idx;
+	}
+	public void setSchedule_idx(int schedule_idx) {
+		this.schedule_idx = schedule_idx;
+	}
+	public int getWork_idx() {
+		return work_idx;
+	}
+	public void setWork_idx(int work_idx) {
+		this.work_idx = work_idx;
 	}
 	
 }

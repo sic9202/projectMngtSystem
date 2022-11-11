@@ -2,155 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="egovframework.projectMngt.service.impl.ProjectMngtMapper">
-	<select id="getProjectList" parameterType="SearchVO" resultType="ProjectVO">
-		SELECT
-			p.idx AS project_idx,
-			project_name,
-			project_type,
-			project_reg_date,
-			p.reg_user_idx,
-			u.user_name AS reg_user_name
-		FROM
-			project p
-		JOIN user u ON p.reg_user_idx = u.idx
-		ORDER BY project_reg_date DESC
-		LIMIT #{firstIndex}, #{recordCountPerPage};
-	</select>
-
-	<select id="getProjectListCnt" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			project p
-		JOIN user u ON p.reg_user_idx = u.idx;
-	</select>
-	
-	<insert id="addProject" parameterType="ProjectVO">
+	<!-- login & signUp 시작 -->
+	<insert id="signUp" parameterType="LoginVO">
 		INSERT INTO 
-			project (project_name, project_type, reg_user_idx) 
+			user (user_email, passwd, user_name, phone_num, join_date, use_yn) 
 		VALUES 
-			(#{project_name}, #{project_type}, #{reg_user_idx});
+			(#{user_id}, #{encrypt_pwd}, #{user_name}, #{phone_num}, now(), 'Y')
 	</insert>
-	
-	<select id="getScheduleList" resultType="ScheduleVO" parameterType="int">
-		SELECT
-			s.idx AS schedule_idx,
-			project_idx,
-			schedule_name,
-			schedule_reg_date,
-			s.reg_user_idx,
-			u.user_name AS reg_user_name
-		FROM
-			schedule s
-		JOIN
-			user u ON s.reg_user_idx = u.idx
-		WHERE
-			s.project_idx = #{project_idx}
-		ORDER BY
-			schedule_reg_date DESC;
-	</select>
-
-	<select id="getScheduleListCnt" resultType="int" parameterType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			schedule s
-		JOIN
-			user u ON s.reg_user_idx = u.idx
-		WHERE
-			s.project_idx = #{project_idx};
-	</select>
-	
-	<insert id="addSchedule" parameterType="ScheduleVO">
-		INSERT INTO 
-			schedule (project_idx, schedule_name, schedule_reg_date, reg_user_idx) 
-		VALUES 
-			(#{project_idx}, #{schedule_name}, now(), #{reg_user_idx});
-	</insert>
-	
-	<select id="getWorkList" resultType="WorkVO" parameterType="Map">
-		SELECT
-			w.idx AS work_idx,
-			schedule_idx,
-			project_idx,
-			work_info,
-			work_reg_date,
-			work_name,
-			w.reg_user_idx,
-			u.user_name AS reg_user_name
-		FROM
-			work w
-		JOIN 
-			user u ON w.reg_user_idx = u.idx
-		WHERE
-			w.schedule_idx = #{schedule_idx}
-		ORDER BY
-			work_reg_date DESC
-	</select>
-
-	<select id="getWorkListCnt" resultType="int" parameterType="Map">
-		SELECT
-			COUNT(*)
-		FROM
-			work w
-		JOIN 
-			user u ON w.reg_user_idx = u.idx
-		WHERE
-			w.schedule_idx = #{schedule_idx};
-	</select>
-	
-	<select id="getProjectInfo" resultType="ProjectVO" parameterType="int">
-		SELECT
-			p.idx AS project_idx,
-			project_name,
-			project_type,
-			project_reg_date,
-			reg_user_idx,
-			u.user_name AS reg_user_name
-		FROM
-			project p
-		JOIN 
-			user u ON p.reg_user_idx = u.idx
-		WHERE
-			p.idx = #{project_idx};
-	</select>
-	
-	<select id="getScheduleInfo" resultType="ScheduleVO" parameterType="int">
-		SELECT
-			s.idx AS schedule_idx,
-			schedule_name,
-			schedule_reg_date,
-			s.project_idx,
-			s.reg_user_idx,
-			u.user_name AS reg_user_name,
-			project_name
-		FROM
-			schedule s
-		JOIN 
-			user u ON s.reg_user_idx = u.idx
-		JOIN
-			project p ON s.project_idx = p.idx
-		WHERE
-			s.idx = #{schedule_idx};
-	</select>
-	
-	<select id="getWorkInfo" resultType="WorkVo" parameterType="int">
-		SELECT
-			w.idx AS work_idx,
-			schedule_idx,
-			project_idx,
-			work_info,
-			work_reg_date,
-			work_name,
-			reg_user_idx,
-			u.user_name AS reg_user_name
-		FROM
-			work w
-		JOIN 
-			user u ON w.reg_user_idx = u.idx
-		WHERE
-			w.idx = #{work_idx};
-	</select>
 	
 	<select id="checkUser1" resultType="int" parameterType="Map">
 		SELECT
@@ -178,8 +36,7 @@
 			user_name,
 			phone_num,
 			join_date,
-			use_yn,
-			user_desc
+			use_yn
 		FROM
 			user
 		WHERE
@@ -196,7 +53,173 @@
 		WHERE
 			user_email = #{user_id} 
 	</select>
+	<!-- login & signUp 끝-->
 	
+	<!-- project 시작 -->
+	<select id="getProjectList" parameterType="SearchVO" resultType="ProjectVO">
+		SELECT
+			p.idx AS project_idx,
+			project_name,
+			project_type,
+			project_reg_date,
+			p.reg_user_idx,
+			u.user_name AS reg_user_name,
+			project_info
+		FROM
+			project p
+		JOIN user u ON p.reg_user_idx = u.idx
+		ORDER BY project_reg_date DESC
+		LIMIT #{firstIndex}, #{recordCountPerPage};
+	</select>
+
+	<select id="getProjectListCnt" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			project p
+		JOIN user u ON p.reg_user_idx = u.idx;
+	</select>
+	
+	<insert id="addProject" parameterType="ProjectVO">
+		INSERT INTO 
+			project (project_name, project_type, reg_user_idx, project_info) 
+		VALUES 
+			(#{project_name}, #{project_type}, #{reg_user_idx}, #{project_info});
+	</insert>
+	
+	<select id="getProjectInfo" resultType="ProjectVO" parameterType="int">
+		SELECT
+			p.idx AS project_idx,
+			project_name,
+			project_type,
+			project_reg_date,
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			project p
+		JOIN 
+			user u ON p.reg_user_idx = u.idx
+		WHERE
+			p.idx = #{project_idx};
+	</select>
+	<!-- project 끝 -->
+	
+	<!-- schedule 시작 -->
+	<select id="getScheduleList" resultType="ScheduleVO" parameterType="SearchVO">
+		SELECT
+			s.idx AS schedule_idx,
+			project_idx,
+			schedule_name,
+			schedule_reg_date,
+			s.reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			schedule s
+		JOIN
+			user u ON s.reg_user_idx = u.idx
+		WHERE
+			s.project_idx = #{project_idx}
+		ORDER BY
+			schedule_reg_date DESC
+		LIMIT #{firstIndex}, #{recordCountPerPage}
+	</select>
+
+	<select id="getScheduleListCnt" resultType="int" parameterType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			schedule s
+		JOIN
+			user u ON s.reg_user_idx = u.idx
+		WHERE
+			s.project_idx = #{project_idx};
+	</select>
+	
+	<insert id="addSchedule" parameterType="ScheduleVO">
+		INSERT INTO 
+			schedule (project_idx, schedule_name, schedule_reg_date, reg_user_idx) 
+		VALUES 
+			(#{project_idx}, #{schedule_name}, now(), #{reg_user_idx});
+	</insert>
+	
+	<select id="getScheduleInfo" resultType="ScheduleVO" parameterType="int">
+		SELECT
+			s.idx AS schedule_idx,
+			schedule_name,
+			schedule_reg_date,
+			s.project_idx,
+			s.reg_user_idx,
+			u.user_name AS reg_user_name,
+			project_name
+		FROM
+			schedule s
+		JOIN 
+			user u ON s.reg_user_idx = u.idx
+		JOIN
+			project p ON s.project_idx = p.idx
+		WHERE
+			s.idx = #{schedule_idx};
+	</select>
+	<!-- schedule 끝 -->
+	
+	<!-- work 시작 -->
+	<select id="getWorkList" resultType="WorkVO" parameterType="SearchVO">
+		SELECT
+			w.idx AS work_idx,
+			schedule_idx,
+			project_idx,
+			work_reg_date,
+			work_name,
+			w.reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.schedule_idx = #{schedule_idx}
+		ORDER BY
+			work_reg_date DESC
+		LIMIT #{firstIndex}, #{recordCountPerPage}
+	</select>
+
+	<select id="getWorkListCnt" resultType="int" parameterType="SearchVO">
+		SELECT
+			COUNT(*)
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.schedule_idx = #{schedule_idx};
+	</select>
+	
+	<select id="getWorkInfo" resultType="WorkVo" parameterType="int">
+		SELECT
+			w.idx AS work_idx,
+			schedule_idx,
+			project_idx,
+			work_reg_date,
+			work_name,
+			reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work w
+		JOIN 
+			user u ON w.reg_user_idx = u.idx
+		WHERE
+			w.idx = #{work_idx};
+	</select>
+	
+	<insert id="addWork" parameterType="WorkVO">
+		INSERT INTO 
+			work (schedule_idx, project_idx, work_reg_date, work_name, reg_user_idx) 
+		VALUES 
+			(#{schedule_idx}, #{project_idx}, now(), #{work_name}, #{reg_user_idx});
+	</insert>
+	<!-- work 끝 -->
+	
+	<!-- work_data 시작 -->
 	<select id="getWorkDataList" resultType="WorkDataVO" parameterType="int">
 		SELECT
 			wd.idx AS work_data_idx,
@@ -292,18 +315,9 @@
 			</where>
 		</if>
 	</delete>
+	<!-- work_data 끝 -->
 	
-	<delete id="delFileInfo" parameterType="java.util.HashMap">
-		<if test="delList.size != 0">
-			DELETE FROM file_info
-			<where> 
-				<foreach collection="delList" item="item" separator="OR">
-					(work_data_idx = ${item.work_data_idx})
-				</foreach>
-			</where>
-		</if>
-	</delete>
-	
+	<!-- uploadFile 시작 -->
 	<select id="getUploadFileInfo" parameterType="FileVO" resultType="FileVO">
 		SELECT
 			idx AS file_idx,
@@ -325,29 +339,6 @@
 			AND idx = #{file_idx}	
 		</if>
 	</select>
-	
-	<update id="updDelYn" parameterType="FileVO">
-		UPDATE 
-			file_info
-		SET
-			del_yn = 'Y'
-		WHERE
-			idx = #{file_idx};
-	</update>
-	
-	<update id="updAddedFileInfo" parameterType="FileVO">
-		UPDATE
-			file_info
-		SET
-			file_name = #{file_name},
-			file_path = #{file_path},
-			file_size = #{file_size},
-			upload_date = now(),
-			ext = #{ext},
-			del_yn = 'N'
-		WHERE
-			idx = #{file_idx}
-	</update>
 	
 	<insert id="addFileInfo" parameterType="FileVO">
 		INSERT INTO
@@ -374,10 +365,38 @@
 			)
 	</insert>
 	
-	<insert id="addWork" parameterType="WorkVO">
-		INSERT INTO 
-			work (schedule_idx, project_idx, work_reg_date, work_name, reg_user_idx) 
-		VALUES 
-			(#{schedule_idx}, #{project_idx}, now(), #{work_name}, #{reg_user_idx});
-	</insert>
+	<delete id="delFileInfo" parameterType="java.util.HashMap">
+		<if test="delList.size != 0">
+			DELETE FROM file_info
+			<where> 
+				<foreach collection="delList" item="item" separator="OR">
+					(work_data_idx = ${item.work_data_idx})
+				</foreach>
+			</where>
+		</if>
+	</delete>
+	
+	<update id="updDelYn" parameterType="FileVO">
+		UPDATE 
+			file_info
+		SET
+			del_yn = 'Y'
+		WHERE
+			idx = #{file_idx};
+	</update>
+	
+	<update id="updAddedFileInfo" parameterType="FileVO">
+		UPDATE
+			file_info
+		SET
+			file_name = #{file_name},
+			file_path = #{file_path},
+			file_size = #{file_size},
+			upload_date = now(),
+			ext = #{ext},
+			del_yn = 'N'
+		WHERE
+			idx = #{file_idx}
+	</update>
+	<!-- uploadFile 끝 -->
 </mapper>

@@ -11,8 +11,7 @@ public class LoginVO {
 	private String user_name;
 	private String phone_num;
 	private Timestamp join_date;
-	private int use_yn;
-	private String user_desc;
+	private String use_yn;
 	private int status;
 	public int getUser_idx() {
 		return user_idx;
@@ -56,17 +55,11 @@ public class LoginVO {
 	public void setJoin_date(Timestamp join_date) {
 		this.join_date = join_date;
 	}
-	public int getUse_yn() {
+	public String getUse_yn() {
 		return use_yn;
 	}
-	public void setUse_yn(int use_yn) {
+	public void setUse_yn(String use_yn) {
 		this.use_yn = use_yn;
-	}
-	public String getUser_desc() {
-		return user_desc;
-	}
-	public void setUser_desc(String user_desc) {
-		this.user_desc = user_desc;
 	}
 	public int getStatus() {
 		return status;

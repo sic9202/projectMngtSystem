@@ -9,6 +9,7 @@ public class ProjectVO extends SearchVO{
 	private Timestamp project_reg_date;
 	private int reg_user_idx;
 	private String reg_user_name;
+	private String project_info;
 	public int getProject_idx() {
 		return project_idx;
 	}
@@ -44,5 +45,11 @@ public class ProjectVO extends SearchVO{
 	}
 	public void setReg_user_name(String reg_user_name) {
 		this.reg_user_name = reg_user_name;
+	}
+	public String getProject_info() {
+		return project_info;
+	}
+	public void setProject_info(String project_info) {
+		this.project_info = project_info;
 	}
 }

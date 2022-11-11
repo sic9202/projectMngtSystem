@@ -1,83 +1,49 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html lang="ko" class="fp-enabled" style="height: 100%;">
-<head>
-    <title>프로젝트관리</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="DATAMASQ">
-    <meta name="naver-site-verification" content="">
-    <meta name="description" content="프로젝트관리">
-    <meta property="og:description" content="프로젝트관리">
-
-    <link rel="shortcut icon" href="/image/common/favicon.png">
-
-    <script type="text/javascript">
-        var CTX = "";
-    </script>
-
-
-    <!-- 공통 CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" media="all">
-
-
-    <!-- jqgrid css,js -->
-    <script src="//code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="/js/jquery.modal.js"></script>
-
-</head>
 <body>
 	<script src="/js/login/sign_up.js"></script>
-            <div class="sub-visual sv01 on">
-                <p class="animated on">회원가입</p>
-            </div>
-            <!--header end-->
+	<div class="sub-visual sv01 on">
+<!-- 		<p class="animated on">회원가입</p> -->
+	</div>
+	<!--header end-->
 
-            <!-- container start-->
-
-            <div class="pr-page">
-				<div class="inner02">
-				  <p class="sub__tit01"> 회원가입 신청</p>
-		
-		
-				  <div class="board_detail_contents">
-					<table class="tbl_info sm">
-					  <caption> 표</caption>
-					  <colgroup>
+	<!-- container start-->
+	<div class="pr-page">
+		<div class="inner02">
+			<p class="sub__tit01">회원가입</p>
+			<div class="board_detail_contents">
+				<table class="tbl_info sm">
+					<caption> 표</caption>
+					<colgroup>
 						<col style="width:20%">
 						<col style="width:80%">
-					  </colgroup>
-					  <tbody>
+					</colgroup>
+					<tbody>
 						<tr>
-						  <th>회원아이디 <span class="red">*</span></th>
-						  <td class="lb"><input id="user_id" type="text" class="inputOrgW" maxlength="50" title="" placeholder="data@dimoa.co.kr"> 
-							<a onclick="re_enter()" id="re_enter"class="btn btn-sm btn_color_navy" style="cursor:pointer;display: none;">이메일 재입력</a>
-							<a onclick="duplicate_check()" id="duplicate_check" class="btn btn-sm btn_color_navy"style="cursor:pointer;display: ;">중복체크</a>
-						  </td>
+							<th>회원아이디 <span class="red">*</span></th>
+							<td class="lb"><input id="user_id" type="text" class="inputOrgW" maxlength="50" title="" placeholder="data@dimoa.co.kr"> 
+								<a onclick="re_enter()" id="re_enter"class="btn btn-sm btn_color_navy" style="cursor:pointer;display: none;">이메일 재입력</a>
+								<a onclick="duplicate_check()" id="duplicate_check" class="btn btn-sm btn_color_navy"style="cursor:pointer;display: ;">중복체크</a>
+							</td>
 						</tr>				
 						<tr>
 							<th>비밀번호 <span class="red">*</span></th>
 							<td class="lb"><input id="user_pwd" type="password" maxlength="50" title="" placeholder="">
-							<br>※ 영문+숫자+특수문자 조합 6~12자 이내로 입력해주세요.</td>
-						  </tr>
-						  <tr>
+								<br>※ 영문+숫자+특수문자 조합 6~12자 이내로 입력해주세요.
+							</td>
+						</tr>
+						<tr>
 							<th>비밀번호확인 <span class="red">*</span></th>
 							<td class="lb"><input id="user_pwd_check" type="password" maxlength="50" title="" placeholder="">
-								<br>※ 영문+숫자+특수문자 조합 6~12자 이내로 입력해주세요.</td>
-						  </tr>
-						  <tr>
+								<br>※ 영문+숫자+특수문자 조합 6~12자 이내로 입력해주세요.
+							</td>
+						</tr>
+						<tr>
 							<th>이름 <span class="red">*</span></th>
 							<td class="lb"><input type="text" id="user_name" class="inputOrgW" maxlength="50" title="" placeholder=""></td>
-						  </tr>
-						  <tr>
-<!-- 							<th>연락처<span class="red">*</span></th> -->
+						</tr>
+						<tr>
 							<th>연락처</th>
 							<td class="lb">  
 								<select id="cotelno0" class="selectOrg">
@@ -100,28 +66,20 @@
 									<option value="070">070</option>
 									<option value="010">010</option>
 								</select> 
-								-
+									-
 								<input type="text" name="cotelno2" id="cotelno1" class="inputOrgWm" title="대표번호 가운뎃자리" size="10" maxlength="4">
-								-
+									-
 								<input type="text" name="cotelno2" id="cotelno2" class="inputOrgWm" title="대표번호 뒤자리" size="10" maxlength="4">
 							</td>
-						  </tr>
-					  </tbody>
-					</table>
-					<input type="hidden" id="id_check" value="0" />	
-					<div class="btn-area cb">
-					  <a onclick="sign_up_user()" class="btn btn-big btn_green btn-150" style="cursor: pointer;">회원가입</a>
-					  <a onclick="goMain();" class="btn btn-big btn_color_green btn-150" style="cursor: pointer;">취소</a>
-					</div>
-				  </div>
-		
+						</tr>
+					</tbody>
+				</table>
+				<input type="hidden" id="id_check" value="0" />	
+				<div class="btn-area cb">
+					<a onclick="sign_up_user()" class="btn btn-big btn_green btn-150" style="cursor: pointer;">회원가입</a>
+					<a href="login.do" class="btn btn-big btn_color_green btn-150">취소</a>
 				</div>
-
-            </div>
-            <!-- container end-->
-
-            <!-- container end-->
-
+			</div>
+		</div>
+	</div>
 </body>
-
-</html>

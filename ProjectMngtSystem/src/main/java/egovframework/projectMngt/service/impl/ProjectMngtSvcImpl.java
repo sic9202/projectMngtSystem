@@ -64,8 +64,8 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
-	public List<ScheduleVO> getScheduleList(int project_idx){
-		List<ScheduleVO> schedule_list = projectMngtMapper.getScheduleList(project_idx);
+	public List<ScheduleVO> getScheduleList(SearchVO search){
+		List<ScheduleVO> schedule_list = projectMngtMapper.getScheduleList(search);
 		return schedule_list;
 	}
 	
@@ -74,13 +74,13 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
-	public List<WorkVO> getWorkList(Map<String, Integer> map){
-		List<WorkVO> work_list = projectMngtMapper.getWorkList(map);
+	public List<WorkVO> getWorkList(SearchVO search){
+		List<WorkVO> work_list = projectMngtMapper.getWorkList(search);
 		return work_list;
 	}
 	
-	public int getWorkListCnt(Map<String, Integer> map) {
-		int totalCnt = projectMngtMapper.getWorkListCnt(map);
+	public int getWorkListCnt(SearchVO search) {
+		int totalCnt = projectMngtMapper.getWorkListCnt(search);
 		return totalCnt;
 	}
 	

@@ -1,8 +1,5 @@
 package egovframework.projectMngt.controller;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,31 +18,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 
 @Controller
 public class ProjectMngtCtrl {
@@ -66,8 +47,8 @@ public class ProjectMngtCtrl {
 			, @RequestParam(required = false, defaultValue = "") String searchContent) {
 		
 		SearchVO search = new SearchVO();
-		search.setPageUnit(propertiesService.getInt("pageUnit"));
-		search.setPageSize((propertiesService.getInt("pageSize")));
+		search.setPageUnit(propertiesService.getInt("mainPageUnit"));
+		search.setPageSize(propertiesService.getInt("mainPageSize"));
 		
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(currentPageNo);
@@ -90,19 +71,23 @@ public class ProjectMngtCtrl {
 	
 	@RequestMapping("/goProjectNew.do")
 	public String goProjectNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		model.addAttribute("login_info", login_info);
 		return "/project/projectNew";
 	}
 	
 	@RequestMapping(value = "/projectNew.do")
 	@ResponseBody
-	public int projectNew(@RequestParam("project_name") String project_name, @RequestParam("user_idx") String user_idx) {
+	public int projectNew(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_name") String project_name
+			, @RequestParam("project_type") String project_type
+			, @RequestParam("project_info") String project_info) {
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		ProjectVO project_param = new ProjectVO();
 		project_param.setProject_name(project_name);
-		if(!"".equals(user_idx) && user_idx != null)
-			project_param.setReg_user_idx(Integer.parseInt(user_idx));
-		else
-			project_param.setReg_user_idx(1);
-		project_param.setProject_type("test project type");
+		project_param.setReg_user_idx(login_info.getUser_idx());
+		project_param.setProject_type(project_type);
+		project_param.setProject_info(project_info);
 		
 		int result = projectMngtSvc.addProject(project_param);
 		
@@ -112,15 +97,33 @@ public class ProjectMngtCtrl {
 	
 	//schedule 시작
 	@RequestMapping("/scheduleList.do")
-	public String scheduleList(ModelMap model, HttpServletRequest request, HttpServletResponse resp,
-			@RequestParam("project_idx") String project_idx) {
-		List<ScheduleVO> schedule_list = projectMngtSvc.getScheduleList(Integer.parseInt(project_idx));
+	public String scheduleList(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam(required = false, defaultValue = "1") int currentPageNo
+			, @RequestParam(required = false, defaultValue = "") String searchType
+			, @RequestParam(required = false, defaultValue = "") String searchContent) {
+		SearchVO search = new SearchVO();
+		search.setPageUnit(propertiesService.getInt("listPageUnit"));
+		search.setPageSize(propertiesService.getInt("listPageSize"));
+		search.setProject_idx(Integer.parseInt(project_idx));
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(currentPageNo);
+		paginationInfo.setRecordCountPerPage(search.getPageUnit());
+		paginationInfo.setPageSize(search.getPageSize());
+		
+		search.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		search.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		List<ScheduleVO> schedule_list = projectMngtSvc.getScheduleList(search);
 		int totalCnt = projectMngtSvc.getScheduleListCnt(Integer.parseInt(project_idx));
+		paginationInfo.setTotalRecordCount(totalCnt);
 		ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
 		
 		model.addAttribute("schedule_list", schedule_list);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("project_info", project_info);
+		model.addAttribute("paginationInfo", paginationInfo);
 		
 		return "/schedule/scheduleList";
 	}
@@ -178,14 +181,30 @@ public class ProjectMngtCtrl {
 	
 	//work 시작
 	@RequestMapping("/workList.do")
-	public String workList(ModelMap model, HttpServletRequest request, HttpServletResponse resp,
-			@RequestParam("project_idx") String project_idx, @RequestParam("schedule_idx") String schedule_idx) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("project_idx", Integer.parseInt(project_idx));
-		map.put("schedule_idx", Integer.parseInt(schedule_idx));
+	public String workList(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_idx") String schedule_idx
+			, @RequestParam(required = false, defaultValue = "1") int currentPageNo
+			, @RequestParam(required = false, defaultValue = "") String searchType
+			, @RequestParam(required = false, defaultValue = "") String searchContent) {
 		
-		List<WorkVO> work_list = projectMngtSvc.getWorkList(map);
-		int totalCnt = projectMngtSvc.getWorkListCnt(map);
+		SearchVO search = new SearchVO();
+		search.setPageUnit(propertiesService.getInt("listPageUnit"));
+		search.setPageSize(propertiesService.getInt("listPageSize"));
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(currentPageNo);
+		paginationInfo.setRecordCountPerPage(search.getPageUnit());
+		paginationInfo.setPageSize(search.getPageSize());
+		
+		search.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		search.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		search.setProject_idx(Integer.parseInt(project_idx));
+		search.setSchedule_idx(Integer.parseInt(schedule_idx));
+		
+		List<WorkVO> work_list = projectMngtSvc.getWorkList(search);
+		int totalCnt = projectMngtSvc.getWorkListCnt(search);
+		paginationInfo.setTotalRecordCount(totalCnt);
 		ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
 		ScheduleVO schedule_info = projectMngtSvc.getScheduleInfo(Integer.parseInt(schedule_idx));
 		
@@ -193,6 +212,7 @@ public class ProjectMngtCtrl {
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("project_info", project_info);
 		model.addAttribute("schedule_info", schedule_info);
+		model.addAttribute("paginationInfo", paginationInfo);
 		
 		return "/work/workList";
 	}

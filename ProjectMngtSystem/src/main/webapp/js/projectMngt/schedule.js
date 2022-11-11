@@ -1,6 +1,7 @@
 function movePage(pageNo){
-	$("#pageNo").val(pageNo);
-	getShareDatasetList(0 ,pageNo)
+	$("#moveForm").attr("action", "/scheduleList.do");
+	$("#moveForm input[name=currentPageNo]").val(pageNo);
+	$("#moveForm").submit();
 }
 
 function goScheduleNew(){
