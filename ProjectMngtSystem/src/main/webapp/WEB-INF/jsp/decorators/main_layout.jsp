@@ -31,6 +31,18 @@
     <script src="//code.jquery.com/jquery-3.4.1.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/js/jquery.modal.js"></script>
+    <style type="text/css">
+    	.ellipsis-box {
+		    display: -webkit-box;
+		    -webkit-box-orient: vertical;
+		    word-wrap: break-word;
+		    text-overflow: ellipsis;
+		    overflow: hidden;
+		    -webkit-line-clamp: 1;
+		    text-align: left;
+		}
+		.tbl_info tbody tr:hover { background-color: #f2f5ff; }
+    </style>
 </head>
 <body>
 	
@@ -39,6 +51,7 @@
 	<page:applyDecorator name="top" encoding="UTF-8"/>
 	</div>
 	<decorator:body></decorator:body>
-	<decorator:getProperty property="div.modal_content"></decorator:getProperty>
+	<decorator:getProperty property="div.modal_content_added"></decorator:getProperty>
+	<decorator:getProperty property="div.modal_content_add"></decorator:getProperty>
 </body>
 </html>

@@ -42,7 +42,7 @@
 							<col style="width:auto;">
 							<col style="width:7%;">
 							<col style="width:7%;">
-							<col style="width:12%;">
+<%-- 							<col style="width:7%;"> --%>
 						</colgroup>
 						<thead>
 							<tr>
@@ -54,21 +54,22 @@
 								<th class="b">지원내용</th>
 								<th class="b">심각도</th>
 								<th class="b">파일</th>
-								<th class="b"></th>
+<!-- 								<th class="b"></th> -->
 							</tr>
 						</thead>
 						<tbody>
 					<c:if test="${fn:length(work_data_list) != 0 }">
 						<c:forEach items="${work_data_list }" var="wd_list" varStatus="wdStatus">
 							<tr data="added">
-								<td><input id="str_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.str_date }" style="border: none; text-align: center;" disabled/></td>
-								<td><input id="end_date_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.end_date }" style="border:none; text-align: center;" disabled/></td>
+								<td>${wd_list.str_date }</td>
+								<td>${wd_list.end_date }</td>
 								<td>${wd_list.reg_user_name }</td>
-								<td><input id="support_time_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_time }" style="border:none; text-align: center;" disabled/></td>
-								<td><input id="support_type_${wdStatus.index }" type="text" class="inputOrg" maxlength="50" value="${wd_list.support_type }" style="border:none;" disabled/></td>
-								<td id="support_content_${wdStatus.index }" style="text-align: left;">${wd_list.support_content }</td>
+								<td>${wd_list.support_time }</td>
+								<td>${wd_list.support_type }</td>
+								<td onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer;"><a class="ellipsis-box">${wd_list.support_content }</a></td>
+<%-- 								<td>${wd_list.support_content }</td> --%>
 								<td>
-									<select id="severity_${wdStatus.index }" class="selectOrgN" style="border:none;" disabled>
+									<select id="severity_${wd_list.work_data_idx }" class="selectOrgN" style="border:none;" disabled>
 										<option value="2" <c:if test="${wd_list.severity eq 2 }">selected="selected"</c:if>>상</option>
 										<option value="1" <c:if test="${wd_list.severity eq 1 }">selected="selected"</c:if>>중</option>
 										<option value="0" <c:if test="${wd_list.severity eq 0 }">selected="selected"</c:if>>하</option>
@@ -78,29 +79,29 @@
 							<c:choose>
 								<c:when test="${wd_list.del_yn eq 'N'}">
 									<img title="${wd_list.file_name}" src="/image/common/download.png" id="" onclick="fileDownload(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
-									<img src="/image/common/delete.png" id="del_file_btn_${wdStatus.index }" onclick="delUploadFile(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
+									<img src="/image/common/delete.png" id="del_file_btn_${wd_list.work_data_idx }" onclick="delUploadFile(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
 								</c:when>
 								<c:otherwise>
-									<label for="uploadFile_${wdStatus.index }">
-										<img src="/image/common/upload.png" id="uploadFileBtn_${wdStatus.index }" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;">
+									<label for="uploadFile_${wd_list.work_data_idx }">
+										<img src="/image/common/upload.png" id="uploadFileBtn_${wd_list.work_data_idx }" style="width: 20px; height: 20px; display: block; margin: 0px auto; cursor: pointer;">
 									</label>
-									<input type="file" id="uploadFile_${wdStatus.index }" style="display: none;" onchange="fileUpload(${wdStatus.index })" required="required"/>	
+									<input type="file" id="uploadFile_${wd_list.work_data_idx }" style="display: none;" onchange="fileUpload(${wd_list.work_data_idx })" required="required"/>	
 								</c:otherwise>
 							</c:choose>
 								</td>
-								<td>
-									<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a>
-									<a id="upd_btn_${wdStatus.index }" style="cursor:pointer" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a>
-									<a id="del_btn_${wdStatus.index }" style="cursor:pointer" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a>
-									<input type="hidden" id="work_data_idx_${wdStatus.index }" value="${wd_list.work_data_idx }" />
-									<input type="hidden" id="hidden_support_content_${wdStatus.index }" value="${wd_list.support_content }"/>
-								</td>
+<!-- 								<td> -->
+<%-- 									<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a> --%>
+<%-- 									<a id="upd_btn_${wdStatus.index }" style="cursor:pointer" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a> --%>
+<%-- 									<a id="del_btn_${wdStatus.index }" style="cursor:pointer" onclick="removeRecord(this)" class="btn btn-sm btn_color_navy">삭제</a> --%>
+<%-- 									<input type="hidden" id="work_data_idx_${wdStatus.index }" value="${wd_list.work_data_idx }" /> --%>
+<%-- 									<input type="hidden" id="hidden_support_content_${wdStatus.index }" value="${wd_list.support_content }"/> --%>
+<!-- 								</td> -->
 							</tr>
 						</c:forEach>
 					</c:if>
 						<c:if test="${fn:length(work_data_list) == 0 }">
 							<tr data="none">
-								<td colspan="9">조회된 데이터가 없습니다.</td>
+								<td colspan="8">조회된 데이터가 없습니다.</td>
 							</tr>
 						</c:if>
 						</tbody>
@@ -126,96 +127,102 @@
 		<input type="hidden" name="work_idx" value="${work_info.work_idx}"/>
 	</form>
 </body>
-<div id="modal_content" class="jquery-modal blocker current" style="display: none;">
-      <div id="work_data_modal" class="modal large" style="display: inline-block;">
-        <a href="#close-modal" rel="modal:close" class="close-modal"><i class="xi-close-min"></i>Close</a>
-        <!-- 레이어팝업  data-->
-        <a href="#focus" class="disabled layer-focus" id="layer_data_preview_pop">레이어로 포커스 이동 됨</a>
-
-        <div class="layer-title">업무데이터</div>
-
-        <!-- layer-contents -->
-        <div class="layer-contents">
-
-          <p class="sub__tit05"> 업무데이터 이름 </p>
-          <table id="dataset_layout" class="tbl_info2">
-            <caption> 표</caption>
-            <colgroup>
-              <col style="width:20%">
-              <col style="width:80%">
-            </colgroup>
-            <tbody>
-            	<tr>
-	                <th>시작일</th>
-	                <td class="lb"><input id="user_pwd" class="inputOrgW" type="text" title="" placeholder=""></td>
-	              </tr>
-	              <tr>
-	                <th>종료일</th>
-	                <td class="lb"><input id="user_pwd" class="inputOrgW" type="text" title="" placeholder=""></td>
-	              </tr>
-	              <tr>
-	              	<th>담당자</th>
-	              	<td class="lb"><input id="user_pwd" class="inputOrgW" type="text" title="" placeholder=""></td>
-	              </tr>
-	              <tr>
-	              	<th>지원시간(분)</th>
-	              	<td class="lb"><input id="user_pwd" class="inputOrgW" type="text" title="" placeholder=""></td>
-	              </tr>
-	              <tr>
-	              	<th>지원방법</th>
-	              	<td class="lb"><input id="user_pwd" class="inputOrg" type="text" title="" placeholder=""></td>
-	              </tr>
-	              <tr>
-	              	<th>지원내용</th>
-	              	<td id="support_content"><textarea rows="1" cols="30" style="resize: none; width: 100%;"></textarea></td>
-	              </tr>
-	              <tr>
-	              	<th>심각도</th>
-	              	<td class="lb"><input id="user_pwd" class="inputOrg" type="text" title="" placeholder=""></td>
-	              </tr>
-            </tbody>
-          </table>
-
-        </div>
-        <!--// layer-contents -->
-
-        <!-- layer-bottom -->
-        <div class="btn-area cb">
-          <a href="#" rel="modal:close" class="btn btn-big btn_gray btn-150">닫기</a>
-        </div>
-        <!--// layer-bottom -->
-        <!--// 레이어팝업 - data -->
-
-
-        <div class="jquery-modal blocker current" style="display: none;">
-          <div id="dataset_sample_modal" class="modal large" style="display: inline-block;">
-            <a href="#close-modal" rel="modal:close" class="close-modal"><i class="xi-close-min"></i>Close</a>
-            <!-- 레이어팝업  - sample -->
-            <a href="#focus" class="disabled layer-focus" id="layer_sample_preview_pop">레이어로 포커스 이동 됨</a>
-
-            <div class="layer-title">샘플 데이터</div>
-
-            <!-- layer-contents -->
-            <div class="layer-contents">
-              <p class="sub__tit05"> ${result.dataset_info.data_name} </p>
-              <table id="dataset_sample" class="tbl_info2">
-                <caption> 표</caption>
-                <colgroup></colgroup>
-                <thead>
-                  <tr></tr>
-                <tbody>
-                  <tr></tr>
-                </tbody>
-              </table>
-            </div>
-            <!--// layer-contents -->
-            <!-- layer-bottom -->
-            <div class="btn-area cb">
-              <a href="#" rel="modal:close" class="btn btn-big btn_gray btn-150">닫기</a>
-            </div>
-            <!--// layer-bottom -->
-            <!--// 레이어팝업 - sample -->
-			</div>
+<div id="modal_content_added" class="jquery-modal blocker current" style="display: none;">
+	<div id="work_data_added_modal" class="modal large" style="display: inline-block;">
+<!-- 		<a href="#close-modal" rel="modal:close" class="close-modal"><i class="xi-close-min"></i>Close</a> -->
+		<a style="cursor: pointer;" onclick="goWorkView(${work_info.work_idx})" class="close-modal"><i class="xi-close-min"></i>Close</a>
+		<!-- 레이어팝업  data-->
+		<a href="#focus" class="disabled layer-focus" id="layer_added_data_pop">레이어로 포커스 이동 됨</a>
+		<div class="layer-title">데이터상세</div>
+		<!-- layer-contents -->
+		<div class="layer-contents">
+			<p class="sub__tit05"></p>
+			<table id="work_data_added" class="tbl_info2">
+				<caption> 표</caption>
+				<colgroup>
+					<col style="width:15%">
+					<col style="width:35%">
+					<col style="width:15%">
+					<col style="width:35%">
+				</colgroup>
+				<tbody>
+					<!-- js에서 넣어주는 부분 -->
+				</tbody>
+			</table>
 		</div>
+		<!--// layer-contents -->
+		<!-- layer-bottom -->
+		<div id="modal_added_btn" class="btn-area cb">
+			<input type="hidden" id="work_data_idx" value="">
+			<a style="cursor:pointer;" onclick="updWorkData()" class="btn btn-big btn_green btn-150">수정</a>
+			<a onclick="delWorkData(${work_info.work_idx})" class="btn btn-big btn_color_red btn-150">삭제</a>
+		</div>
+		<!--// layer-bottom -->
+		<!--// 레이어팝업 - data -->
+	</div>
+</div>
+<div id="modal_content_add" class="jquery-modal blocker current" style="display: none;">
+	<div id="work_data_add_modal" class="modal large" style="display: inline-block;">
+<!-- 		<a href="#close-modal" rel="modal:close" class="close-modal"><i class="xi-close-min"></i>Close</a> -->
+		<a style="cursor: pointer;" onclick="goWorkView(${work_info.work_idx})" class="close-modal"><i class="xi-close-min"></i>Close</a>
+		<!-- 레이어팝업  - sample -->
+		<a href="#focus" class="disabled layer-focus" id="layer_add_preview_pop">레이어로 포커스 이동 됨</a>
+		<div class="layer-title">데이터신규</div>
+		<!-- layer-contents -->
+		<div class="layer-contents">
+			<p class="sub__tit05"></p>
+			<table id="work_data_add" class="tbl_info2">
+				<caption> 표</caption>
+				<colgroup>
+					<col style="width:15%">
+					<col style="width:35%">
+					<col style="width:15%">
+					<col style="width:35%">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>
+							시작일
+						</th>
+						<td class="lb"><input id="str_date" class="inputOrg" type="text" title="" placeholder=""></td>
+						<th>종료일</th>
+						<td class="lb"><input id="end_date" class="inputOrg" type="text" title="" placeholder=""></td>
+					</tr>
+					<tr>
+						<th>지원시간(분)</th>
+						<td class="lb"><input id="support_time" class="inputOrg" type="text" title="" placeholder=""></td>
+						<th>담당자</th>
+						<td class="lb">${login_info.user_name }</td>
+					</tr>
+					<tr>
+						<th>지원방법</th>
+						<td class="lb" colspan="3"><input id="support_type" class="inputOrg" type="text" title="" placeholder=""></td>
+					</tr>
+					<tr>
+						<th>지원내용</th>
+						<td id="support_content" colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;"></textarea></td>
+					</tr>
+					<tr>
+						<th>심각도</th>
+						<td class="lb" colspan="3">
+							<select id="severity" class="selectOrgN">
+								<option value="2">상</option>
+								<option value="1">중</option>
+								<option value="0">하</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--// layer-contents -->
+		<!-- layer-bottom -->
+		<div class="btn-area cb">
+			<a style="cursor:pointer;" onclick="saveWorkData(${work_info.work_idx})" class="btn btn-big btn_green btn-150">저장</a>
+<!-- 			<a href="#" rel="modal:close" class="btn btn-big btn_gray btn-150">닫기</a> -->
+			<a style="cursor: pointer;" onclick="goWorkView(${work_info.work_idx})" class="btn btn-big btn_gray btn-150">닫기</a>
+		</div>
+		<!--// layer-bottom -->
+		<!--// 레이어팝업 - sample -->
 	</div>
 </div>

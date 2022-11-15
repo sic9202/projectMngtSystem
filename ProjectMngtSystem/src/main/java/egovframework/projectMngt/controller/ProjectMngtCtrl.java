@@ -249,6 +249,16 @@ public class ProjectMngtCtrl {
 		
 		return status;
 	}
+	
+	@RequestMapping("/getWorkData.do")
+	@ResponseBody
+	public WorkDataVO getWorkData(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("work_data_idx") String work_data_idx) throws Exception {
+		
+		WorkDataVO work_data_info = projectMngtSvc.getWorkDataInfo(Integer.parseInt(work_data_idx));
+		
+		return work_data_info;
+	}
 	//work 끝
 	
 	//fileUpload

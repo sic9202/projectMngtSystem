@@ -54,7 +54,7 @@ function goWorkView(work_idx) {
 }
 
 //레코드추가
-function addRecord() {
+/*function addRecord() {
 	var totalCnt = $("input[name=totalCnt]").val();
 	if(totalCnt == 0 && $('#work_data table tbody tr').attr("data") == "none"){
 		$('#work_data table tbody tr').remove();
@@ -87,10 +87,10 @@ function addRecord() {
 		+		'</td>'
 		+	'</tr>'
 	$('#work_data tbody').append(tag);
-}
+}*/
 
 //레코드 삭제
-function removeRecord(btn) {
+/*function removeRecord(btn) {
 	tr = $(btn).parent().parent();
 	if (tr.attr("data") == "add") {
 		tr.remove();
@@ -98,10 +98,10 @@ function removeRecord(btn) {
 		tr.attr("data", "del");
 		tr.attr("style", "display:none");
 	}
-}
+}*/
 
 //레코드 수정
-function updateRecord(idx) {
+/*function updateRecord(idx) {
 	tr = $("#upd_btn_" + idx).parent().parent();
 	tr.attr("data", "update");
 	$("#str_date_" + idx).attr("disabled", false);
@@ -120,10 +120,10 @@ function updateRecord(idx) {
 	$("#severity_" + idx).attr("style", "border:;");
 	$("#upd_btn_" + idx).attr("style", "display:none;");
 	$("#cncl_btn_" + idx).attr("style", "cursor:pointer; display:inline-block;");
-}
+}*/
 
 //레코드 수정 취소
-function cancelRecord(idx) {
+/*function cancelRecord(idx) {
 	tr = $("#cncl_btn_" + idx).parent().parent();
 	tr.attr("data", "added");
 	$("#str_date_" + idx).attr("disabled", true);
@@ -143,10 +143,10 @@ function cancelRecord(idx) {
 	$("#severity_" + idx).attr("style", "border:none;");
 	$("#upd_btn_" + idx).attr("style", "cursor:pointer; display:inline-block;");
 	$("#cncl_btn_" + idx).attr("style", "display:none;");
-}
+}*/
 
-//유효성검사
-function check_work_data_val() {
+//유효성검사 - 기존
+/*function check_work_data_val() {
 	var result = true;
 	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
 	$('#work_data table tbody tr').each(function(idx, val) {
@@ -205,10 +205,86 @@ function check_work_data_val() {
 	});
 
 	return result;
+}*/
+
+function check_work_data_val(work_data_idx) {
+	var result = true;
+	var str_date = "";
+	var end_date = "";
+	var support_time = "";
+	var support_type = "";
+	var support_content = "";
+	var severity = "";
+	
+	if(work_data_idx != null){
+		str_date = $("#str_date_"+work_data_idx).val();
+		end_date = $("#end_date_"+work_data_idx).val();
+		support_time = $("#support_time_"+work_data_idx).val();
+		support_type = $("#support_type_"+work_data_idx).val();
+		support_content = $("#support_content_"+work_data_idx+" textarea").val();
+		severity = $("#severity_"+work_data_idx).val();
+	}else{
+		str_date = $("#str_date").val();
+		end_date = $("#end_date").val();
+		support_time = $("#support_time").val();
+		support_type = $("#support_type").val();
+		support_content = $("#support_content textarea").val();
+		severity = $("#severity").val();
+	}
+	
+	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
+	if (str_date == null || str_date.trim() == "") {
+		alert("시작일을 입력해주세요.");
+		result = false;
+		return false;
+	}else if(!str_date.match(date_pattern)){
+		alert("날짜형식에 맞지 않는 데이터가 입력되었습니다. 다시 입력해주세요.");
+		result = false;
+		return false;
+	}
+
+	if (end_date == null || end_date.trim() == "") {
+		alert("종료일을 입력해주세요.");
+		result = false;
+		return false;
+	}else if(!end_date.match(date_pattern)){
+		alert("날짜형식에 맞지 않는 데이터가 입력되었습니다. 다시 입력해주세요.");
+		result = false;
+		return false;
+	}
+
+	if (support_time == null || support_time.trim() == "") {
+		alert("지원시간을 입력해주세요.");
+		result = false;
+		return false;
+	} else if (isNaN(support_time)) {
+		alert("지원시간에 숫자만 입력해주세요.");
+		result = false;
+		return false;
+	}
+
+	if (support_type == null || support_type.trim() == "") {
+		alert("지원방법을 입력해주세요.");
+		result = false;
+		return false;
+	}
+	if (support_content == null || support_content.trim() == "") {
+		alert("지원내용을 입력해주세요.");
+		result = false;
+		return false;
+	}
+
+	if (severity == null || severity == "") {
+		alert("심각도를 선택해주세요.");
+		result = false;
+		return false;
+	}
+
+	return result;
 }
 
-//work_data 저장
-function saveWorkData(work_idx) {
+//work_data 저장 - 기존
+/*function saveWorkData(work_idx) {
 	
 	var arr = new Array();
 	var updArr = new Array();
@@ -288,6 +364,171 @@ function saveWorkData(work_idx) {
 	} else {
 		return false;
 	}
+}*/
+
+function saveWorkData(work_idx, work_data_idx){
+	var str_date = "";
+	var end_date = "";
+	var support_time = "";
+	var support_type = "";
+	var support_content = "";
+	var severity = "";
+	var save_type = "";
+	
+	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){
+		str_date = $("#str_date").val();
+		end_date = $("#end_date").val();
+		support_time = $("#support_time").val();
+		support_type = $("#support_type").val();
+		support_content = $("#support_content textarea").val().replace(/\n/g, "<br>");
+		severity = $("#severity option:selected").val();
+		save_type = "add";
+	}else{
+		str_date = $("#str_date_"+work_data_idx).val();
+		end_date = $("#end_date_"+work_data_idx).val();
+		support_time = $("#support_time_"+work_data_idx).val();
+		support_type = $("#support_type_"+work_data_idx).val();
+		support_content = $("#support_content_"+work_data_idx+" textarea").val();
+		severity = $("#severity_"+work_data_idx).val();
+		save_type = "upd";
+	}
+	
+	
+	var arr = new Array();
+	var updArr = new Array();
+	var addRecordList = "";
+	var updRecordList = "";
+	if (check_work_data_val(work_data_idx)) {
+		var obj = new Object();
+			obj.work_idx = work_idx;
+			obj.str_date = str_date;
+			obj.end_date = end_date;
+			obj.support_time = support_time;
+			obj.support_type = support_type;
+			obj.support_content = support_content;
+			obj.severity = severity;
+			obj.reg_user_idx = $("#user_idx").val();
+		if(save_type == "add"){
+			arr.push(obj);
+			addRecordList = JSON.stringify(arr);	
+		}else if(type == "upd"){
+			obj.work_data_idx = work_data_idx;
+			updArr.push(obj);
+			updRecordList = JSON.stringify(updArr);
+		}
+		
+		
+		$.ajax({
+			type: 'POST',
+			url: '/saveWorkData.do',
+			data: {
+				addRecordList: addRecordList,
+				updRecordList: updRecordList
+			},
+			success: function(r) {
+				if (r == 1) {
+					alert("저장되었습니다.");
+					var work_idx = $("#moveForm input[name=work_idx]").val();
+					goWorkView(work_idx);
+				}
+			},
+			error: function(e) {
+				alert("저장에 실패했습니다.");
+				var work_idx = $("#moveForm input[name=work_idx]").val();
+				goWorkView(work_idx);
+			}
+		});
+	}else{
+		return false;
+	}
+}
+
+function delWorkData(work_idx){
+	var work_data_idx = $("#work_data_idx").val();
+	var delArr = new Array();
+
+	var obj = new Object();
+	obj.work_idx = work_idx;
+	obj.work_data_idx = work_data_idx;
+	delArr.push(obj);
+
+	var delRecordList = JSON.stringify(delArr);
+
+	$.ajax({
+		type: 'POST',
+		url: '/saveWorkData.do',
+		data: {
+			delRecordList: delRecordList
+		},
+		success: function(r) {
+			if (r == 1) {
+				alert("삭제되었습니다.");
+				var work_idx = $("#moveForm input[name=work_idx]").val();
+				goWorkView(work_idx);
+			}
+		},
+		error: function(e) {
+			alert("삭제에 실패했습니다.");
+			var work_idx = $("#moveForm input[name=work_idx]").val();
+			goWorkView(work_idx);
+		}
+	});
+}
+
+function updWorkData(){
+	var work_data_idx = $("#work_data_idx").val();
+	$.ajax({
+		url: "/getWorkData.do",
+		type: "POST",
+		data: {
+			work_data_idx: work_data_idx
+		},
+		success: function(r){
+			var tag = "";
+			var btn_tag = "";
+			var support_content = r.support_content.replace(/<br>/g, "\r\n");
+			
+			tag +=	'<tr>'
+				+		'<th>시작일</th>'
+				+		'<td class="lb"><input type="text" class="inputOrg" id="str_date_'+r.work_data_idx+'" value="'+r.str_date+'"></td>'
+				+		'<th>종료일</th>'
+				+		'<td class="lb"><input type="text" class="inputOrg" id="end_date_'+r.work_data_idx+'" value="'+r.end_date+'"></td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>지원시간(분)</th>'
+				+		'<td class="lb"><input type="text" class="inputOrg" id="support_time_'+r.work_data_idx+'" value="'+r.support_time+'"></td>'
+				+		'<th>담당자</th>'
+				+		'<td class="lb" id="user_name_'+r.work_data_idx+'">'+r.reg_user_name+'</td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>지원방법</th>'
+				+		'<td class="lb" colspan="3"><input type="text" class="inputOrg" id="support_type_'+r.work_data_idx+'" value="'+r.support_type+'"></td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>지원내용</th>'
+				+		'<td id="support_content_"'+r.work_data_idx+' colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;">'+support_content+'</textarea></td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>심각도</th>'
+				+		'<td class="lb" colspan="3">'
+				+			'<select id="severity" class="selectOrgN">'
+				+				'<option value="2">상</option>'
+				+				'<option value="1">중</option>'
+				+				'<option value="0">하</option>'
+				+			'</select>'
+				+		'</td>'
+				+	'</tr>';
+			
+			btn_tag +=	'<input type="hidden" id="work_data_idx" value="'+r.work_data_idx+'">'
+					+	'<a style="cursor: pointer; margin-right: 2px;" onclick="saveWorkData('+r.work_idx+','+r.work_data_idx+')" class="btn btn-big btn_green btn-150">저장</a>'
+					+	'<a style="cursor: pointer; margin-left: 2px;" onclick="goWorkView('+r.work_idx+')" class="btn btn-big btn_gray btn-150">닫기</a>';
+					
+			$('#work_data_added tbody').html(tag);
+			$('#work_data_idx').val(r.work_data_idx);
+			$('#modal_added_btn').html(btn_tag);
+//			$("#work_data_added_modal").modal();
+		}
+	});
 }
 
 function goScheduleList() {
@@ -296,9 +537,10 @@ function goScheduleList() {
 }
 
 //파일 업로드
-function fileUpload(idx){
-	var selectedFile = $("#uploadFile_"+idx).get(0).files[0];
-	var work_data_idx = $("#work_data_idx_"+idx).val();
+function fileUpload(work_data_idx){
+	var selectedFile = $("#uploadFile_"+work_data_idx).get(0).files[0];
+//	var work_data_idx = $("#work_data_idx_"+idx).val();
+	var work_data_idx = work_data_idx;
 	var work_idx = $("#moveForm input[name=work_idx]").val();
 	var frmData = new FormData();
 	frmData.append("uploadFile", selectedFile);
@@ -357,5 +599,61 @@ function fileDownload(file_idx){
 }
 
 function addRecordPopUp(){
-	$("#work_data_modal").modal();
+	$("#work_data_add_modal").modal();
+}
+
+function workDataView(work_data_idx){
+	$.ajax({
+		url: "/getWorkData.do",
+		type: "POST",
+		data: {
+			work_data_idx: work_data_idx
+		},
+		success: function(r){
+			var tag = "";
+			var severity = "";
+			switch(r.severity){
+				case 0:
+					severity = "하";
+					break;
+				case 1:
+					severity = "중";
+					break;
+				case 2:
+					severity = "상";
+					break;
+				default:
+					severity = "";
+			}
+			
+			tag +=	'<tr>'
+				+		'<th>시작일</th>'
+				+		'<td class="lb" id="str_date_'+r.work_data_idx+'">'+r.str_date+'</td>'
+				+		'<th>종료일</th>'
+				+		'<td class="lb" id="end_date_'+r.work_data_idx+'">'+r.end_date+'</td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>지원시간(분)</th>'
+				+		'<td class="lb" id="support_time_'+r.work_data_idx+'">'+r.support_time+'</td>'
+				+		'<th>담당자</th>'
+				+		'<td class="lb" id="user_name_'+r.work_data_idx+'">'+r.reg_user_name+'</td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>지원방법</th>'
+				+		'<td class="lb" colspan="3" id="support_type_'+r.work_data_idx+'">'+r.support_type+'</td>'
+				+	'</tr>'
+				+	'<tr style="overflow: scroll; height: 300px;">'
+				+		'<th>지원내용</th>'
+				+		'<td class="lb" colspan="3"><div id="support_content_'+r.work_data_idx+'" style="overflow:auto; height: 300px;">'+r.support_content+'</div></td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>심각도</th>'
+				+		'<td class="lb" colspan="3" id="severity_'+r.work_data_idx+'">'+severity+'</td>'
+				+	'</tr>';
+				
+			$('#work_data_added tbody').html(tag);
+			$('#work_data_idx').val(r.work_data_idx);
+			$("#work_data_added_modal").modal();
+		}
+	});
 }

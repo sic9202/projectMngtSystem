@@ -258,6 +258,26 @@
 			wd.work_idx = #{work_idx};
 	</select>
 	
+	<select id="getworkDataInfo" resultType="WorkDataVO" parameterType="int">
+		SELECT
+			wd.idx AS work_data_idx,
+			work_idx,
+			str_date,
+			end_date,
+			support_time,
+			support_type,
+			support_content,
+			severity,
+			u.idx AS reg_user_idx,
+			u.user_name AS reg_user_name
+		FROM
+			work_data wd
+		JOIN user u ON wd.reg_user_idx = u.idx 
+		WHERE
+			wd.idx = #{work_data_idx}
+		
+	</select>
+	
 	<insert id="addWorkData" parameterType="java.util.HashMap">
 		<if test="addList.size != 0">
 			INSERT INTO work_data(

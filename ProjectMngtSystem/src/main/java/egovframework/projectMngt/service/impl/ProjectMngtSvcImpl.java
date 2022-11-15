@@ -54,6 +54,7 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
+	//project
 	public List<ProjectVO> getProjectList(SearchVO search){
 		List<ProjectVO> project_list = projectMngtMapper.getProjectList(search);
 		return project_list;
@@ -64,6 +65,17 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
+	public ProjectVO getProjectInfo(int project_idx) {
+		ProjectVO project_info = projectMngtMapper.getProjectInfo(project_idx);
+		return project_info;
+	}
+	
+	public int addProject(ProjectVO project_param) {
+		int result = projectMngtMapper.addProject(project_param);
+		return result;
+	}
+	
+	//schedule
 	public List<ScheduleVO> getScheduleList(SearchVO search){
 		List<ScheduleVO> schedule_list = projectMngtMapper.getScheduleList(search);
 		return schedule_list;
@@ -74,6 +86,17 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
+	public ScheduleVO getScheduleInfo(int schedule_idx) {
+		ScheduleVO schedule_info = projectMngtMapper.getScheduleInfo(schedule_idx);
+		return schedule_info;
+	}
+	
+	public int addSchedule(ScheduleVO schedule_param) {
+		int result = projectMngtMapper.addSchedule(schedule_param);
+		return result;
+	}
+	
+	//work
 	public List<WorkVO> getWorkList(SearchVO search){
 		List<WorkVO> work_list = projectMngtMapper.getWorkList(search);
 		return work_list;
@@ -84,29 +107,9 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
-	public ProjectVO getProjectInfo(int project_idx) {
-		ProjectVO project_info = projectMngtMapper.getProjectInfo(project_idx);
-		return project_info;
-	}
-	
-	public ScheduleVO getScheduleInfo(int schedule_idx) {
-		ScheduleVO schedule_info = projectMngtMapper.getScheduleInfo(schedule_idx);
-		return schedule_info;
-	}
-	
 	public WorkVO getWorkInfo(int work_idx) {
 		WorkVO work_info = projectMngtMapper.getWorkInfo(work_idx);
 		return work_info;
-	}
-	
-	public int addProject(ProjectVO project_param) {
-		int result = projectMngtMapper.addProject(project_param);
-		return result;
-	}
-	
-	public int addSchedule(ScheduleVO schedule_param) {
-		int result = projectMngtMapper.addSchedule(schedule_param);
-		return result;
 	}
 	
 	public int addWork(WorkVO work_param) {
@@ -114,6 +117,7 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
+	//work_data
 	public List<WorkDataVO> getWorkDataList(int work_idx) {
 		List<WorkDataVO> work_data_info = projectMngtMapper.getWorkDataList(work_idx);
 		return work_data_info;
@@ -124,26 +128,31 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return totalCnt;
 	}
 	
+	public WorkDataVO getWorkDataInfo(int work_data_idx) {
+		WorkDataVO work_data_info = projectMngtMapper.getworkDataInfo(work_data_idx);
+		return work_data_info;
+	}
+	
 	public int saveWorkData(Map<String, String> map) {
 		int result = 1;
 		try {
 			String addRecordList = map.get("addRecordList");
-			JSONArray addJsonArr = new JSONArray(addRecordList);
-			if(addJsonArr.length() != 0) {
+			if(addRecordList != null && !"".equals(addRecordList)) {
+				JSONArray addJsonArr = new JSONArray(addRecordList);
 				List<Map<String, String>> addList = getListMapFromJsonArray(addJsonArr);
 				int addCnt = projectMngtMapper.addWorkData(addList);
 			}
 			
 			String updRecordList = map.get("updRecordList");
-			JSONArray updJsonArr = new JSONArray(updRecordList);
-			if(updJsonArr.length() != 0) {
+			if(updRecordList != null && !"".equals(updRecordList)) {
+				JSONArray updJsonArr = new JSONArray(updRecordList);
 				List<Map<String, String>> updList = getListMapFromJsonArray(updJsonArr);
 				int updCnt = projectMngtMapper.updWorkData(updList);
 			}
 			
 			String delRecordList = map.get("delRecordList");
-			JSONArray delJsonArr = new JSONArray(delRecordList);
-			if(delJsonArr.length() != 0) {
+			if (delRecordList != null && !"".equals(delRecordList)) {
+				JSONArray delJsonArr = new JSONArray(delRecordList);
 				List<Map<String, String>> delList = getListMapFromJsonArray(delJsonArr);
 				//work_data row 삭제
 				int delCnt = projectMngtMapper.delWorkData(delList);
@@ -163,6 +172,7 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 					int delFileCnt = projectMngtMapper.delFileInfo(delList);
 				}
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = 0;

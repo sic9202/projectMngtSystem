@@ -64,13 +64,14 @@ public interface ProjectMngtSvc {
 	//work 관련
 	List<WorkVO> getWorkList(SearchVO search);
 	int getWorkListCnt(SearchVO search);
-	WorkVO getWorkInfo(int parseInt);
+	WorkVO getWorkInfo(int wokr_idx);
 	int addWork(WorkVO work_param);
 	
 	//work_data 관련
 	List<WorkDataVO> getWorkDataList(int work_idx);
-	int getWorkDataListCnt(int parseInt);
+	int getWorkDataListCnt(int work_idx);
 	int saveWorkData(Map<String, String> map);
+	WorkDataVO getWorkDataInfo(int work_data_idx);
 	
 	//uploadFile 관련
 	void uploadFile(FileVO fileVO) throws Exception;
