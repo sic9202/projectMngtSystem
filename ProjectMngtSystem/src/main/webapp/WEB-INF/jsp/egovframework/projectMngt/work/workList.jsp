@@ -42,16 +42,16 @@
 					<table id="datasetList" class="tbl_board notice">
 						<caption>데이터셋</caption>
 						<colgroup>
-							<col style="width: 10%">
-							<col style="width: 60%">
+<%-- 							<col style="width: 10%"> --%>
 							<col style="width: 20%">
+							<col style="width: 60%">
 							<col style="width: 10%">
 						</colgroup>
 						<thead>
 							<tr>
-								<th scope="col">번호</th>
-								<th scope="col">업무명</th>
+<!-- 								<th scope="col">번호</th> -->
 								<th scope="col">등록일</th>
+								<th scope="col">업무명</th>
 								<th scope="col">등록자</th>
 							</tr>
 						</thead>
@@ -59,16 +59,16 @@
 						<c:if test="${fn:length(work_list) != 0 }">
 							<c:forEach var="w_list" items="${work_list }" varStatus="wStatus">
 								<tr>
-									<td>${paginationInfo.totalRecordCount - paginationInfo.recordCountPerPage*(paginationInfo.currentPageNo - 1) - wStatus.index}</td>
-									<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkView(${w_list.work_idx})">${w_list.work_name }</a></td>
+<%-- 									<td>${paginationInfo.totalRecordCount - paginationInfo.recordCountPerPage*(paginationInfo.currentPageNo - 1) - wStatus.index}</td> --%>
 									<td><fmt:formatDate pattern="yyyy-MM-dd" value="${w_list.work_reg_date }"/></td>
+									<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkView(${w_list.work_idx})">${w_list.work_name }</a></td>
 									<td>${w_list.reg_user_name }</td>
 								</tr>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(work_list) == 0 }">
 							<tr>
-								<td colspan="4">조회된 데이터가 없습니다.</td>
+								<td colspan="3">조회된 데이터가 없습니다.</td>
 							</tr>
 						</c:if>
 						</tbody>

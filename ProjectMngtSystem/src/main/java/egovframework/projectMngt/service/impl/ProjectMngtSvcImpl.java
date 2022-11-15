@@ -154,8 +154,6 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 			if (delRecordList != null && !"".equals(delRecordList)) {
 				JSONArray delJsonArr = new JSONArray(delRecordList);
 				List<Map<String, String>> delList = getListMapFromJsonArray(delJsonArr);
-				//work_data row 삭제
-				int delCnt = projectMngtMapper.delWorkData(delList);
 				
 				boolean delResult = true;
 				//file delete
@@ -171,6 +169,9 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 				if(delResult) {
 					int delFileCnt = projectMngtMapper.delFileInfo(delList);
 				}
+				
+				//work_data row 삭제
+				int delCnt = projectMngtMapper.delWorkData(delList);
 			}
 			
 		} catch (Exception e) {

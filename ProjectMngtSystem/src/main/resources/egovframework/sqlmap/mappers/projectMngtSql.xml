@@ -82,9 +82,9 @@
 	
 	<insert id="addProject" parameterType="ProjectVO">
 		INSERT INTO 
-			project (project_name, project_type, reg_user_idx, project_info) 
+			project (project_name, project_type, project_reg_date, reg_user_idx, project_info) 
 		VALUES 
-			(#{project_name}, #{project_type}, #{reg_user_idx}, #{project_info});
+			(#{project_name}, #{project_type}, now(), #{reg_user_idx}, #{project_info});
 	</insert>
 	
 	<select id="getProjectInfo" resultType="ProjectVO" parameterType="int">

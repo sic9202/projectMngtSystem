@@ -38,7 +38,7 @@
 <!-- 				</div> -->
 			</div>
 			<div id="data_content">
-			<c:if test=""></c:if>
+			<c:if test="${fn:length(project_list) != 0 }">
 			<c:forEach var="p_list" items="${project_list }" varStatus="pStatus">
 				<div class="data-view-result" style="cursor: pointer;" onclick="goScheduleList(${p_list.project_idx })">
 					<p class="cate"><span class="cate19">분야</span><span>${p_list.project_type }</span></p>
@@ -49,6 +49,12 @@
 					<p class="text">${p_list.project_info }</p>
 				</div>
 			</c:forEach>
+			</c:if>
+			<c:if test="${fn:length(project_list) == 0 }">
+				<div class="data-view-result">
+					<p class="text">조회된 데이터가 없습니다.</p>
+				</div>
+			</c:if>
 			</div>
 			<div class="pagination">
 			<!-- 페이지 많이지면 생김 -->

@@ -216,20 +216,20 @@ function check_work_data_val(work_data_idx) {
 	var support_content = "";
 	var severity = "";
 	
-	if(work_data_idx != null){
-		str_date = $("#str_date_"+work_data_idx).val();
-		end_date = $("#end_date_"+work_data_idx).val();
-		support_time = $("#support_time_"+work_data_idx).val();
-		support_type = $("#support_type_"+work_data_idx).val();
-		support_content = $("#support_content_"+work_data_idx+" textarea").val();
-		severity = $("#severity_"+work_data_idx).val();
-	}else{
+	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){ //new
 		str_date = $("#str_date").val();
 		end_date = $("#end_date").val();
 		support_time = $("#support_time").val();
 		support_type = $("#support_type").val();
 		support_content = $("#support_content textarea").val();
 		severity = $("#severity").val();
+	}else{ //update
+		str_date = $("#str_date_"+work_data_idx).val();
+		end_date = $("#end_date_"+work_data_idx).val();
+		support_time = $("#support_time_"+work_data_idx).val();
+		support_type = $("#support_type_"+work_data_idx).val();
+		support_content = $("#support_content_"+work_data_idx+" textarea").val();
+		severity = $("#severity_"+work_data_idx).val();
 	}
 	
 	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
@@ -375,7 +375,7 @@ function saveWorkData(work_idx, work_data_idx){
 	var severity = "";
 	var save_type = "";
 	
-	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){
+	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){ //new
 		str_date = $("#str_date").val();
 		end_date = $("#end_date").val();
 		support_time = $("#support_time").val();
@@ -383,7 +383,7 @@ function saveWorkData(work_idx, work_data_idx){
 		support_content = $("#support_content textarea").val().replace(/\n/g, "<br>");
 		severity = $("#severity option:selected").val();
 		save_type = "add";
-	}else{
+	}else{ //update
 		str_date = $("#str_date_"+work_data_idx).val();
 		end_date = $("#end_date_"+work_data_idx).val();
 		support_time = $("#support_time_"+work_data_idx).val();
@@ -398,20 +398,22 @@ function saveWorkData(work_idx, work_data_idx){
 	var updArr = new Array();
 	var addRecordList = "";
 	var updRecordList = "";
+	
 	if (check_work_data_val(work_data_idx)) {
 		var obj = new Object();
-			obj.work_idx = work_idx;
-			obj.str_date = str_date;
-			obj.end_date = end_date;
-			obj.support_time = support_time;
-			obj.support_type = support_type;
-			obj.support_content = support_content;
-			obj.severity = severity;
-			obj.reg_user_idx = $("#user_idx").val();
-		if(save_type == "add"){
+		obj.work_idx = work_idx;
+		obj.str_date = str_date;
+		obj.end_date = end_date;
+		obj.support_time = support_time;
+		obj.support_type = support_type;
+		obj.support_content = support_content;
+		obj.severity = severity;
+		obj.reg_user_idx = $("#user_idx").val();
+		
+		if(save_type == "add"){ //new
 			arr.push(obj);
 			addRecordList = JSON.stringify(arr);	
-		}else if(type == "upd"){
+		}else if(save_type == "upd"){ //update
 			obj.work_data_idx = work_data_idx;
 			updArr.push(obj);
 			updRecordList = JSON.stringify(updArr);
@@ -506,12 +508,12 @@ function updWorkData(){
 				+	'</tr>'
 				+	'<tr>'
 				+		'<th>지원내용</th>'
-				+		'<td id="support_content_"'+r.work_data_idx+' colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;">'+support_content+'</textarea></td>'
+				+		'<td id="support_content_'+r.work_data_idx+'" colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;">'+support_content+'</textarea></td>'
 				+	'</tr>'
 				+	'<tr>'
 				+		'<th>심각도</th>'
 				+		'<td class="lb" colspan="3">'
-				+			'<select id="severity" class="selectOrgN">'
+				+			'<select id="severity_'+r.work_data_idx+'" class="selectOrgN">'
 				+				'<option value="2">상</option>'
 				+				'<option value="1">중</option>'
 				+				'<option value="0">하</option>'
@@ -526,7 +528,7 @@ function updWorkData(){
 			$('#work_data_added tbody').html(tag);
 			$('#work_data_idx').val(r.work_data_idx);
 			$('#modal_added_btn').html(btn_tag);
-//			$("#work_data_added_modal").modal();
+			$("#severity_"+r.work_data_idx+" option:eq("+r.severity+")").prop("selected", true);
 		}
 	});
 }

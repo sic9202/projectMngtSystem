@@ -20,7 +20,7 @@
 				<div class="data-view-result">
 					<p class="cate"><span class="cate19">경로</span> <span>${project_info.project_name } > ${schedule_info.schedule_name }</span></p>
 					<p class="date">
-						<span>등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${work_info.work_reg_date }"/></span>
+						<span>업무등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${work_info.work_reg_date }"/></span>
 					</p>
 					<p class="title">${work_info.work_name }</p>
 				</div>
@@ -69,11 +69,11 @@
 								<td onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer;"><a class="ellipsis-box">${wd_list.support_content }</a></td>
 <%-- 								<td>${wd_list.support_content }</td> --%>
 								<td>
-									<select id="severity_${wd_list.work_data_idx }" class="selectOrgN" style="border:none;" disabled>
-										<option value="2" <c:if test="${wd_list.severity eq 2 }">selected="selected"</c:if>>상</option>
-										<option value="1" <c:if test="${wd_list.severity eq 1 }">selected="selected"</c:if>>중</option>
-										<option value="0" <c:if test="${wd_list.severity eq 0 }">selected="selected"</c:if>>하</option>
-									</select>
+									<c:choose>
+										<c:when test="${wd_list.severity eq 2 }">상</c:when>
+										<c:when test="${wd_list.severity eq 1 }">중</c:when>
+										<c:when test="${wd_list.severity eq 0 }">하</c:when>
+									</c:choose>
 								</td>
 								<td>
 							<c:choose>
@@ -155,7 +155,7 @@
 		<div id="modal_added_btn" class="btn-area cb">
 			<input type="hidden" id="work_data_idx" value="">
 			<a style="cursor:pointer;" onclick="updWorkData()" class="btn btn-big btn_green btn-150">수정</a>
-			<a onclick="delWorkData(${work_info.work_idx})" class="btn btn-big btn_color_red btn-150">삭제</a>
+			<a style="cursor:pointer;" onclick="delWorkData(${work_info.work_idx})" class="btn btn-big btn_color_red btn-150">삭제</a>
 		</div>
 		<!--// layer-bottom -->
 		<!--// 레이어팝업 - data -->

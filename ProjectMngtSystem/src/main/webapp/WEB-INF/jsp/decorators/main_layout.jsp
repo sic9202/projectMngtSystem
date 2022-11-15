@@ -41,7 +41,7 @@
 		    -webkit-line-clamp: 1;
 		    text-align: left;
 		}
-		.tbl_info tbody tr:hover { background-color: #f2f5ff; }
+/* 		.tbl_info tbody tr:hover { background-color: #f2f5ff; } */
     </style>
 </head>
 <body>
