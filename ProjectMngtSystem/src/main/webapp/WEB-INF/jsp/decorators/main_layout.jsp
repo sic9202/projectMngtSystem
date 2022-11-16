@@ -26,7 +26,10 @@
     
     <!-- 공통 CSS -->
     <link rel="stylesheet" type="text/css" href="/css/style.css" media="all">
-
+	
+	<!-- date picker -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"/>
+	
     <!-- jqgrid css,js -->
     <script src="//code.jquery.com/jquery-3.4.1.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -41,6 +44,8 @@
 		    -webkit-line-clamp: 1;
 		    text-align: left;
 		}
+		
+		.ui-datepicker{font-size: 15px;}
 /* 		.tbl_info tbody tr:hover { background-color: #f2f5ff; } */
     </style>
 </head>

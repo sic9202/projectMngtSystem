@@ -1,3 +1,9 @@
+function enterkey(){
+	if(window.event.keyCode == 13){
+		check_user();		
+	}
+}
+
 function id_check(id){
 	var reg_id = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 

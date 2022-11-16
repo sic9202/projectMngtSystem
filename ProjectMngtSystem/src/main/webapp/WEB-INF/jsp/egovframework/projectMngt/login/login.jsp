@@ -21,10 +21,9 @@
 						<div class="w_1160">
 							<div class="w_550">
 								<form id="" name="">
-									<input type="text" placeholder="아이디" id="user_id" name="user_id">
-									<input type="password" placeholder="비밀번호" id="user_pwd" name="user_pwd">
+									<input type="text" placeholder="아이디" id="user_id" name="user_id" onkeyup="enterkey()">
+									<input type="password" placeholder="비밀번호" id="user_pwd" name="user_pwd" onkeyup="enterkey()">
 								</form>
-<!-- 								<button type="button" onclick="moveProjectList()">로그인</button> -->
 								<button type="button" onclick="check_user()">로그인</button>
 								<ul class="flex">
 <!-- 									<li><a href="findPwd.do">비밀번호 찾기</a></li> -->

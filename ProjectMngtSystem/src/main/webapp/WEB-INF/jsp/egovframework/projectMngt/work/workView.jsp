@@ -5,8 +5,7 @@
 
 <body>
 	<script src="/js/projectMngt/work.js"></script>
-	<script type="text/javascript">
-	</script>
+	<script type="text/javascript"></script>
 	<div class="sub-visual sv01 on">
 <!-- 		<p class="animated on">업무상세</p> -->
 	</div>
@@ -17,6 +16,10 @@
 		<div class="inner02">
 			<p class="sub__tit01">업무상세</p>
 			<div class="board_detail_contents">
+				<div class="btn-area lb">
+					<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">목록</a>
+				</div>
+			
 				<div class="data-view-result">
 					<p class="cate"><span class="cate19">경로</span> <span>${project_info.project_name } > ${schedule_info.schedule_name }</span></p>
 					<p class="date">
@@ -65,7 +68,7 @@
 								<td>${wd_list.end_date }</td>
 								<td>${wd_list.reg_user_name }</td>
 								<td>${wd_list.support_time }</td>
-								<td>${wd_list.support_type }</td>
+								<td style="text-align: left;">${wd_list.support_type }</td>
 								<td onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer;"><a class="ellipsis-box">${wd_list.support_content }</a></td>
 <%-- 								<td>${wd_list.support_content }</td> --%>
 								<td>
@@ -113,8 +116,7 @@
 						<a style="cursor:pointer;" onclick="addRecordPopUp()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a>
 					</div>
 					<div class="btn-area cb">
-						<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">이전</a>
-						<a style="cursor:pointer;" onclick="saveWorkData(${work_info.work_idx})" class="btn btn-big btn_green btn-150">저장</a>
+<%-- 						<a style="cursor:pointer;" onclick="saveWorkData(${work_info.work_idx})" class="btn btn-big btn_green btn-150">저장</a> --%>
 					</div>
 				</div>
 			</div>
@@ -181,9 +183,7 @@
 				</colgroup>
 				<tbody>
 					<tr>
-						<th>
-							시작일
-						</th>
+						<th>시작일</th>
 						<td class="lb"><input id="str_date" class="inputOrg" type="text" title="" placeholder=""></td>
 						<th>종료일</th>
 						<td class="lb"><input id="end_date" class="inputOrg" type="text" title="" placeholder=""></td>

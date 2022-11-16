@@ -39,12 +39,12 @@
 			</div>
 			<div class="board_wrap">
 				<div class="board_tbl_box">
-					<table id="datasetList" class="tbl_board notice">
-						<caption>데이터셋</caption>
+					<table id="workList" class="tbl_board notice">
+						<caption>업무리스트</caption>
 						<colgroup>
 <%-- 							<col style="width: 10%"> --%>
-							<col style="width: 20%">
-							<col style="width: 60%">
+							<col style="width: 15%">
+							<col style="width: auto;">
 							<col style="width: 10%">
 						</colgroup>
 						<thead>
