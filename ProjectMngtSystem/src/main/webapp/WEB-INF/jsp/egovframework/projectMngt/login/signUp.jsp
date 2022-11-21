@@ -2,7 +2,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <body>
-	<script src="/js/login/sign_up.js"></script>
+	<script src="/js/login/signUp.js"></script>
 	<div class="sub-visual sv01 on">
 <!-- 		<p class="animated on">회원가입</p> -->
 	</div>

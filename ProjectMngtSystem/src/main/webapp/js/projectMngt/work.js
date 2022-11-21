@@ -482,14 +482,6 @@ function datePicker(work_data_idx){
 			, dayNamesMin: ['일','월','화','수','목','금','토']
 		});
 	}
-	$("#end_date_"+work_data_idx).datepicker({
-		dateFormat: 'yy-mm-dd'
-		, changeMonth: true
-		, yearSuffix: "년"
-		, monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
-		, monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
-		, dayNamesMin: ['일','월','화','수','목','금','토']
-	});
 }
 
 //일정목록 이동

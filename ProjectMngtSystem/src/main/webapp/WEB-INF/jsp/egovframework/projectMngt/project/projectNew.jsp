@@ -3,7 +3,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <body>
-	<script src="/js/projectMngt/project.js"></script>
+	<script src="/js/projectMngt/project.js">
+		$("#project_reg_date").datepicker({
+			dateFormat: 'yy-mm-dd'
+			, changeMonth: true
+			, yearSuffix: "년"
+			, monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+			, monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+			, dayNamesMin: ['일','월','화','수','목','금','토']
+		});	
+	</script>
 	<div class="sub-visual sv01 on">
 		<p class="animated on">프로젝트관리</p>
 	</div>
@@ -31,6 +40,10 @@
 						<tr>
 							<th>프로젝트설명</th>
 							<td class="lb"><input id="project_info" type="text" class="inputOrg"/></td>
+						</tr>
+						<tr>
+							<th>등록일자</th>
+							<td class="lb"><input id="project_reg_date" class="inputOrg" type="text" title="" placeholder=""></td>
 						</tr>
 						<tr>
 							<th>등록자</th>

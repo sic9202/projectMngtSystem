@@ -5,10 +5,10 @@
 	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
 		<property name="properties">
 	        <map>
-	        	<entry key="mainPageUnit" value="4"/>
-	        	<entry key="mainPageSize" value="2"/>
-	        	<entry key="listPageUnit" value="5"/>
-	        	<entry key="listPageSize" value="2"/>
+	        	<entry key="mainPageUnit" value="10"/>
+	        	<entry key="mainPageSize" value="10"/>
+	        	<entry key="listPageUnit" value="10"/>
+	        	<entry key="listPageSize" value="10"/>
 	        </map>
 		</property>
 	</bean>
