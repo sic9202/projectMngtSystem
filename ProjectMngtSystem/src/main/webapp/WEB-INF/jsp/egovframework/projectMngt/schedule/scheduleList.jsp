@@ -15,9 +15,10 @@
     <!-- container start-->
 	<div class="pr-page">
 		<div id="inner02" class="inner02">
-			<p class="sub__tit01">일정관리</p>
+			<p class="sub__tit01">단계</p>
 			<p class="sub__tit02">${project_info.project_name }</p>
 			<div class="btn-area rb">
+				<a style="cursor:pointer;" onclick="goProjectNew()" style="cursor: pointer;" class="btn btn-big btn_green btn-150">수정</a>
 				<a style="cursor:pointer;" onclick="goScheduleNew()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
 			</div>
 			<div class="board_top">
@@ -42,30 +43,43 @@
 					<table id="scheduleList" class="tbl_board notice">
 						<caption>일정리스트</caption>
 						<colgroup>
-							<col style="width: 10%">
+							<col style="width: 5%">
+							<col style="width: 20%">
 							<col style="width: auto;">
 							<col style="width: 20%">
+							<col style="width: 7%">
 							<col style="width: 10%">
+<%-- 							<col style="width: 7%"> --%>
 						</colgroup>
 						<thead>
 							<tr>
 								<th scope="col">번호</th>
-								<th scope="col">공정명</th>
+								<th scope="col">단계</th>
+								<th scope="col">단계정보</th>
+								<th scope="col">기간</th>
+								<th scope="col">담당자</th>
 								<th scope="col">등록일</th>
-								<th scope="col">등록자</th>
+<!-- 								<th scope="col">등록자</th> -->
 							</tr>
 						</thead>
 						<tbody>
 						<c:if test="${fn:length(schedule_list) != 0 }">
 							<c:forEach var="s_list" items="${schedule_list }" varStatus="sStatus">
 							<tr>
-								<td>${paginationInfo.totalRecordCount - paginationInfo.recordCountPerPage*(paginationInfo.currentPageNo - 1) - sStatus.index}</td>
-								<td class="sbj txtL"><a style="cursor:pointer;" onclick="goWorkList(${s_list.schedule_idx})">${s_list.schedule_name }</a></td>
+								<td>${paginationInfo.recordCountPerPage*(paginationInfo.currentPageNo - 1) + sStatus.count}</td>
+								<td class="sbj txtL"><a style="cursor:pointer; text-align: center;" onclick="goWorkList(${s_list.schedule_idx})">${s_list.schedule_name }</a></td>
+								<td>
+								<c:if test="${s_list.schedule_info ne null and s_list.schedule_info ne ''}">
+									${s_list.schedule_info }
+								</c:if>
+								<c:if test="${s_list.schedule_info eq null or s_list.schedule_info eq ''}">
+									-
+								</c:if>
+								</td>
+								<td>${s_list.schedule_period }</td>
+								<td>${s_list.schedule_manager }</td>
 								<td><fmt:formatDate pattern="yyyy-MM-dd" value="${s_list.schedule_reg_date }"/></td>
-								<td>${s_list.reg_user_name }</td>
-<!-- 								<td> -->
-<%-- 									<a id="del_btn_${sStatus.index }" style="cursor:pointer;" onclick="removeRecord(this)" style="cursor:pointer;" class="btn btn-sm btn_color_navy">삭제</a> --%>
-<!-- 								</td> -->
+<%-- 								<td>${s_list.reg_user_name }</td> --%>
 							</tr>
 							</c:forEach>
 						</c:if>

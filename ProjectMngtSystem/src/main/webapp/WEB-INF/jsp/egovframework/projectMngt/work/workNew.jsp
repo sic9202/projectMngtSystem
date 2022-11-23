@@ -1,37 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <title>프로젝트관리</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="DATAMASQ">
-    <meta name="naver-site-verification" content="">
-    <meta name="description" content="프로젝트관리">
-    <meta property="og:description" content="프로젝트관리">
-
-    <link rel="shortcut icon" href="/image/common/favicon.png">
-
-    <script type="text/javascript">
-        var CTX = "";
-    </script>
-
-
-    <!-- 공통 CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" media="all">
-
-
-    <!-- jqgrid css,js -->
-    <script src="//code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="/js/jquery.modal.js"></script>
-
-</head>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <body>
   	<script src="/js/projectMngt/work.js"></script>
     <div class="sub-visual sv01 on">
@@ -43,12 +13,54 @@
     <input type="hidden" name="menuCode" value="">
     <div class="pr-page">
       <div class="inner02">
-        <p class="sub__tit01">업무신규</p>
-        <div class="etc__box"><input type="text" id="" name="work_name" class="inputOrg" maxlength="50" title="데이터를 입력하세요"
-            placeholder="업무명을 입력하세요.">
-        </div>
+      <c:set var="chk" value="${work_info ne null and work_info ne '' }"/>
+        <p class="sub__tit01">
+		<c:if test="${chk }">
+			업무수정
+		</c:if>
+		<c:if test="${!chk }">
+			업무신규		
+		</c:if>
+		</p>
+		<div class="board_detail_contents">
+		<c:if test="${chk}">
+			<div class="btn-area rb">
+				<a style="cursor:pointer;" onclick="delWork()" class="btn btn-big btn_color_red btn-150">삭제</a>
+			</div>
+		</c:if>
+			<table class="tbl_info sm">
+				<caption> 표</caption>
+				<colgroup>
+					<col style="width:20%">
+					<col style="width:80%">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>업무명</th>
+						<td class="lb">
+							<input type="text" id="work_name" name="work_name" class="inputOrg" value='<c:if test="${chk }">${work_info.work_name }</c:if>'>
+						</td>
+					</tr>	
+					<tr>
+						<th>등록일</th>
+						<td class="lb">
+							<input id="work_reg_date" class="inputOrgW" type="text" value='<c:if test="${chk}"><fmt:formatDate pattern="yyyy-MM-dd" value="${work_info.work_reg_date }"/></c:if>'>
+						</td>
+					</tr>
+					<tr>
+						<th>등록자</th>
+						<td class="lb">${login_info.user_name }</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
         <div class="btn-area cb">
+        <c:if test="${chk }">
+        	<a style="cursor: pointer;" onclick="workNew(${work_info.work_idx})" class="btn btn-big btn_green btn-150">수정</a>
+        </c:if>
+        <c:if test="${!chk }">
         	<a style="cursor: pointer;" onclick="workNew()" class="btn btn-big btn_green btn-150">등록</a>
+        </c:if>	
         	<a href="javascript:history.back();" class="btn btn-big btn_green btn-150">취소</a>
         </div>
       </div>

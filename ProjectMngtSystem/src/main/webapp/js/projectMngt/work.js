@@ -18,14 +18,24 @@ function goWorkNew() {
 }
 
 //업무 추가
-function workNew(){
+function workNew(work_idx){
 	var project_idx = $("input[name=project_idx]").val();
 	var schedule_idx = $("input[name=schedule_idx]").val();
 	var work_name = $("input[name=work_name]").val();
+	var work_reg_date = $("#work_reg_date").val();
 	
 	if(work_name == ""){
 		alert("업무명을 입력해주세요.");
 		$("input[name=work_name]").focus();
+		return false;
+	}
+	
+	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
+	if(work_reg_date == null || work_reg_date.trim() == ""){
+		alert("등록일을 입력해주세요.");
+		return false;
+	}else if(!work_reg_date.match(date_pattern)){
+		alert("날짜형식에 맞지 않는 데이터가 입력되었습니다. 다시 입력해주세요.");
 		return false;
 	}
 	
@@ -35,7 +45,9 @@ function workNew(){
 		data: {
 			project_idx: project_idx,
 			schedule_idx: schedule_idx,
-			work_name: work_name
+			work_name: work_name,
+			work_reg_date: work_reg_date,
+			work_idx: work_idx
 		},
 		success: function(r){
 			if(r = 1){
@@ -47,6 +59,11 @@ function workNew(){
 				$("#moveForm").attr("action", "/workList.do");
 				$("#moveForm").submit();
 			}
+		},
+		error: function(error){
+			alert("통신 실패");
+			$("#moveForm").attr("action", "/workList.do");
+			$("#moveForm").submit();
 		}
 	});
 }
@@ -489,6 +506,22 @@ function goScheduleList() {
 	$("#moveForm").attr("action", "/scheduleList.do");
 	$("#moveForm").submit();
 }
+
+function goScheduleNew(){
+	$("#moveForm").attr("action", "/goScheduleNew.do");
+	$("#moveForm").submit();
+}
+
+$(document).ready(function(){
+	$("#work_reg_date").datepicker({
+		dateFormat: 'yy-mm-dd'
+		, changeMonth: true
+		, yearSuffix: "년"
+		, monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+		, monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+		, dayNamesMin: ['일','월','화','수','목','금','토']	
+	});
+});
 //레코드추가
 /*function addRecord() {
 	var totalCnt = $("input[name=totalCnt]").val();

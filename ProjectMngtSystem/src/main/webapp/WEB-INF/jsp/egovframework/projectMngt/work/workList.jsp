@@ -14,11 +14,11 @@
     <!-- container start-->
     <div class="pr-page">
 		<div id="inner02" class="inner02">
-			<p class="sub__tit01">업무관리</p>
+			<p class="sub__tit01">업무</p>
 			<p class="sub__tit02">${schedule_info.schedule_name }</p>
 			<div class="btn-area rb">
+				<a style="cursor:pointer;" onclick="goScheduleNew()" style="cursor: pointer;" class="btn btn-big btn_green btn-150">수정</a>
 				<a style="cursor:pointer;" onclick="goWorkNew()" class="btn btn-big btn_color_green btn-150"><i class="xi-plus"></i> 신규등록</a>
-<!-- 				<a style="cursor:pointer;" onclick="" class="btn btn-big btn_color_green btn-150"><i class="xi-minus"></i> 삭제</a> -->
 			</div>
 			<div class="board_top">
 				<p class="lb count">

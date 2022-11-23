@@ -5,11 +5,14 @@ import java.sql.Timestamp;
 public class WorkVO extends SearchVO{
 	private int work_idx;
 	private String work_name;
-	private int schedule_idx;
-	private String schedule_name;
+	private String work_manager;
+	private String work_period;
+	private Timestamp work_reg_date;
+	private String work_info;
 	private int project_idx;
 	private String project_name;
-	private Timestamp work_reg_date;
+	private int schedule_idx;
+	private String schedule_name;
 	private int reg_user_idx;
 	private String reg_user_name;
 	public int getWork_idx() {
@@ -24,17 +27,29 @@ public class WorkVO extends SearchVO{
 	public void setWork_name(String work_name) {
 		this.work_name = work_name;
 	}
-	public int getSchedule_idx() {
-		return schedule_idx;
+	public String getWork_manager() {
+		return work_manager;
 	}
-	public void setSchedule_idx(int schedule_idx) {
-		this.schedule_idx = schedule_idx;
+	public void setWork_manager(String work_manager) {
+		this.work_manager = work_manager;
 	}
-	public String getSchedule_name() {
-		return schedule_name;
+	public String getWork_period() {
+		return work_period;
 	}
-	public void setSchedule_name(String schedule_name) {
-		this.schedule_name = schedule_name;
+	public void setWork_period(String work_period) {
+		this.work_period = work_period;
+	}
+	public Timestamp getWork_reg_date() {
+		return work_reg_date;
+	}
+	public void setWork_reg_date(Timestamp work_reg_date) {
+		this.work_reg_date = work_reg_date;
+	}
+	public String getWork_info() {
+		return work_info;
+	}
+	public void setWork_info(String work_info) {
+		this.work_info = work_info;
 	}
 	public int getProject_idx() {
 		return project_idx;
@@ -48,11 +63,17 @@ public class WorkVO extends SearchVO{
 	public void setProject_name(String project_name) {
 		this.project_name = project_name;
 	}
-	public Timestamp getWork_reg_date() {
-		return work_reg_date;
+	public int getSchedule_idx() {
+		return schedule_idx;
 	}
-	public void setWork_reg_date(Timestamp work_reg_date) {
-		this.work_reg_date = work_reg_date;
+	public void setSchedule_idx(int schedule_idx) {
+		this.schedule_idx = schedule_idx;
+	}
+	public String getSchedule_name() {
+		return schedule_name;
+	}
+	public void setSchedule_name(String schedule_name) {
+		this.schedule_name = schedule_name;
 	}
 	public int getReg_user_idx() {
 		return reg_user_idx;

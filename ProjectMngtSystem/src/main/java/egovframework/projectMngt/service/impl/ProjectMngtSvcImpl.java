@@ -75,6 +75,16 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
+	public int updProject(ProjectVO project_param) {
+		int result = projectMngtMapper.updProject(project_param);
+		return result;
+	}
+	
+	public int delProject(int project_idx) {
+		int result = projectMngtMapper.delProject(project_idx);
+		return result;
+	}
+	
 	//schedule
 	public List<ScheduleVO> getScheduleList(SearchVO search){
 		List<ScheduleVO> schedule_list = projectMngtMapper.getScheduleList(search);
@@ -96,6 +106,16 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
+	public int updSchedule(ScheduleVO schedule_param) {
+		int result = projectMngtMapper.updSchedule(schedule_param);
+		return result;
+	}
+	
+	public int delSchedule(int schedule_idx) {
+		int result = projectMngtMapper.delSchedule(schedule_idx);
+		return result;
+	}
+	
 	//work
 	public List<WorkVO> getWorkList(SearchVO search){
 		List<WorkVO> work_list = projectMngtMapper.getWorkList(search);
@@ -114,6 +134,11 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	
 	public int addWork(WorkVO work_param) {
 		int result = projectMngtMapper.addWork(work_param);
+		return result;
+	}
+	
+	public int updWork(WorkVO work_param) {
+		int result = projectMngtMapper.updWork(work_param);
 		return result;
 	}
 	

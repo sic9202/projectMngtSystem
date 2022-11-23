@@ -16,8 +16,8 @@
 		<div class="inner02">
 			<p class="sub__tit01">업무상세</p>
 			<div class="board_detail_contents">
-				<div class="btn-area lb">
-					<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">목록</a>
+				<div class="btn-area rb">
+					<a style="cursor:pointer;" onclick="goWorkNew()" style="cursor: pointer;" class="btn btn-big btn_green btn-150">수정</a>
 				</div>
 			
 				<div class="data-view-result">
@@ -113,10 +113,10 @@
 					<input type="hidden" id="user_idx" value="${login_info.user_idx }"/>
 					<div class="btn-area lb">
 <!-- 						<a style="cursor:pointer;" onclick="addRecord()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a> -->
-						<a style="cursor:pointer;" onclick="addRecordPopUp()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a>
+						<a style="cursor:pointer;" onclick="addRecordPopUp()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>업무추가</a>
 					</div>
-					<div class="btn-area cb">
-<%-- 						<a style="cursor:pointer;" onclick="saveWorkData(${work_info.work_idx})" class="btn btn-big btn_green btn-150">저장</a> --%>
+					<div class="btn-area lb">
+						<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">목록</a>
 					</div>
 				</div>
 			</div>
@@ -183,16 +183,16 @@
 				</colgroup>
 				<tbody>
 					<tr>
-						<th>시작일</th>
-						<td class="lb"><input id="str_date" class="inputOrg" type="text" title="" placeholder=""></td>
-						<th>종료일</th>
-						<td class="lb"><input id="end_date" class="inputOrg" type="text" title="" placeholder=""></td>
-					</tr>
-					<tr>
 						<th>지원시간(분)</th>
 						<td class="lb"><input id="support_time" class="inputOrg" type="text" title="" placeholder=""></td>
 						<th>담당자</th>
 						<td class="lb">${login_info.user_name }</td>
+					</tr>
+					<tr>
+						<th>시작일</th>
+						<td class="lb"><input id="str_date" class="inputOrg" type="text" title="" placeholder=""></td>
+						<th>종료일</th>
+						<td class="lb"><input id="end_date" class="inputOrg" type="text" title="" placeholder=""></td>
 					</tr>
 					<tr>
 						<th>지원방법</th>

@@ -41,12 +41,14 @@
 			<c:if test="${fn:length(project_list) != 0 }">
 			<c:forEach var="p_list" items="${project_list }" varStatus="pStatus">
 				<div class="data-view-result" style="cursor: pointer;" onclick="goScheduleList(${p_list.project_idx })">
-					<p class="cate"><span class="cate19">분야</span><span>${p_list.project_type }</span></p>
-					<p class="date">
-						<span>등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${p_list.project_reg_date }"/></span>
-					</p>
-					<p class="title"><a>${p_list.project_name }</a></p>
+					<p class="title">${p_list.project_name }</p>
 					<p class="text">${p_list.project_info }</p>
+					<p class="cate">
+						<span class="cate19">고객사 : <a>${p_list.customer }</a></span>
+						<span class="cate19">고객사PM : <a>${p_list.customer_pm }</a></span>
+						<span class="cate19">프로젝트PM : <a>${p_list.project_pm }</a></span>
+						<span class="cate19">프로젝트기간 : <a>${p_list.project_period }</a></span>
+					</p>
 				</div>
 			</c:forEach>
 			</c:if>

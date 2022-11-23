@@ -1,5 +1,8 @@
 package egovframework.projectMngt.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,27 +73,68 @@ public class ProjectMngtCtrl {
 	}
 	
 	@RequestMapping("/goProjectNew.do")
-	public String goProjectNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp) {
+	public String goProjectNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam(required = false, defaultValue = "") String project_idx) {
 		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		model.addAttribute("login_info", login_info);
+		if(project_idx != null && !"".equals(project_idx)) {
+			ProjectVO project_info = projectMngtSvc.getProjectInfo(Integer.parseInt(project_idx));
+			model.addAttribute("project_info", project_info);
+		}
+		
 		return "/project/projectNew";
 	}
 	
 	@RequestMapping(value = "/projectNew.do")
 	@ResponseBody
 	public int projectNew(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("customer") String customer
+			, @RequestParam("customer_pm") String customer_pm
 			, @RequestParam("project_name") String project_name
-			, @RequestParam("project_type") String project_type
-			, @RequestParam("project_info") String project_info) {
+			, @RequestParam("project_pm") String project_pm
+			, @RequestParam("project_period") String project_period
+			, @RequestParam("project_reg_date") String project_reg_date
+			, @RequestParam("project_info") String project_info
+			, @RequestParam(required = false, defaultValue = "") String project_idx) {
 		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		ProjectVO project_param = new ProjectVO();
+		project_param.setCustomer(customer);
+		project_param.setCustomer_pm(customer_pm);
 		project_param.setProject_name(project_name);
+		project_param.setProject_pm(project_pm);
+		project_param.setProject_period(project_period);
 		project_param.setReg_user_idx(login_info.getUser_idx());
-		project_param.setProject_type(project_type);
-		project_param.setProject_info(project_info);
 		
-		int result = projectMngtSvc.addProject(project_param);
+		if(project_reg_date != null && !"".equals(project_reg_date)) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date parseDate = sdf.parse(project_reg_date);
+				project_param.setProject_reg_date(new Timestamp(parseDate.getTime()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
+		if(project_info != null && !"".equals(project_info)) {
+			project_param.setProject_info(project_info);
+		}
+		
+		int result = 0;
+		if(project_idx != null && !"".equals(project_idx)) {
+			project_param.setProject_idx(Integer.parseInt(project_idx));
+			result = projectMngtSvc.updProject(project_param);
+		}else {
+			result = projectMngtSvc.addProject(project_param);
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("/delProject.do")
+	@ResponseBody
+	public int delProject(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_idx") String project_idx) {
+		int result = projectMngtSvc.delProject(Integer.parseInt(project_idx));
 		return result;
 	}
 	//project 끝
@@ -129,52 +173,69 @@ public class ProjectMngtCtrl {
 	}
 	
 	@RequestMapping("/goScheduleNew.do")
-	public String goScheduleNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp,
-			@RequestParam("project_idx") String project_idx) {
-		model.addAttribute("project_idx", project_idx);
-		return "/schedule/scheduleNew";
-	}
-	
-	@RequestMapping("/goWorkNew.do")
-	public String goWorkNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+	public String goScheduleNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp
 			, @RequestParam("project_idx") String project_idx
-			, @RequestParam("schedule_idx") String schedule_idx) {
+			, @RequestParam(required = false, defaultValue = "") String schedule_idx) {
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
 		model.addAttribute("project_idx", project_idx);
-		model.addAttribute("schedule_idx", schedule_idx);
-		return "/work/workNew";
+		
+		if(schedule_idx != null && !"".equals(schedule_idx)){
+			ScheduleVO schedule_info = projectMngtSvc.getScheduleInfo(Integer.parseInt(schedule_idx));
+			model.addAttribute("schedule_info", schedule_info);
+		}
+		model.addAttribute("login_info", login_info);
+		return "/schedule/scheduleNew";
 	}
 	
 	@RequestMapping(value = "/scheduleNew.do")
 	@ResponseBody
 	public int scheduleNew(HttpServletRequest request, HttpServletResponse resp
 			, @RequestParam("schedule_name") String schedule_name
-			, @RequestParam("project_idx") String project_idx){
+			, @RequestParam("schedule_manager") String schedule_manager
+			, @RequestParam("schedule_period") String schedule_period
+			, @RequestParam("schedule_info") String schedule_info
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_reg_date") String schedule_reg_date
+			, @RequestParam(required = false, defaultValue = "") String schedule_idx){
 		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		
 		ScheduleVO schedule_param = new ScheduleVO();
+		schedule_param.setReg_user_idx(login_info.getUser_idx());
 		schedule_param.setProject_idx(Integer.parseInt(project_idx));
 		schedule_param.setSchedule_name(schedule_name);
-		schedule_param.setReg_user_idx(login_info.getUser_idx());
+		schedule_param.setSchedule_manager(schedule_manager);
+		schedule_param.setSchedule_period(schedule_period);
 		
-		int result = projectMngtSvc.addSchedule(schedule_param);
+		if(schedule_info != null && !"".equals(schedule_info)) {
+			schedule_param.setSchedule_info(schedule_info);
+		}
+		
+		if(schedule_reg_date != null && !"".equals(schedule_reg_date)) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date parseDate = sdf.parse(schedule_reg_date);
+				schedule_param.setSchedule_reg_date(new Timestamp(parseDate.getTime()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		int result = 0;
+		if(schedule_idx != null && !"".equals(schedule_idx)) {
+			schedule_param.setSchedule_idx(Integer.parseInt(schedule_idx));
+			result = projectMngtSvc.updSchedule(schedule_param);
+		}else {
+			result = projectMngtSvc.addSchedule(schedule_param);
+		}
 		
 		return result;
 	}
 	
-	@RequestMapping(value = "/workNew.do")
+	@RequestMapping("/delSchedule.do")
 	@ResponseBody
-	public int workNew(HttpServletRequest request, HttpServletResponse resp
-			, @RequestParam("work_name") String work_name
-			, @RequestParam("project_idx") String project_idx
-			, @RequestParam("schedule_idx") String schedule_idx){
-		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
-		WorkVO work_param = new WorkVO();
-		work_param.setProject_idx(Integer.parseInt(project_idx));
-		work_param.setSchedule_idx(Integer.parseInt(schedule_idx));
-		work_param.setWork_name(work_name);
-		work_param.setReg_user_idx(login_info.getUser_idx());
-		
-		int result = projectMngtSvc.addWork(work_param);
-		
+	public int delSchedule(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("schedule_idx") String schedule_idx) {
+		int result = projectMngtSvc.delSchedule(Integer.parseInt(schedule_idx));
 		return result;
 	}
 	//schedule 끝
@@ -215,6 +276,58 @@ public class ProjectMngtCtrl {
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		return "/work/workList";
+	}
+	
+	@RequestMapping("/goWorkNew.do")
+	public String goWorkNew(ModelMap model, HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_idx") String schedule_idx
+			, @RequestParam(required = false, defaultValue = "") String work_idx) {
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		model.addAttribute("login_info", login_info);
+		
+		if(work_idx != null && !"".equals(work_idx)) {
+			WorkVO work_info = projectMngtSvc.getWorkInfo(Integer.parseInt(work_idx));
+			model.addAttribute("work_info", work_info);
+		}
+		model.addAttribute("project_idx", project_idx);
+		model.addAttribute("schedule_idx", schedule_idx);
+		return "/work/workNew";
+	}
+	
+	@RequestMapping(value = "/workNew.do")
+	@ResponseBody
+	public int workNew(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("work_name") String work_name
+			, @RequestParam("project_idx") String project_idx
+			, @RequestParam("schedule_idx") String schedule_idx
+			, @RequestParam("work_reg_date") String work_reg_date
+			, @RequestParam(required = false, defaultValue = "") String work_idx){
+		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		WorkVO work_param = new WorkVO();
+		work_param.setProject_idx(Integer.parseInt(project_idx));
+		work_param.setSchedule_idx(Integer.parseInt(schedule_idx));
+		work_param.setWork_name(work_name);
+		work_param.setReg_user_idx(login_info.getUser_idx());
+		
+		if(work_reg_date != null && !"".equals(work_reg_date)) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date parseDate = sdf.parse(work_reg_date);
+				work_param.setWork_reg_date(new Timestamp(parseDate.getTime()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		int result = 0;
+		if(work_idx != null && !"".equals(work_idx)) {
+			work_param.setWork_idx(Integer.parseInt(work_idx));
+			result = projectMngtSvc.updWork(work_param);
+		}else {
+			result = projectMngtSvc.addWork(work_param);
+		}
+		
+		return result;
 	}
 	
 	@RequestMapping("/workView.do")

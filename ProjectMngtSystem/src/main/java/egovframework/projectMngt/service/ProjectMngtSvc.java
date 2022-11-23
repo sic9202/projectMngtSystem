@@ -54,18 +54,23 @@ public interface ProjectMngtSvc {
 	int getProjectListCnt();
 	ProjectVO getProjectInfo(int project_idx);
 	int addProject(ProjectVO project_param);
+	int updProject(ProjectVO project_param);
+	int delProject(int project_idx);
 	
 	//schedule 관련
 	List<ScheduleVO> getScheduleList(SearchVO search);
 	int getScheduleListCnt(int project_idx);
 	ScheduleVO getScheduleInfo(int schedule_idx);
 	int addSchedule(ScheduleVO schedule_param);
+	int updSchedule(ScheduleVO schedule_param);
+	int delSchedule(int schedule_idx);
 	
 	//work 관련
 	List<WorkVO> getWorkList(SearchVO search);
 	int getWorkListCnt(SearchVO search);
-	WorkVO getWorkInfo(int wokr_idx);
+	WorkVO getWorkInfo(int work_idx);
 	int addWork(WorkVO work_param);
+	int updWork(WorkVO work_param);
 	
 	//work_data 관련
 	List<WorkDataVO> getWorkDataList(int work_idx);
@@ -77,4 +82,6 @@ public interface ProjectMngtSvc {
 	void uploadFile(FileVO fileVO) throws Exception;
 	boolean delUploadFile(int parseInt);
 	void fileDownload(int parseInt, HttpServletRequest request, HttpServletResponse resp);
+	
+	
 }

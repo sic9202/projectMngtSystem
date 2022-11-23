@@ -59,16 +59,19 @@
 	<select id="getProjectList" parameterType="SearchVO" resultType="ProjectVO">
 		SELECT
 			p.idx AS project_idx,
+			customer,
+			customer_pm,
 			project_name,
-			project_type,
+			project_pm,
+			project_period,
 			project_reg_date,
+			project_info,
 			p.reg_user_idx,
-			u.user_name AS reg_user_name,
-			project_info
+			u.user_name AS reg_user_name
 		FROM
 			project p
 		JOIN user u ON p.reg_user_idx = u.idx
-		ORDER BY project_reg_date DESC
+		ORDER BY project_reg_date
 		LIMIT #{firstIndex}, #{recordCountPerPage};
 	</select>
 
@@ -82,18 +85,56 @@
 	
 	<insert id="addProject" parameterType="ProjectVO">
 		INSERT INTO 
-			project (project_name, project_type, project_reg_date, reg_user_idx, project_info) 
+			project (customer, customer_pm, project_name, project_pm, project_period, project_reg_date, project_info, reg_user_idx) 
 		VALUES 
-			(#{project_name}, #{project_type}, now(), #{reg_user_idx}, #{project_info});
+			(
+				#{customer}
+				, #{customer_pm}
+				, #{project_name}
+				, #{project_pm}
+				, #{project_period}
+				<if test="project_reg_date != null and project_reg_date != ''">
+					, #{project_reg_date}
+				</if>
+				<if test="project_reg_date == null or project_reg_date == ''">
+					, now()
+				</if>
+				, #{project_info}
+				, #{reg_user_idx}
+			);
 	</insert>
+	
+	<update id="updProject" parameterType="ProjectVO">
+		UPDATE 
+			project
+		SET
+			customer = #{customer}
+			, customer_pm = #{customer_pm}
+			, project_name = #{project_name}
+			, project_pm = #{project_pm}
+			, project_period = #{project_period}
+			, project_reg_date = #{project_reg_date}
+			, project_info = #{project_info}
+		WHERE
+			idx = #{project_idx};
+	</update>
+	
+	<delete id="delProject" parameterType="int">
+		DELETE FROM project
+		where idx = #{project_idx}
+	</delete>
 	
 	<select id="getProjectInfo" resultType="ProjectVO" parameterType="int">
 		SELECT
 			p.idx AS project_idx,
+			customer,
+			customer_pm,
 			project_name,
-			project_type,
+			project_pm,
+			project_period,
 			project_reg_date,
-			reg_user_idx,
+			project_info,
+			p.reg_user_idx,
 			u.user_name AS reg_user_name
 		FROM
 			project p
@@ -108,9 +149,12 @@
 	<select id="getScheduleList" resultType="ScheduleVO" parameterType="SearchVO">
 		SELECT
 			s.idx AS schedule_idx,
-			project_idx,
 			schedule_name,
+			schedule_manager,
+			schedule_period,
 			schedule_reg_date,
+			schedule_info,
+			project_idx,
 			s.reg_user_idx,
 			u.user_name AS reg_user_name
 		FROM
@@ -120,7 +164,7 @@
 		WHERE
 			s.project_idx = #{project_idx}
 		ORDER BY
-			schedule_reg_date DESC
+			schedule_reg_date
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 
@@ -137,20 +181,62 @@
 	
 	<insert id="addSchedule" parameterType="ScheduleVO">
 		INSERT INTO 
-			schedule (project_idx, schedule_name, schedule_reg_date, reg_user_idx) 
+			schedule (
+				schedule_name
+				, schedule_manager
+				, schedule_period
+				, schedule_reg_date
+				, schedule_info
+				, project_idx
+				, reg_user_idx
+				) 
 		VALUES 
-			(#{project_idx}, #{schedule_name}, now(), #{reg_user_idx});
+			(
+				#{schedule_name}
+				, #{schedule_manager}
+				, #{schedule_period}
+				<if test="schedule_reg_date != null and schedule_reg_date != ''">
+					, #{schedule_reg_date}
+				</if>
+				<if test="schedule_reg_date == null or schedule_reg_date == ''">
+					, now()
+				</if>
+				, #{schedule_info}
+				, #{project_idx}
+				, #{reg_user_idx}
+			);
 	</insert>
+	
+	<update id="updSchedule" parameterType="ScheduleVO">
+		UPDATE 
+			schedule
+		SET
+			schedule_name = #{schedule_name}
+			, schedule_manager = #{schedule_manager}
+			, schedule_period = #{schedule_period}
+			, schedule_reg_date = #{schedule_reg_date}
+			, schedule_info = #{schedule_info}
+		WHERE
+			idx = #{schedule_idx};
+	</update>
+	
+	<delete id="delSchedule" parameterType="int">
+		DELETE FROM schedule
+		where idx = #{schedule_idx}
+	</delete>
 	
 	<select id="getScheduleInfo" resultType="ScheduleVO" parameterType="int">
 		SELECT
 			s.idx AS schedule_idx,
 			schedule_name,
+			schedule_manager,
+			schedule_period,
 			schedule_reg_date,
+			schedule_info,
 			s.project_idx,
+			p.project_name,
 			s.reg_user_idx,
-			u.user_name AS reg_user_name,
-			project_name
+			u.user_name AS reg_user_name
 		FROM
 			schedule s
 		JOIN 
@@ -166,10 +252,13 @@
 	<select id="getWorkList" resultType="WorkVO" parameterType="SearchVO">
 		SELECT
 			w.idx AS work_idx,
-			schedule_idx,
-			project_idx,
-			work_reg_date,
 			work_name,
+			work_manager,
+			work_period,
+			work_reg_date,
+			work_info,
+			project_idx,
+			schedule_idx,
 			w.reg_user_idx,
 			u.user_name AS reg_user_name
 		FROM
@@ -179,7 +268,7 @@
 		WHERE
 			w.schedule_idx = #{schedule_idx}
 		ORDER BY
-			work_reg_date DESC
+			work_reg_date
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 
@@ -197,10 +286,13 @@
 	<select id="getWorkInfo" resultType="WorkVo" parameterType="int">
 		SELECT
 			w.idx AS work_idx,
-			schedule_idx,
-			project_idx,
-			work_reg_date,
 			work_name,
+			work_manager,
+			work_period,
+			work_reg_date,
+			work_info,
+			project_idx,
+			schedule_idx,
 			reg_user_idx,
 			u.user_name AS reg_user_name
 		FROM
@@ -213,9 +305,27 @@
 	
 	<insert id="addWork" parameterType="WorkVO">
 		INSERT INTO 
-			work (schedule_idx, project_idx, work_reg_date, work_name, reg_user_idx) 
+			work (
+					work_name
+					, work_manager
+					, work_period
+					, work_reg_date
+					, work_info
+					, project_idx
+					, schedule_idx
+					, reg_user_idx
+				) 
 		VALUES 
-			(#{schedule_idx}, #{project_idx}, now(), #{work_name}, #{reg_user_idx});
+			(
+				#{work_name}
+				, #{work_manager}
+				, #{work_period}
+				, now()
+				, #{work_info}
+				, #{project_idx}
+				, #{schedule_idx}
+				, #{reg_user_idx}
+			);
 	</insert>
 	<!-- work 끝 -->
 	
@@ -244,7 +354,7 @@
 			file_info fi ON fi.work_data_idx = wd.idx
 		WHERE
 			wd.work_idx = #{work_idx}
-		ORDER BY end_date DESC, upd_date DESC;
+		ORDER BY end_date, upd_date;
 	</select>
 	
 	<select id="getWorkDataListCnt" resultType="int" parameterType="int">
