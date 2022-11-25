@@ -31,7 +31,7 @@ function scheduleNew(schedule_idx){
 				schedule_idx: schedule_idx
 			},
 			success: function(r){
-				if(r == 1){
+				if(r > 0){
 					alert("등록되었습니다.")
 					$("#moveForm").attr("action", "/scheduleList.do");
 					$("#moveForm").submit();

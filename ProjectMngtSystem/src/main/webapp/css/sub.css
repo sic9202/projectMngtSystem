@@ -163,8 +163,10 @@
 .board_tbl_box { width: 100%; } 
 .tbl_board { width: 100%; table-layout: fixed; border-top: 2px solid #4E4E4E; border-collapse: collapse; } 
 .tbl_board tr.notice { background-color: #F7F8FA; } 
-.tbl_board th { border-bottom: 1px solid #ddd; background-color: #EEEFF1; font-size: 16px; padding: 23px 5px; font-weight: 600; } 
-.tbl_board td { border-bottom: 1px solid #ddd; padding: 18px 5px; text-align: center; font-size: 16px; } 
+/* .tbl_board th { border-bottom: 1px solid #ddd; background-color: #EEEFF1; font-size: 16px; padding: 23px 5px; font-weight: 600; }  */
+.tbl_board th { border-bottom: 1px solid #ddd; background-color: #EEEFF1; font-size: 16px; padding: 20px 5px; font-weight: 600; } 
+/* .tbl_board td { border-bottom: 1px solid #ddd; padding: 18px 5px; text-align: center; font-size: 16px; }  */
+.tbl_board td { border-bottom: 1px solid #ddd; padding: 10px 5px; text-align: center; font-size: 16px; } 
 .tbl_board td.line { border-bottom: 1px dotted #ddd; } 
 .tbl_board tbody tr { transition: all .3s ease; position: relative; } 
 .tbl_board tbody tr:hover { background-color: #f2f5ff; } 
@@ -253,12 +255,14 @@
 .tbl_info td { padding: 10px 3px; font-size: 13px; } 
 .tbl_info td.txtL { padding-left: 10px; } 
 
+.tbl_info tbody .sbj a:hover { text-decoration: underline; }
+.tbl_info tbody tr:hover { background-color: #f2f5ff; }
+
 .tbl_info.sm th { padding: 10px 3px; font-size: 13px; } 
 .tbl_info.sm td { padding: 10px 3px; font-size: 13px; } 
 
 .tbl_info .dot_list > li { font-size: 13px; } 
 .tbl_info .dot_list > li::before { top: 7px; width: 3px; height: 3px; } 
-
 
 td.td_rss { padding-right: 40px; } 
 td.td_rss .addr_coyp { width: 30px; height: 30px; right: 7px; top: 5px; } 
@@ -306,6 +310,10 @@ td.td_rss .addr_coyp { width: 30px; height: 30px; right: 7px; top: 5px; }
 .tbl_info td.top { vertical-align: top; } 
 .tbl_info td.bold { font-weight: 600; } 
 .tbl_info td span.bold { font-weight: 600; } 
+
+/*추가*/
+.tbl_info .sbj a:hover { text-decoration: underline; } 
+.tbl_info tbody tr:hover { background-color: #f2f5ff; } 
 
 .table_info_box > .tbl_info2 { min-width:600px; } 
 .tbl_info2 { width: 100%; border-collapse: collapse; border-top: 2px solid #222; position: relative; table-layout: fixed; margin-top:40px; } 

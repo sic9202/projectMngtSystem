@@ -19,13 +19,14 @@
 				<div class="btn-area rb">
 					<a style="cursor:pointer;" onclick="goWorkNew()" style="cursor: pointer;" class="btn btn-big btn_green btn-150">수정</a>
 				</div>
-			
 				<div class="data-view-result">
-					<p class="cate"><span class="cate19">경로</span> <span>${project_info.project_name } > ${schedule_info.schedule_name }</span></p>
-					<p class="date">
-						<span>업무등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${work_info.work_reg_date }"/></span>
-					</p>
+<!-- 					<p class="date"> -->
+<%-- 						<span>업무등록일자 : <fmt:formatDate pattern="yyyy-MM-dd" value="${work_info.work_reg_date }"/></span> --%>
+<!-- 					</p> -->
 					<p class="title">${work_info.work_name }</p>
+					<p class="cate">
+						<span class="cate19">경로</span> <span>${project_info.project_name } > ${schedule_info.schedule_name }</span>
+					</p>
 				</div>
 				<div class="tab_borad_in_wrap">
 					<ul class="tab_board_in">
@@ -66,11 +67,13 @@
 							<tr data="added">
 								<td>${wd_list.str_date }</td>
 								<td>${wd_list.end_date }</td>
-								<td>${wd_list.reg_user_name }</td>
+								<td>${wd_list.work_data_manager }</td>
 								<td>${wd_list.support_time }</td>
 								<td style="text-align: left;">${wd_list.support_type }</td>
-								<td onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer;"><a class="ellipsis-box">${wd_list.support_content }</a></td>
-<%-- 								<td>${wd_list.support_content }</td> --%>
+<%-- 								<td onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer;"><a class="ellipsis-box">${wd_list.support_content }</a></td> --%>
+								<td class="sbj">
+									<a class="ellipsis-box" onclick="workDataView(${wd_list.work_data_idx })" style="cursor: pointer; ">${wd_list.support_content }</a>
+								</td>
 								<td>
 									<c:choose>
 										<c:when test="${wd_list.severity eq 2 }">상</c:when>
@@ -186,7 +189,7 @@
 						<th>지원시간(분)</th>
 						<td class="lb"><input id="support_time" class="inputOrg" type="text" title="" placeholder=""></td>
 						<th>담당자</th>
-						<td class="lb">${login_info.user_name }</td>
+						<td class="lb"><input id="work_data_manager" class="inputOrg" type="text" title="" placeholder=""></td>
 					</tr>
 					<tr>
 						<th>시작일</th>

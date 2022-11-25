@@ -71,7 +71,7 @@
 		FROM
 			project p
 		JOIN user u ON p.reg_user_idx = u.idx
-		ORDER BY project_reg_date
+		ORDER BY project_reg_date, p.idx
 		LIMIT #{firstIndex}, #{recordCountPerPage};
 	</select>
 
@@ -164,7 +164,7 @@
 		WHERE
 			s.project_idx = #{project_idx}
 		ORDER BY
-			schedule_reg_date
+			schedule_reg_date, s.idx
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 
@@ -268,7 +268,7 @@
 		WHERE
 			w.schedule_idx = #{schedule_idx}
 		ORDER BY
-			work_reg_date
+			work_reg_date, w.idx
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 
@@ -320,13 +320,36 @@
 				#{work_name}
 				, #{work_manager}
 				, #{work_period}
-				, now()
+				<if test="work_reg_date != null and work_reg_date != ''">
+					, #{work_reg_date}
+				</if>
+				<if test="work_reg_date == null or work_reg_date == ''">
+					, now()
+				</if>
 				, #{work_info}
 				, #{project_idx}
 				, #{schedule_idx}
 				, #{reg_user_idx}
 			);
 	</insert>
+	
+	<update id="updWork" parameterType="WorkVO">
+		UPDATE 
+			work
+		SET
+			work_name = #{work_name}
+			, work_manager = #{work_manager}
+			, work_period = #{work_period}
+			, work_reg_date = #{work_reg_date}
+			, work_info = #{work_info}
+		WHERE
+			idx = #{work_idx};
+	</update>
+	
+	<delete id="delWork" parameterType="int">
+		DELETE FROM work
+		where idx = #{work_idx}
+	</delete>
 	<!-- work 끝 -->
 	
 	<!-- work_data 시작 -->
@@ -340,6 +363,7 @@
 			support_type,
 			support_content,
 			severity,
+			work_data_manager,
 			reg_user_idx,
 			u.user_name AS reg_user_name,
 			fi.idx AS file_idx,
@@ -378,6 +402,7 @@
 			support_type,
 			support_content,
 			severity,
+			work_data_manager,
 			u.idx AS reg_user_idx,
 			u.user_name AS reg_user_name
 		FROM
@@ -399,6 +424,7 @@
 				support_content,
 				severity,
 				reg_user_idx,
+				work_data_manager,
 				work_data_reg_date
 			) VALUES
 			<foreach collection="addList" item="item" separator=",">
@@ -411,6 +437,7 @@
 					'${item.support_content}',
 					${item.severity},
 					${item.reg_user_idx},
+					'${item.work_data_manager}',
 					now()
 				)
 			</foreach>
@@ -428,6 +455,7 @@
 					support_type = '${item.support_type}',
 					support_content = '${item.support_content}',
 					severity = ${item.severity},
+					work_data_manager = '${item.work_data_manager}',
 					upd_date = now()
 				WHERE
 					idx = ${item.work_data_idx}
@@ -528,5 +556,25 @@
 		WHERE
 			idx = #{file_idx}
 	</update>
+	
+	<select id="getFileInfoList" parameterType="WorkVO" resultType="FileVO">
+		SELECT
+			fi.idx AS file_idx
+		    , fi.file_path
+		FROM 
+			work w
+		JOIN
+			file_info fi ON w.idx = fi.work_idx
+		WHERE 1=1
+			<if test="project_idx != null and project_idx != ''">
+				AND w.project_idx = #{project_idx}
+			</if>
+			<if test="schedule_idx != null and schedule_idx != ''">
+				AND w.schedule_idx = #{schedule_idx}
+			</if>
+			<if test="work_idx != null and work_idx != ''">
+				AND w.idx = #{work_idx}
+			</if> 
+	</select>
 	<!-- uploadFile 끝 -->
 </mapper>

@@ -85,7 +85,7 @@
 						</c:if>
 						<c:if test="${fn:length(schedule_list) == 0 }">
 							<tr>
-								<td colspan="4">조회된 데이터가 없습니다.</td>
+								<td colspan="6">조회된 데이터가 없습니다.</td>
 							</tr>
 						</c:if>
 						</tbody>

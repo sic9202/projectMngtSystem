@@ -1,4 +1,3 @@
-
 function movePage(pageNo){
 	window.location.href = encodeURI("/projectList.do?currentPageNo="+pageNo);
 }
@@ -52,7 +51,7 @@ function projectNew(project_idx){
 				project_idx: project_idx
 			},
 			success: function(r){
-				if(r == 1){
+				if(r > 0){
 					alert("등록되었습니다.")
 					window.location.href = encodeURI("/projectList.do");
 				}else{

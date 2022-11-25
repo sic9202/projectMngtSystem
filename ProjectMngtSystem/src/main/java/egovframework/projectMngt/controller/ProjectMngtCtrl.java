@@ -134,7 +134,7 @@ public class ProjectMngtCtrl {
 	@ResponseBody
 	public int delProject(HttpServletRequest request, HttpServletResponse resp
 			, @RequestParam("project_idx") String project_idx) {
-		int result = projectMngtSvc.delProject(Integer.parseInt(project_idx));
+		int	result = projectMngtSvc.delProject(Integer.parseInt(project_idx));
 		return result;
 	}
 	//project 끝
@@ -299,16 +299,26 @@ public class ProjectMngtCtrl {
 	@ResponseBody
 	public int workNew(HttpServletRequest request, HttpServletResponse resp
 			, @RequestParam("work_name") String work_name
+			, @RequestParam("work_manager") String work_manager
+			, @RequestParam("work_period") String work_period
+			, @RequestParam("work_info") String work_info
+			, @RequestParam("work_reg_date") String work_reg_date
 			, @RequestParam("project_idx") String project_idx
 			, @RequestParam("schedule_idx") String schedule_idx
-			, @RequestParam("work_reg_date") String work_reg_date
 			, @RequestParam(required = false, defaultValue = "") String work_idx){
 		LoginVO login_info = (LoginVO) request.getSession().getAttribute("loginVO");
+		
 		WorkVO work_param = new WorkVO();
+		work_param.setReg_user_idx(login_info.getUser_idx());
 		work_param.setProject_idx(Integer.parseInt(project_idx));
 		work_param.setSchedule_idx(Integer.parseInt(schedule_idx));
 		work_param.setWork_name(work_name);
-		work_param.setReg_user_idx(login_info.getUser_idx());
+		work_param.setWork_manager(work_manager);
+		work_param.setWork_period(work_period);
+		
+		if(work_info != null && !"".equals(work_info)) {
+			work_param.setWork_info(work_info);
+		}
 		
 		if(work_reg_date != null && !"".equals(work_reg_date)) {
 			try {
@@ -319,6 +329,7 @@ public class ProjectMngtCtrl {
 				e.printStackTrace();
 			}
 		}
+		
 		int result = 0;
 		if(work_idx != null && !"".equals(work_idx)) {
 			work_param.setWork_idx(Integer.parseInt(work_idx));
@@ -327,6 +338,14 @@ public class ProjectMngtCtrl {
 			result = projectMngtSvc.addWork(work_param);
 		}
 		
+		return result;
+	}
+	
+	@RequestMapping("/delWork.do")
+	@ResponseBody
+	public int delWork(HttpServletRequest request, HttpServletResponse resp
+			, @RequestParam("work_idx") String work_idx) {
+		int result = projectMngtSvc.delWork(Integer.parseInt(work_idx));
 		return result;
 	}
 	

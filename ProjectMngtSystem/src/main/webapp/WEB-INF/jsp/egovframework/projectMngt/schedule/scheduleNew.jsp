@@ -39,17 +39,17 @@
 					</colgroup>
 					<tbody>
 						<tr>
-							<th>단계</th>
+							<th>단계<span class="red">*</span></th>
 							<td class="lb" colspan="3">
 								<input type="text" id="schedule_name" name="schedule_name" class="inputOrg" value='<c:if test="${chk }">${schedule_info.schedule_name }</c:if>'>
 							</td>
 						</tr>
 						<tr>
-							<th>담당자</th>
+							<th>담당자<span class="red">*</span></th>
 							<td class="lb">
 								<input type="text" id="schedule_manager" name="schedule_name" class="inputOrg" value='<c:if test="${chk }">${schedule_info.schedule_manager }</c:if>'>
 							</td>
-							<th>기간</th>
+							<th>기간<span class="red">*</span></th>
 							<td class="lb">
 								<input type="text" id="schedule_period" name="schedule_name" class="inputOrg" value='<c:if test="${chk }">${schedule_info.schedule_period }</c:if>'>
 							</td>
@@ -61,7 +61,7 @@
 							</td>
 						</tr>	
 						<tr>
-							<th>등록일</th>
+							<th>등록일<span class="red">*</span></th>
 							<td class="lb">
 								<input id="schedule_reg_date" class="inputOrg" type="text" value='<c:if test="${chk}"><fmt:formatDate pattern="yyyy-MM-dd" value="${schedule_info.schedule_reg_date }"/></c:if>'>
 							</td>

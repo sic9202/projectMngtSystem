@@ -81,7 +81,23 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	}
 	
 	public int delProject(int project_idx) {
-		int result = projectMngtMapper.delProject(project_idx);
+		
+		//file_idx list 가져오기
+		WorkVO workVO = new WorkVO();
+		workVO.setProject_idx(project_idx);
+		List<FileVO> del_file_info_list = projectMngtMapper.getFileInfoList(workVO);
+		boolean del_file_chk = true;
+		if(del_file_info_list.size() > 0) {
+			for(FileVO file_info : del_file_info_list) {
+				del_file_chk = delFile(file_info);
+			}
+		}
+		
+		int result = 1;
+		if(del_file_chk) {
+			result = projectMngtMapper.delProject(project_idx);
+		}
+		
 		return result;
 	}
 	
@@ -112,7 +128,22 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	}
 	
 	public int delSchedule(int schedule_idx) {
-		int result = projectMngtMapper.delSchedule(schedule_idx);
+		//file_idx list 가져오기
+		WorkVO workVO = new WorkVO();
+		workVO.setSchedule_idx(schedule_idx);
+		List<FileVO> del_file_info_list = projectMngtMapper.getFileInfoList(workVO);
+		boolean del_file_chk = true;
+		if(del_file_info_list.size() > 0) {
+			for(FileVO file_info : del_file_info_list) {
+				del_file_chk = delFile(file_info);
+			}
+		}
+		
+		int result = 1;
+		if(del_file_chk) {
+			result = projectMngtMapper.delSchedule(schedule_idx);
+		}
+		
 		return result;
 	}
 	
@@ -139,6 +170,26 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	
 	public int updWork(WorkVO work_param) {
 		int result = projectMngtMapper.updWork(work_param);
+		return result;
+	}
+	
+	public int delWork(int work_idx) {
+		//file_idx list 가져오기
+		WorkVO workVO = new WorkVO();
+		workVO.setWork_idx(work_idx);
+		List<FileVO> del_file_info_list = projectMngtMapper.getFileInfoList(workVO);
+		boolean del_file_chk = true;
+		if(del_file_info_list.size() > 0) {
+			for(FileVO file_info : del_file_info_list) {
+				del_file_chk = delFile(file_info);
+			}
+		}
+		
+		int result = 1;
+		if(del_file_chk) {
+			result = projectMngtMapper.delWork(work_idx);
+		}
+		
 		return result;
 	}
 	

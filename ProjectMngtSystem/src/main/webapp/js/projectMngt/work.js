@@ -21,51 +21,115 @@ function goWorkNew() {
 function workNew(work_idx){
 	var project_idx = $("input[name=project_idx]").val();
 	var schedule_idx = $("input[name=schedule_idx]").val();
-	var work_name = $("input[name=work_name]").val();
+	var work_name = $("#work_name").val();
+	var work_manager = $("#work_manager").val();
+	var work_period = $("#work_period").val();
+	var work_info = $("#work_info").val();
 	var work_reg_date = $("#work_reg_date").val();
 	
-	if(work_name == ""){
+	if(check_work_val()){
+		$.ajax({
+			type: "POST",
+			url: "/workNew.do",
+			data: {
+				project_idx: project_idx,
+				schedule_idx: schedule_idx,
+				work_name: work_name,
+				work_manager: work_manager,
+				work_period: work_period,
+				work_info: work_info,
+				work_reg_date: work_reg_date,
+				work_idx: work_idx
+			},
+			success: function(r){
+				if(r = 1){
+					alert("등록되었습니다.")
+					$("#moveForm").attr("action", "/workList.do");
+					$("#moveForm").submit();
+				}else{
+					alert("등록에 실패했습니다.");
+					$("#moveForm").attr("action", "/workList.do");
+					$("#moveForm").submit();
+				}
+			},
+			error: function(error){
+				alert("통신 실패");
+				$("#moveForm").attr("action", "/workList.do");
+				$("#moveForm").submit();
+			}
+		});
+	}
+}
+
+function check_work_val(){
+	var result = true;
+	var work_name = $("#work_name").val();
+	var work_manager = $("#work_manager").val();
+	var work_period = $("#work_period").val();
+	var work_reg_date = $("#work_reg_date").val(); 
+	
+	if(work_name == null || work_name.trim() == ""){
 		alert("업무명을 입력해주세요.");
-		$("input[name=work_name]").focus();
+		$("#work_name").focus();
+		result = false;
+		return false;
+	}
+	
+	if(work_manager == null || work_manager.trim() == ""){
+		alert("담당자을 입력해주세요.");
+		$("#work_manager").focus();
+		result = false;
+		return false;
+	}
+	
+	if(work_period == null || work_period.trim() == ""){
+		alert("기간을 입력해주세요.");
+		$("#work_period").focus();
+		result = false;
 		return false;
 	}
 	
 	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
-	if(work_reg_date == null || work_reg_date.trim() == ""){
+	if (work_reg_date == null || work_reg_date.trim() == ""){
 		alert("등록일을 입력해주세요.");
+		result = false;
 		return false;
 	}else if(!work_reg_date.match(date_pattern)){
 		alert("날짜형식에 맞지 않는 데이터가 입력되었습니다. 다시 입력해주세요.");
+		result = false;
 		return false;
 	}
 	
-	$.ajax({
-		type: "POST",
-		url: "/workNew.do",
-		data: {
-			project_idx: project_idx,
-			schedule_idx: schedule_idx,
-			work_name: work_name,
-			work_reg_date: work_reg_date,
-			work_idx: work_idx
-		},
-		success: function(r){
-			if(r = 1){
-				alert("등록되었습니다.")
-				$("#moveForm").attr("action", "/workList.do");
-				$("#moveForm").submit();
-			}else{
-				alert("등록에 실패했습니다.");
+	return result;
+}
+
+function delWork(work_idx){
+	if(confirm("해당 업무 하위의 모든 데이터가 삭제됩니다. 그래도 삭제하시겠습니까?") == true){
+		var work_idx = work_idx;
+		$.ajax({
+			type: "POST",
+			url: "/delWork.do",
+			data: {
+				work_idx: work_idx
+			},
+			success: function(r){
+				if(r > 0){
+					alert("삭제가 완료되었습니다.")
+					$("#moveForm").attr("action", "/workList.do");
+					$("#moveForm").submit();
+				}else{
+					alert("삭제에 실패했습니다.");
+					$("#moveForm").attr("action", "/workList.do");
+					$("#moveForm").submit();	
+				}
+			},
+			error: function(error){
+				alert("통신 실패");
 				$("#moveForm").attr("action", "/workList.do");
 				$("#moveForm").submit();
 			}
-		},
-		error: function(error){
-			alert("통신 실패");
-			$("#moveForm").attr("action", "/workList.do");
-			$("#moveForm").submit();
-		}
-	});
+		})
+	}
 }
 
 //업무상세 이동
@@ -84,6 +148,7 @@ function check_work_data_val(work_data_idx) {
 	var support_type = "";
 	var support_content = "";
 	var severity = "";
+	var work_data_manager = "";
 	
 	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){ //new
 		str_date = $("#str_date").val();
@@ -92,6 +157,7 @@ function check_work_data_val(work_data_idx) {
 		support_type = $("#support_type").val();
 		support_content = $("#support_content textarea").val();
 		severity = $("#severity").val();
+		work_data_manager = $("#work_data_manager").val();
 	}else{ //update
 		str_date = $("#str_date_"+work_data_idx).val();
 		end_date = $("#end_date_"+work_data_idx).val();
@@ -99,6 +165,23 @@ function check_work_data_val(work_data_idx) {
 		support_type = $("#support_type_"+work_data_idx).val();
 		support_content = $("#support_content_"+work_data_idx+" textarea").val();
 		severity = $("#severity_"+work_data_idx).val();
+		work_data_manager = $("#work_data_manager_"+work_data_idx).val();
+	}
+	
+	if (support_time == null || support_time.trim() == "") {
+		alert("지원시간을 입력해주세요.");
+		result = false;
+		return false;
+	} else if (isNaN(support_time)) {
+		alert("지원시간에 숫자만 입력해주세요.");
+		result = false;
+		return false;
+	}
+	
+	if (work_data_manager == null || work_data_manager == "") {
+		alert("담당자를 입력해주세요.");
+		result = false;
+		return false;
 	}
 	
 	var date_pattern = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
@@ -130,16 +213,6 @@ function check_work_data_val(work_data_idx) {
 		return false;
 	}
 	
-	if (support_time == null || support_time.trim() == "") {
-		alert("지원시간을 입력해주세요.");
-		result = false;
-		return false;
-	} else if (isNaN(support_time)) {
-		alert("지원시간에 숫자만 입력해주세요.");
-		result = false;
-		return false;
-	}
-
 	if (support_type == null || support_type.trim() == "") {
 		alert("지원방법을 입력해주세요.");
 		result = false;
@@ -168,6 +241,7 @@ function saveWorkData(work_idx, work_data_idx){
 	var support_type = "";
 	var support_content = "";
 	var severity = "";
+	var work_data_manager = "";
 	var save_type = "";
 	
 	if(typeof work_data_idx == "undefined" || work_data_idx == null || work_data_idx == ""){ //new
@@ -177,6 +251,7 @@ function saveWorkData(work_idx, work_data_idx){
 		support_type = $("#support_type").val();
 		support_content = $("#support_content textarea").val().replace(/\n/g, "<br>");
 		severity = $("#severity option:selected").val();
+		work_data_manager = $("#work_data_manager").val();
 		save_type = "add";
 	}else{ //update
 		str_date = $("#str_date_"+work_data_idx).val();
@@ -185,6 +260,7 @@ function saveWorkData(work_idx, work_data_idx){
 		support_type = $("#support_type_"+work_data_idx).val();
 		support_content = $("#support_content_"+work_data_idx+" textarea").val();
 		severity = $("#severity_"+work_data_idx).val();
+		work_data_manager = $("#work_data_manager_"+work_data_idx).val();
 		save_type = "upd";
 	}
 	
@@ -203,6 +279,7 @@ function saveWorkData(work_idx, work_data_idx){
 		obj.support_type = support_type;
 		obj.support_content = support_content;
 		obj.severity = severity;
+		obj.work_data_manager = work_data_manager;
 		obj.reg_user_idx = $("#user_idx").val();
 		
 		if(save_type == "add"){ //new
@@ -223,7 +300,7 @@ function saveWorkData(work_idx, work_data_idx){
 				updRecordList: updRecordList
 			},
 			success: function(r) {
-				if (r == 1) {
+				if (r > 0) {
 					alert("저장되었습니다.");
 					var work_idx = $("#moveForm input[name=work_idx]").val();
 					goWorkView(work_idx);
@@ -260,7 +337,7 @@ function delWorkData(work_idx){
 				delRecordList: delRecordList
 			},
 			success: function(r) {
-				if (r == 1) {
+				if (r > 0) {
 					alert("삭제되었습니다.");
 					var work_idx = $("#moveForm input[name=work_idx]").val();
 					goWorkView(work_idx);
@@ -299,7 +376,7 @@ function updWorkData(){
 				+		'<th>지원시간(분)</th>'
 				+		'<td class="lb"><input type="text" class="inputOrg" id="support_time_'+r.work_data_idx+'" value="'+r.support_time+'"></td>'
 				+		'<th>담당자</th>'
-				+		'<td class="lb" id="user_name_'+r.work_data_idx+'">'+r.reg_user_name+'</td>'
+				+		'<td class="lb"><input type="text" class="inputOrg" id="work_data_manager_'+r.work_data_idx+'" value="'+r.work_data_manager+'"></td>'
 				+	'</tr>'
 				+	'<tr>'
 				+		'<th>지원방법</th>'
@@ -351,7 +428,7 @@ function fileUpload(work_data_idx){
 		contentType: false,
 		data: frmData,
 		success: function(r){
-			if(r == 1){
+			if(r > 0){
 				alert("업로드가 완료되었습니다.");
 				goWorkView(work_idx);
 					
@@ -438,7 +515,7 @@ function workDataView(work_data_idx){
 				+		'<th>지원시간(분)</th>'
 				+		'<td class="lb" id="support_time_'+r.work_data_idx+'">'+r.support_time+'</td>'
 				+		'<th>담당자</th>'
-				+		'<td class="lb" id="user_name_'+r.work_data_idx+'">'+r.reg_user_name+'</td>'
+				+		'<td class="lb" id="work_data_manger_'+r.work_data_idx+'">'+r.work_data_manager+'</td>'
 				+	'</tr>'
 				+	'<tr>'
 				+		'<th>지원방법</th>'

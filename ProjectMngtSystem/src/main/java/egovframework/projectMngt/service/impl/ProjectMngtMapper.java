@@ -46,6 +46,7 @@ public interface ProjectMngtMapper {
 	WorkVO getWorkInfo(int work_idx);
 	int addWork(WorkVO work_param);
 	int updWork(WorkVO work_param);
+	int delWork(int work_idx);
 	
 	//work_data 관련
 	List<WorkDataVO> getWorkDataList(int work_idx);
@@ -61,5 +62,7 @@ public interface ProjectMngtMapper {
 	void updAddedFileInfo(FileVO addedFileInfo);
 	void updDelYn(FileVO file_info);
 	int delFileInfo(@Param(value = "delList") List<Map<String, String>> delList);
+	
+	List<FileVO> getFileInfoList(WorkVO workVO);
 	
 }

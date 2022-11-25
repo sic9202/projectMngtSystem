@@ -9,6 +9,7 @@ public class WorkDataVO extends SearchVO{
 	private String support_type;
 	private String support_content;
 	private int severity;
+	private String work_data_manager;
 	private int reg_user_idx;
 	private String reg_user_name;
 	private int file_idx;
@@ -63,6 +64,12 @@ public class WorkDataVO extends SearchVO{
 	public void setSeverity(int severity) {
 		this.severity = severity;
 	}
+	public String getWork_data_manager() {
+		return work_data_manager;
+	}
+	public void setWork_data_manager(String work_data_manager) {
+		this.work_data_manager = work_data_manager;
+	}
 	public int getReg_user_idx() {
 		return reg_user_idx;
 	}
@@ -99,4 +106,5 @@ public class WorkDataVO extends SearchVO{
 	public void setDel_yn(String del_yn) {
 		this.del_yn = del_yn;
 	}
+	
 }

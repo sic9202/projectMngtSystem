@@ -71,6 +71,7 @@ public interface ProjectMngtSvc {
 	WorkVO getWorkInfo(int work_idx);
 	int addWork(WorkVO work_param);
 	int updWork(WorkVO work_param);
+	int delWork(int parseInt);
 	
 	//work_data 관련
 	List<WorkDataVO> getWorkDataList(int work_idx);
@@ -80,8 +81,6 @@ public interface ProjectMngtSvc {
 	
 	//uploadFile 관련
 	void uploadFile(FileVO fileVO) throws Exception;
-	boolean delUploadFile(int parseInt);
-	void fileDownload(int parseInt, HttpServletRequest request, HttpServletResponse resp);
-	
-	
+	boolean delUploadFile(int file_idx);
+	void fileDownload(int file_idx, HttpServletRequest request, HttpServletResponse resp);
 }
