@@ -313,7 +313,6 @@ td.td_rss .addr_coyp { width: 30px; height: 30px; right: 7px; top: 5px; }
 
 /*추가*/
 .tbl_info .sbj a:hover { text-decoration: underline; } 
-.tbl_info tbody tr:hover { background-color: #f2f5ff; } 
 
 .table_info_box > .tbl_info2 { min-width:600px; } 
 .tbl_info2 { width: 100%; border-collapse: collapse; border-top: 2px solid #222; position: relative; table-layout: fixed; margin-top:40px; } 
