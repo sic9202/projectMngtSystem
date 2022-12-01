@@ -225,7 +225,7 @@ function check_work_data_val(work_data_idx) {
 	}
 
 	if (severity == null || severity == "") {
-		alert("심각도를 선택해주세요.");
+		alert("중요도를 선택해주세요.");
 		result = false;
 		return false;
 	}
@@ -387,7 +387,7 @@ function updWorkData(){
 				+		'<td id="support_content_'+r.work_data_idx+'" colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;">'+support_content+'</textarea></td>'
 				+	'</tr>'
 				+	'<tr>'
-				+		'<th>심각도</th>'
+				+		'<th>중요도</th>'
 				+		'<td class="lb" colspan="3">'
 				+			'<select id="severity_'+r.work_data_idx+'" class="selectOrgN">'
 				+				'<option value="2">상</option>'
@@ -489,6 +489,11 @@ function workDataView(work_data_idx){
 		success: function(r){
 			var tag = "";
 			var severity = "";
+			var file_name = "-";
+			if(r.file_name != null && r.del_yn == 'N'){
+				file_name = r.file_name;
+			}
+			
 			switch(r.severity){
 				case 0:
 					severity = "하";
@@ -526,8 +531,12 @@ function workDataView(work_data_idx){
 				+		'<td class="lb" colspan="3"><div id="support_content_'+r.work_data_idx+'" style="overflow:auto; height: 300px;">'+support_content+'</div></td>'
 				+	'</tr>'
 				+	'<tr>'
-				+		'<th>심각도</th>'
+				+		'<th>중요도</th>'
 				+		'<td class="lb" colspan="3" id="severity_'+r.work_data_idx+'">'+severity+'</td>'
+				+	'</tr>'
+				+	'<tr>'
+				+		'<th>파일명</th>'
+				+		'<td class="lb" colspan="3" id="file_name_'+r.work_data_idx+'">'+file_name+'</td>'
 				+	'</tr>';
 				
 			$('#work_data_added tbody').html(tag);

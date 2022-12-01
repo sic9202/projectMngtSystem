@@ -56,7 +56,7 @@
 								<th class="b">지원시간(분)</th>
 								<th class="b">지원방법</th>
 								<th class="b">지원내용</th>
-								<th class="b">심각도</th>
+								<th class="b">중요도</th>
 								<th class="b">파일</th>
 <!-- 								<th class="b"></th> -->
 							</tr>
@@ -118,7 +118,7 @@
 <!-- 						<a style="cursor:pointer;" onclick="addRecord()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>행추가</a> -->
 						<a style="cursor:pointer;" onclick="addRecordPopUp()" class="btn btn-sm btn_color_navy"><i class="xi-download-disk"></i>업무추가</a>
 					</div>
-					<div class="btn-area lb">
+					<div class="btn-area cb">
 						<a style="cursor:pointer;" onclick="goWorkList()" class="btn btn-big btn_green btn-150">목록</a>
 					</div>
 				</div>
@@ -206,7 +206,7 @@
 						<td id="support_content" colspan="3"><textarea rows="1" cols="30" style="resize: none; width: 100%; height: 300px;"></textarea></td>
 					</tr>
 					<tr>
-						<th>심각도</th>
+						<th>중요도</th>
 						<td class="lb" colspan="3">
 							<select id="severity" class="selectOrgN">
 								<option value="2">상</option>

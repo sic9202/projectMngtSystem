@@ -395,7 +395,7 @@
 	<select id="getworkDataInfo" resultType="WorkDataVO" parameterType="int">
 		SELECT
 			wd.idx AS work_data_idx,
-			work_idx,
+			wd.work_idx,
 			str_date,
 			end_date,
 			support_time,
@@ -404,13 +404,15 @@
 			severity,
 			work_data_manager,
 			u.idx AS reg_user_idx,
-			u.user_name AS reg_user_name
+			u.user_name AS reg_user_name,
+			fi.file_name,
+			fi.del_yn
 		FROM
 			work_data wd
-		JOIN user u ON wd.reg_user_idx = u.idx 
+		JOIN user u ON wd.reg_user_idx = u.idx
+		LEFT JOIN file_info fi ON wd.idx = fi.work_data_idx
 		WHERE
 			wd.idx = #{work_data_idx}
-		
 	</select>
 	
 	<insert id="addWorkData" parameterType="java.util.HashMap">

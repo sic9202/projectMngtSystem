@@ -47,7 +47,7 @@
 							<col style="width: 20%">
 							<col style="width: auto;">
 							<col style="width: 20%">
-							<col style="width: 7%">
+							<col style="width: 10%">
 							<col style="width: 10%">
 <%-- 							<col style="width: 7%"> --%>
 						</colgroup>

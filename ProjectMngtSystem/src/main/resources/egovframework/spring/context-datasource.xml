@@ -7,13 +7,13 @@
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <!-- local -->
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?allowMultiQueries=true" />        
-        <property name="username" value="root"/>
-        <property name="password" value="d293471dls!"/>
+<!--         <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?allowMultiQueries=true" />         -->
+<!--         <property name="username" value="root"/> -->
+<!--         <property name="password" value="d293471dls!"/> -->
 
         <!-- server -->
-<!--         <property name="url" value="jdbc:mysql://127.0.0.1:3306/projectMngt?allowMultiQueries=true" /> -->
-<!--         <property name="username" value="icshin"/>         -->
-<!--         <property name="password" value="Dmoaicshin1!"/> -->
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/projectMngt?allowMultiQueries=true" />
+        <property name="username" value="icshin"/>        
+        <property name="password" value="Dmoaicshin1!"/>
     </bean>
 </beans>
