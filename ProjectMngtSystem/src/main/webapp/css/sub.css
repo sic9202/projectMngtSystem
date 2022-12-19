@@ -474,7 +474,9 @@ jquerymodal custom
 
 .btn_green { color: #fff; background: #041e42; } 
 
-.btn_color_navy { background: #fff; color: #164299; border: 1px solid #164299; } 
+.btn_color_navy { background: #fff; color: #164299; border: 1px solid #164299; }
+/*추가*/
+.btn_color_navy:hover { background: #164299; color: #fff; border: 1px solid #164299; }
 .btn_color_green { background: #fff; color: #041e42; border: 1px solid #041e42; } 
 .btn_color_green:hover { background: #041e42; color: #fff; border: 1px solid #041e42; } 
 .btn_color_red { background: #fff; color: #da0011; border: 1px solid #da0011; } 
