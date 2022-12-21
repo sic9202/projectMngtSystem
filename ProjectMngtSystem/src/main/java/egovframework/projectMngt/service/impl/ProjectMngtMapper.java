@@ -64,5 +64,6 @@ public interface ProjectMngtMapper {
 	int delFileInfo(@Param(value = "delList") List<Map<String, String>> delList);
 	
 	List<FileVO> getFileInfoList(WorkVO workVO);
+	List<FileVO> getFileList(int work_data_idx);
 	
 }

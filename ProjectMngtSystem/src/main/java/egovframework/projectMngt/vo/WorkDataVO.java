@@ -1,5 +1,7 @@
 package egovframework.projectMngt.vo;
 
+import java.util.List;
+
 public class WorkDataVO extends SearchVO{
 	private int work_data_idx;
 	private int work_idx;
@@ -16,6 +18,9 @@ public class WorkDataVO extends SearchVO{
 	private String file_name;
 	private int file_size;
 	private String del_yn;
+	private List<FileVO> file_list;
+	private int status;
+	
 	public int getWork_data_idx() {
 		return work_data_idx;
 	}
@@ -105,6 +110,18 @@ public class WorkDataVO extends SearchVO{
 	}
 	public void setDel_yn(String del_yn) {
 		this.del_yn = del_yn;
+	}
+	public List<FileVO> getFile_list() {
+		return file_list;
+	}
+	public void setFile_list(List<FileVO> file_list) {
+		this.file_list = file_list;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

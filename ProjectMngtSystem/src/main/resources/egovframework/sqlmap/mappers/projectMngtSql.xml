@@ -365,17 +365,11 @@
 			severity,
 			work_data_manager,
 			reg_user_idx,
-			u.user_name AS reg_user_name,
-			fi.idx AS file_idx,
-			fi.file_name,
-			fi.file_size,
-			fi.del_yn  
+			u.user_name AS reg_user_name
 		FROM
 			work_data wd
 		JOIN 
 			user u ON wd.reg_user_idx = u.idx
-		LEFT JOIN
-			file_info fi ON fi.work_data_idx = wd.idx
 		WHERE
 			wd.work_idx = #{work_idx}
 		ORDER BY end_date, upd_date;
@@ -404,13 +398,10 @@
 			severity,
 			work_data_manager,
 			u.idx AS reg_user_idx,
-			u.user_name AS reg_user_name,
-			fi.file_name,
-			fi.del_yn
+			u.user_name AS reg_user_name
 		FROM
 			work_data wd
 		JOIN user u ON wd.reg_user_idx = u.idx
-		LEFT JOIN file_info fi ON wd.idx = fi.work_data_idx
 		WHERE
 			wd.idx = #{work_data_idx}
 	</select>
@@ -576,7 +567,20 @@
 			</if>
 			<if test="work_idx != null and work_idx != ''">
 				AND w.idx = #{work_idx}
-			</if> 
+			</if>
+	</select>
+	
+	<select id="getFileList" parameterType="int" resultType="FileVO">
+		SELECT
+			idx AS file_idx,
+			file_name,
+			file_path,
+			file_size
+		FROM
+			file_info fi
+		WHERE 1=1
+			AND work_data_idx = #{work_data_idx}
+			AND del_yn = 'N'
 	</select>
 	<!-- uploadFile 끝 -->
 </mapper>

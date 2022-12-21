@@ -614,3 +614,6 @@ jquerymodal custom
 @media all and (max-width:1500px) {}
 
 @media all and (max-width:1400px) {}
+
+
+.tbl_info2 tbody .lb a:hover {text-decoration: underline;}

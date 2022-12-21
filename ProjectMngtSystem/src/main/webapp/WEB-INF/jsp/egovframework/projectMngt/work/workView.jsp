@@ -45,7 +45,7 @@
 							<col style="width:15%;">
 							<col style="width:auto;">
 							<col style="width:7%;">
-							<col style="width:7%;">
+<%-- 							<col style="width:7%;"> --%>
 <%-- 							<col style="width:7%;"> --%>
 						</colgroup>
 						<thead>
@@ -57,7 +57,7 @@
 								<th class="b">지원방법</th>
 								<th class="b">지원내용</th>
 								<th class="b">중요도</th>
-								<th class="b">파일</th>
+<!-- 								<th class="b">파일</th> -->
 <!-- 								<th class="b"></th> -->
 							</tr>
 						</thead>
@@ -81,7 +81,7 @@
 										<c:when test="${wd_list.severity eq 0 }">하</c:when>
 									</c:choose>
 								</td>
-								<td>
+<%-- 								<td>
 							<c:choose>
 								<c:when test="${wd_list.del_yn eq 'N'}">
 									<img title="${wd_list.file_name}" src="/image/common/download.png" id="" onclick="fileDownload(${wd_list.file_idx})" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">
@@ -94,7 +94,7 @@
 									<input type="file" id="uploadFile_${wd_list.work_data_idx }" style="display: none;" onchange="fileUpload(${wd_list.work_data_idx })" required="required"/>	
 								</c:otherwise>
 							</c:choose>
-								</td>
+								</td> --%>
 <!-- 								<td> -->
 <%-- 									<a id="cncl_btn_${wdStatus.index }" style="cursor:pointer; display:none;" onclick="cancelRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy" >취소</a> --%>
 <%-- 									<a id="upd_btn_${wdStatus.index }" style="cursor:pointer" onclick="updateRecord(${wdStatus.index })" class="btn btn-sm btn_color_navy">수정</a> --%>
@@ -107,7 +107,7 @@
 					</c:if>
 						<c:if test="${fn:length(work_data_list) == 0 }">
 							<tr data="none">
-								<td colspan="8">조회된 데이터가 없습니다.</td>
+								<td colspan="7">조회된 데이터가 없습니다.</td>
 							</tr>
 						</c:if>
 						</tbody>

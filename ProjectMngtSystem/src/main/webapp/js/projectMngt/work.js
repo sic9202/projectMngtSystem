@@ -412,12 +412,17 @@ function updWorkData(){
 
 //파일 업로드
 function fileUpload(work_data_idx){
-	var selectedFile = $("#uploadFile_"+work_data_idx).get(0).files[0];
-//	var work_data_idx = $("#work_data_idx_"+idx).val();
+//	var selectedFile = $("#uploadFile_"+work_data_idx).get(0).files[0];
 	var work_data_idx = work_data_idx;
 	var work_idx = $("#moveForm input[name=work_idx]").val();
 	var frmData = new FormData();
-	frmData.append("uploadFile", selectedFile);
+	
+	//fileUpload
+	var files = $("#uploadFile_"+work_data_idx)[0].files;
+	for(var i = 0; i < files.length; i++){
+		frmData.append("fileArr", files[i]);
+	}
+	
 	frmData.append("work_data_idx", work_data_idx);
 	frmData.append("work_idx", work_idx);
 	
@@ -428,43 +433,72 @@ function fileUpload(work_data_idx){
 		contentType: false,
 		data: frmData,
 		success: function(r){
-			if(r > 0){
+			if(r.status > 0){
 				alert("업로드가 완료되었습니다.");
-				goWorkView(work_idx);
-					
+				var file_name_tag = "";
+				if(r.file_list != null && r.file_list.length > 0){
+					var fl = r.file_list;
+					for(var i = 0; i < fl.length; i++){
+						file_name_tag +=	'<a onclick="fileDownload('+fl[i].file_idx+')" style="cursor: pointer;">'+fl[i].file_name+'</a>'
+								  	  +		'<img src="/image/common/delete.png" id="del_file_btn_'+fl[i].file_idx+'" onclick="delUploadFile('+fl[i].file_idx+', '+r.work_data_idx+')" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">'
+									  +		'</br>';
+					}
+				}else{
+					file_name_tag = "-";
+				}
+				$('#file_name_'+r.work_data_idx).html(file_name_tag);
 			}else{
 				alert("업로드에 실패하였습니다.");
 				goWorkView(work_idx);
 			}
 		},
 		error: function(e){
-			
+			alert("업로드에 실패하였습니다.");
+			goWorkView(work_idx);
 		}
 	});
 }
 
 //파일 삭제
-function delUploadFile(file_idx){
-	var file_idx = file_idx;
-	var work_idx = $("#moveForm input[name=work_idx]").val();
-	
-	$.ajax({
-		url: "/delUploadFile.do",
-		type: "POST",
-		data: {
-				file_idx: file_idx
-		},
-		success: function(r) {
-			if(r == true){
-				alert("삭제가 완료되었습니다.");
+function delUploadFile(file_idx, work_data_idx){
+	if(confirm("해당 파일을 삭제하시겠습니까?") == true){
+		var file_idx = file_idx;
+		var work_data_idx = work_data_idx;
+		var work_idx = $("#moveForm input[name=work_idx]").val();
+		
+		$.ajax({
+			url: "/delUploadFile.do",
+			type: "POST",
+			data: {
+					file_idx: file_idx,
+					work_data_idx: work_data_idx
+			},
+			success: function(r) {
+				if(r.status > 0){
+					alert("삭제가 완료되었습니다.");
+					var file_name_tag = "";
+					if(r.file_list != null && r.file_list.length > 0){
+						var fl = r.file_list;
+						for(var i = 0; i < fl.length; i++){
+							file_name_tag +=	'<a onclick="fileDownload('+fl[i].file_idx+')" style="cursor: pointer;">'+fl[i].file_name+'</a>'
+									  	  +		'<img src="/image/common/delete.png" id="del_file_btn_'+fl[i].file_idx+'" onclick="delUploadFile('+fl[i].file_idx+', '+r.work_data_idx+')" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">'
+										  +		'</br>';
+						}
+					}else{
+						file_name_tag = "-";
+					}
+					$('#file_name_'+r.work_data_idx).html(file_name_tag);
+				}else{
+					alert("삭제에 실패했습니다.");
+					goWorkView(work_idx);
+				}
+			},
+			error: function(e) {
+				alert("삭제에 실패했습니다.");
 				goWorkView(work_idx);
 			}
-		},
-		error: function(e) {
-			alert("삭제에 실패했습니다.");
-			goWorkView(work_idx);
-		}
-	});
+		});
+	}
 }
 
 //파일 다운로드
@@ -489,11 +523,28 @@ function workDataView(work_data_idx){
 		success: function(r){
 			var tag = "";
 			var severity = "";
-			var file_name = "-";
-			if(r.file_name != null && r.del_yn == 'N'){
-				file_name = r.file_name;
+//			var file_name = "-";
+//			if(r.file_name != null && r.del_yn == 'N'){
+//				file_name = r.file_name;
+//			}
+			
+			var file_name_tag = "";
+			if(r.file_list != null && r.file_list.length > 0){
+				var fl = r.file_list;
+				for(var i = 0; i < fl.length; i++){
+					file_name_tag +=	'<a onclick="fileDownload('+fl[i].file_idx+')" style="cursor: pointer;">'+fl[i].file_name+'</a>'
+							  	  +		'<img src="/image/common/delete.png" id="del_file_btn_'+fl[i].file_idx+'" onclick="delUploadFile('+fl[i].file_idx+', '+r.work_data_idx+')" style="width: 20px; height: 20px; display: inline-block; margin: 0px 3px; cursor: pointer;">'
+								  +		'</br>';
+				}
+			}else{
+				file_name_tag = "-";
 			}
 			
+//			file_name_tag +=	'<label for="uploadFile_'+r.work_data_idx+'">'
+//						  +			'<img src="/image/common/upload.png" id="uploadFileBtn_'+r.work_data_idx+'" style="width: 20px; height: 20px; display: block; cursor: pointer;">'
+//						  +		'</label>'
+//						  +		'<input multiple="multiple" type="file" id="uploadFile_'+r.work_data_idx+'" style="display: none;" onchange="fileUpload('+r.work_data_idx+')" required="required"/>';
+						
 			switch(r.severity){
 				case 0:
 					severity = "하";
@@ -535,8 +586,14 @@ function workDataView(work_data_idx){
 				+		'<td class="lb" colspan="3" id="severity_'+r.work_data_idx+'">'+severity+'</td>'
 				+	'</tr>'
 				+	'<tr>'
-				+		'<th>파일명</th>'
-				+		'<td class="lb" colspan="3" id="file_name_'+r.work_data_idx+'">'+file_name+'</td>'
+				+		'<th>'
+				+			'파일&nbsp'
+				+			'<label for="uploadFile_'+r.work_data_idx+'">'
+	  		    +				'<img src="/image/common/upload.png" id="uploadFileBtn_'+r.work_data_idx+'" style="width: 15px; height: 15px; display: inline-block; cursor: pointer;">'
+			    +			'</label>'
+			    +			'<input multiple="multiple" type="file" id="uploadFile_'+r.work_data_idx+'" style="display: none;" onchange="fileUpload('+r.work_data_idx+')" required="required"/>'
+				+		'</th>'
+				+		'<td class="lb" colspan="3" id="file_name_'+r.work_data_idx+'">'+file_name_tag+'</td>'
 				+	'</tr>';
 				
 			$('#work_data_added tbody').html(tag);
@@ -608,6 +665,7 @@ $(document).ready(function(){
 		, dayNamesMin: ['일','월','화','수','목','금','토']	
 	});
 });
+
 //레코드추가
 /*function addRecord() {
 	var totalCnt = $("input[name=totalCnt]").val();

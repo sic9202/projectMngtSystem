@@ -81,6 +81,6 @@ public interface ProjectMngtSvc {
 	
 	//uploadFile 관련
 	void uploadFile(FileVO fileVO) throws Exception;
-	boolean delUploadFile(int file_idx);
+	int delUploadFile(int file_idx);
 	void fileDownload(int file_idx, HttpServletRequest request, HttpServletResponse resp);
 }

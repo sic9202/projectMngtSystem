@@ -206,6 +206,8 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 	
 	public WorkDataVO getWorkDataInfo(int work_data_idx) {
 		WorkDataVO work_data_info = projectMngtMapper.getworkDataInfo(work_data_idx);
+		List<FileVO> file_list = projectMngtMapper.getFileList(work_data_idx);
+		work_data_info.setFile_list(file_list);
 		return work_data_info;
 	}
 	
@@ -235,16 +237,17 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 				//file delete
 				for(int i = 0; i < delList.size(); i++) {
 					int work_data_idx = Integer.parseInt(delList.get(i).get("work_data_idx"));
-					FileVO fileVO = new FileVO();
-					fileVO.setWork_data_idx(work_data_idx);
-					fileVO = projectMngtMapper.getUploadFileInfo(fileVO);
-					delResult = delFile(fileVO);
+					List<FileVO> file_list = projectMngtMapper.getFileList(work_data_idx);
+					for(FileVO file_info : file_list) {
+						delResult = delFile(file_info);
+					}
+//					fileVO = projectMngtMapper.getUploadFileInfo(fileVO);
 				}
 				
 				//file_info row 삭제
-				if(delResult) {
-					int delFileCnt = projectMngtMapper.delFileInfo(delList);
-				}
+//				if(delResult) {
+//					int delFileCnt = projectMngtMapper.delFileInfo(delList);
+//				}
 				
 				//work_data row 삭제
 				int delCnt = projectMngtMapper.delWorkData(delList);
@@ -345,13 +348,14 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		fileVO.setExt(fileExt);
 		
 		//기존 work_data에 있는 파일인지 확인
-		FileVO addedFileInfo = projectMngtMapper.getUploadFileInfo(fileVO);
-		if(addedFileInfo != null) {
-			fileVO.setFile_idx(addedFileInfo.getFile_idx());
-			projectMngtMapper.updAddedFileInfo(fileVO);
-		}else {
-			projectMngtMapper.addFileInfo(fileVO);
-		}
+		/*
+		 * FileVO addedFileInfo = projectMngtMapper.getUploadFileInfo(fileVO);
+		 * if(addedFileInfo != null) { fileVO.setFile_idx(addedFileInfo.getFile_idx());
+		 * projectMngtMapper.updAddedFileInfo(fileVO); }else {
+		 * projectMngtMapper.addFileInfo(fileVO); }
+		 */
+		//file_info테이블에 추가
+		projectMngtMapper.addFileInfo(fileVO);
 	}
 	
 	//file delete
@@ -368,7 +372,7 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		return result;
 	}
 	
-	public boolean delUploadFile(int file_idx) {
+	public int delUploadFile(int file_idx) {
 		FileVO file_info = new FileVO();
 		file_info.setFile_idx(file_idx);
 		
@@ -376,11 +380,14 @@ public class ProjectMngtSvcImpl implements ProjectMngtSvc {
 		
 		//file delete
 		boolean result = delFile(file_info);
+		int status = 0;
+		if(result)
+			status = 1;
 		
 		//file_info table update
 		projectMngtMapper.updDelYn(file_info);
 		
-		return result;
+		return status;
 	}
 	
 	public void fileDownload(int file_idx, HttpServletRequest request, HttpServletResponse resp) {
