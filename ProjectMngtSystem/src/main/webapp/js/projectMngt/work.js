@@ -404,10 +404,19 @@ function updWorkData(){
 			$('#work_data_added tbody').html(tag);
 			$('#work_data_idx').val(r.work_data_idx);
 			$('#modal_added_btn').html(btn_tag);
-			$("#severity_"+r.work_data_idx+" option:eq("+r.severity+")").prop("selected", true);
+			selectedControl(r.work_data_idx, r.severity);
 			datePicker(r.work_data_idx);
 		}
 	});
+}
+
+function selectedControl(work_data_idx, severity){
+	var target = document.getElementById("severity_"+work_data_idx);
+	for(let i = 0; i < 3; i++){
+		if(target.options[i].value == severity){
+			target.options[i].selected = true;
+		}
+	}
 }
 
 //파일 업로드

@@ -26,6 +26,7 @@
 					<p class="title">${work_info.work_name }</p>
 					<p class="cate">
 						<span class="cate19">경로</span> <span>${project_info.project_name } > ${schedule_info.schedule_name }</span>
+						<span class="cate19">기간</span> <span>${work_info.work_period }</span>
 					</p>
 				</div>
 				<div class="tab_borad_in_wrap">
